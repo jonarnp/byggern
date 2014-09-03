@@ -1,5 +1,5 @@
-@N: CD630 :"Z:\byggern\address_decoder.vhd":6:7:6:21|Synthesizing work.address_decoder.behavioral 
+@N: CD630 :"Z:\byggern\gal_address_decoder\address_decoder.vhd":6:7:6:21|Synthesizing work.address_decoder.behavioral 
 Post processing for work.address_decoder.behavioral
-@W: CL240 :"Z:\byggern\address_decoder.vhd":16:2:16:8|oled_dc is not assigned a value (floating) - a simulation mismatch is possible 
-@W: CL159 :"Z:\byggern\address_decoder.vhd":10:2:10:3|Input a9 is unused
-@W: CL159 :"Z:\byggern\address_decoder.vhd":11:2:11:3|Input a8 is unused
+@W: CL240 :"Z:\byggern\gal_address_decoder\address_decoder.vhd":16:2:16:8|oled_dc is not assigned a value (floating) - a simulation mismatch is possible 
+@W: CL159 :"Z:\byggern\gal_address_decoder\address_decoder.vhd":10:2:10:3|Input a9 is unused
+@W: CL159 :"Z:\byggern\gal_address_decoder\address_decoder.vhd":11:2:11:3|Input a8 is unused

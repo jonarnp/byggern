@@ -1,7 +1,7 @@
-#$ DATE Wed Sep 03 10:27:38 2014
+#$ DATE Wed Sep 03 12:16:12 2014
 #$ TOOL EDIF2BLIF version IspLever 1.0 
 #$ MODULE address_decoder
-#$ PINS 8 a11:1'ke'  a10:2'ke'  a9:3'ke'  a8:4'ke'  ram_cs:19'ke'  adc_cs:18'ke'  oled_cs:17'ke'  oled_dc:16'ke' 
+#$ PINS 8 a11:4'ke'  a10:3'ke'  a9:2'ke'  a8:1'ke'  ram_cs:19'ke'  adc_cs:18'ke'  oled_cs:17'ke'  oled_dc:16'ke' 
 #$ NODES 7 gnd_n_n a11_i a11_c a10_c adc_cs_c a10_c_i oled_cs_1_i 
 .model address_decoder
 .inputs a11.BLIF a10.BLIF gnd_n_n.BLIF a11_i.BLIF a11_c.BLIF a10_c.BLIF adc_cs_c.BLIF a10_c_i.BLIF oled_cs_1_i.BLIF  
