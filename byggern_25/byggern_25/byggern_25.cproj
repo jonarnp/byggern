@@ -114,6 +114,12 @@
     <Compile Include="byggern_25.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="drivers\adc.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="drivers\adc.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="drivers\usart.c">
       <SubType>compile</SubType>
     </Compile>
@@ -126,10 +132,22 @@
     <Compile Include="drivers\xmem.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="tests\adc_test.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="tests\adc_test.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="tests\sram_test.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="tests\sram_test.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="tests\usart_test.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="tests\usart_test.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>

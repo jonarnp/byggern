@@ -1,6 +1,204 @@
 ispLEVER Auto-Make Log File
 ---------------------------
 
-Starting: 'C:\ispLEVER_Classic1_4\ispcpld\bin\checkini.exe -err=automake.err "C:\ispLEVER_Classic1_4\ispcpld\config\gen_GAL.ini"'
+Updating: Chip Report
+Cannot get current project information.
+Starting: 'C:\ispLEVER_Classic1_4\ispcpld\bin\Synpwrap.exe -e address_decoder -target ispGAL -pro '
+
+Copyright (c) 1991-2010 Lattice Semiconductor Corporation,  All rights reserved.
+Version : 1.4.00.04.27.10
+
+Done sucessfully with exit code 0.
+#Build: Synplify Pro for Lattice D-2009.12LC-1, Build 040R, Jan 20 2010
+#install: C:\ISPLEVER_CLASSIC1_4\synpbase
+#OS: Windows_NT
+
+#Hostname: SANNTID08
+
+$ Start of Compile
+#Wed Sep 03 15:05:17 2014
+
+Synopsys VHDL Compiler, version comp500rc, Build 070R, built Apr 20 2010
+Copyright (C) 1994-2010, Synopsys Inc.  All Rights Reserved
+
+@N: CD720 :"C:\ISPLEVER_CLASSIC1_4\synpbase\lib\vhd\std.vhd":123:18:123:21|Setting time resolution to ns
+@N:"Z:\byggern\gal_address_decoder\address_decoder.vhd":6:7:6:21|Top entity is set to address_decoder.
+VHDL syntax check successful!
+@N: CD630 :"Z:\byggern\gal_address_decoder\address_decoder.vhd":6:7:6:21|Synthesizing work.address_decoder.behavioral 
+Post processing for work.address_decoder.behavioral
+@W: CL240 :"Z:\byggern\gal_address_decoder\address_decoder.vhd":16:2:16:8|oled_dc is not assigned a value (floating) - a simulation mismatch is possible 
+@W: CL159 :"Z:\byggern\gal_address_decoder\address_decoder.vhd":10:2:10:3|Input a9 is unused
+@W: CL159 :"Z:\byggern\gal_address_decoder\address_decoder.vhd":11:2:11:3|Input a8 is unused
+@END
+Process took 0h:00m:01s realtime, 0h:00m:01s cputime
+# Wed Sep 03 15:05:17 2014
+
+###########################################################]
+Synopsys CPLD Technology Mapper, Version map500lat, Build 127R, Built Apr 21 2010
+Copyright (C) 1994-2010, Synopsys Inc.  All Rights Reserved
+Product Version D-2009.12LC-1
+---------------------------------------
+Resource Usage Report
+
+Simple gate primitives:
+IBUF            2 uses
+OBUF            4 uses
+AND2            2 uses
+INV             4 uses
+
+
+@N: FC100 |Timing Report not generated for this device, please use place and route tools for timing analysis.
+D-2009.12LC-1
+Mapper successful!
+Process took 0h:00m:01s realtime, 0h:00m:01s cputime
+# Wed Sep 03 15:05:18 2014
+
+###########################################################]
+
+Synplicity VHDL/Verilog HDL Synthesizer finished successfully
+
+Done: completed successfully.
+
+Starting: 'C:\ispLEVER_Classic1_4\ispcpld\bin\edif2blf.exe -edf "address_decoder.edi" -out "address_decoder.bl0" -err automake.err -log "address_decoder.log" -prj gal_address_decoder -lib "C:\ispLEVER_Classic1_4\ispcpld/dat/mach.edn" -cvt YES -net_Vcc VCC -n...'
+
+Starting EDIF2BLIF....
+readEDIF ended normally.
+
+Inspect circuit address_decoder
+    Number of input ports   : 4
+    Number of output ports  : 4
+    Number of bidir ports   : 0
+    Number of instances     : 13
+    Number of nets          : 15
+
+No design errors found in circuit address_decoder
+
+WriteBLIF ended normally.
+
+Done: completed successfully.
+
+Starting: 'C:\ispLEVER_Classic1_4\ispcpld\bin\iblifopt.exe "address_decoder.bl0" -red bypin choose -collapse -pterms 8 -family -err automake.err -gui'
+
+BLIFOPT  Open-ABEL Optimizer 
+ispLEVER Classic 1.4 Copyright(C), 1992-2005, Lattice Semiconductor Corporation. All rights reserved
+Portions Copyright(c), 1992-1999, Vantis Corporation
+Portions Copyright(C), 1993-1998, Data I/O Corporation
+Portions Copyright(C), 1997-1998, MINC Washington Corporation
+Portions Copyright(C), Alan Phillips, Lancaster University Computer Centre 1992-1998
+U.C. Berkeley, SIS Ver. 1.0, supported by Lattice Semiconductor Corp.
+Reading Open-ABEL 2 file address_decoder.bl0...
+Node a10_i has been collapsed.
+Node a11_c has been collapsed.
+Node a10_c has been collapsed.
+Node N_2 has been collapsed.
+Node N_1 has been collapsed.
+Node gnd_n_n has been collapsed.
+Node a11_i has been collapsed.
+Node adc_cs_c has been collapsed.
+Node oled_cs_c has been collapsed.
+Performing 'bypin choose' optimization...
+Writing Open-ABEL 2 (BLIF) file address_decoder.bl1...
+
+BLIFOPT complete - 0 errors, 0 warnings. Time: 1 seconds
+
+Done: completed successfully.
+
+Starting: 'C:\ispLEVER_Classic1_4\ispcpld\bin\iblflink.exe "address_decoder.bl1" -o "gal_address_decoder.bl2" -omod address_decoder -family -err automake.err -gui'
+
+BLIFLINK  Top-Down Design Linker
+ispLEVER Classic 1.4 Copyright(C), 1992-2005, Lattice Semiconductor Corporation. All rights reserved
+Portions Copyright(c), 1992-1999, Vantis Corporation
+Portions Copyright(C), 1993-1998, Data I/O Corporation
+Portions Copyright(C), 1997-1998, MINC Washington Corporation
+Portions Copyright(C), Alan Phillips, Lancaster University Computer Centre 1992-1998
+
+Top-level file: 'address_decoder.bl1'
+
+Hierarchical BLIF: 'gal_address_decoder.bl2'
+
+BLIFLINK complete.  Time: 1 second 
+
+Done: completed successfully.
+
+Starting: 'C:\ispLEVER_Classic1_4\ispcpld\bin\iblifopt.exe gal_address_decoder.bl2 -red bypin choose -sweep -collapse all -pterms 8 -err automake.err -gui'
+
+BLIFOPT  Open-ABEL Optimizer 
+ispLEVER Classic 1.4 Copyright(C), 1992-2005, Lattice Semiconductor Corporation. All rights reserved
+Portions Copyright(c), 1992-1999, Vantis Corporation
+Portions Copyright(C), 1993-1998, Data I/O Corporation
+Portions Copyright(C), 1997-1998, MINC Washington Corporation
+Portions Copyright(C), Alan Phillips, Lancaster University Computer Centre 1992-1998
+U.C. Berkeley, SIS Ver. 1.0, supported by Lattice Semiconductor Corp.
+Reading Open-ABEL 2 file gal_address_decoder.bl2...
+Performing 'bypin choose' optimization...
+Writing Open-ABEL 2 (BLIF) file gal_address_decoder.bl3...
+
+BLIFOPT complete - 0 errors, 0 warnings. Time: 1 seconds
+
+Done: completed successfully.
+
+Starting: 'C:\ispLEVER_Classic1_4\ispcpld\bin\idiofft.exe gal_address_decoder.bl3 -pla -o gal_address_decoder.tt2 -dev p16v8 -define N -err automake.err -gui'
+
+DIOFFT  Flip-Flop Transformation program
+ispLEVER Classic 1.4 Copyright(C), 1992-2005, Lattice Semiconductor Corporation. All rights reserved
+Portions Copyright(c), 1992-1999, Vantis Corporation
+Portions Copyright(C), 1993-1998, Data I/O Corporation
+Portions Copyright(C), 1997-1998, MINC Washington Corporation
+Portions Copyright(C), Alan Phillips, Lancaster University Computer Centre 1992-1998
+Input file: gal_address_decoder.bl3.
+Output file: gal_address_decoder.tt2.
+Cross reference file: gal_address_decoder.xrf.
+
+Shortening signal names...
+Writing signal name cross reference file gal_address_decoder.xrf... 
+
+DIOFFT complete. - Time 0 seconds
+
+Done: completed successfully.
+
+Starting: 'C:\ispLEVER_Classic1_4\ispcpld\bin\fit.exe gal_address_decoder.tt2 -dev p16v8 -str -err automake.err -gui'
+
+FIT  Generic Device Fitter
+ispLEVER Classic 1.4 Copyright(C), 1992-2005, Lattice Semiconductor Corporation. All rights reserved
+Portions Copyright(c), 1992-1999, Vantis Corporation
+Portions Copyright(C), 1993-1998, Data I/O Corporation
+Portions Copyright(C), 1997-1998, MINC Washington Corporation
+Portions Copyright(C), Alan Phillips, Lancaster University Computer Centre 1992-1998
+Input file: 'gal_address_decoder.tt2'
+Device 'p16v8'
+Note 4161: Using device architecture type P16V8AS.
+Warning 4154:Signal 'a9' (pin 2) is not used in the design -
+neither the signal nor its pin will be reassigned.
+Warning 4154:Signal 'a8' (pin 1) is not used in the design -
+neither the signal nor its pin will be reassigned.
+Design FITS
+Pin-assigned pla: 'gal_address_decoder.tt3'
+
+FIT complete.  Time: 1 second.
+
+Done: completed successfully.
+
+Starting: 'C:\ispLEVER_Classic1_4\ispcpld\bin\fuseasm.exe gal_address_decoder.tt3 -dev p16v8 -o gal_address_decoder.jed -ivec NoInput.tmv -rep gal_address_decoder.rpt -doc brief -con ptblown -for brief -err automake.err -gui'
+
+FUSEASM  Fusemap Assembler
+ispLEVER Classic 1.4 Copyright(C), 1992-2005, Lattice Semiconductor Corporation. All rights reserved
+Portions Copyright(c), 1992-1999, Vantis Corporation
+Portions Copyright(C), 1993-1998, Data I/O Corporation
+Portions Copyright(C), 1997-1998, MINC Washington Corporation
+Portions Copyright(C), Alan Phillips, Lancaster University Computer Centre 1992-1998
+Note 5144: Could not open vector file NoInput.tmv
+
+Input file: 'gal_address_decoder.tt3'
+Device: 'P16V8AS'
+Building model...
+Choosing best polarities...
+Mapping equations...
+.
+2 of 64 terms used; 0 vectors loaded
+Programmer load file: 'gal_address_decoder.jed'
+Generating report...
+Report file: 'gal_address_decoder.rpt'
+
+FUSEASM complete.  Time: 1 second 
 
 Done: completed successfully.

@@ -6,14 +6,14 @@
 #
 # Created by Synplify VHDL Compiler version comp500rc, Build 070R from Synplicity, Inc.
 # Copyright 1994-2010 Synopsys, Inc. , All rights reserved.
-# Synthesis Netlist written on Wed Sep 03 12:16:06 2014
+# Synthesis Netlist written on Wed Sep 03 15:05:17 2014
 #
 #
 #OPTIONS:"|-top|address_decoder|-dfltencoding|sequential|-encrypt|-pro|-lite|-ll|2000|-ui|-fid2|-ram|-sharing|on|-autosm|-ignore_undefined_lib|-lib|work"
 #CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\bin\\c_vhdl.exe":1272017192
 #CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\lib\\vhd\\location.map":1216910970
 #CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\lib\\vhd\\std.vhd":1272017908
-#CUR:"Z:\\byggern\\gal_address_decoder\\address_decoder.vhd":1409739351
+#CUR:"Z:\\byggern\\gal_address_decoder\\address_decoder.vhd":1409749505
 #CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\lib\\vhd\\std1164.vhd":1272017908
 #CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\lib\\vhd\\arith.vhd":1272017906
 #CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\lib\\vhd\\unsigned.vhd":1272017910
@@ -66,14 +66,11 @@ NRODFR4"u(
 NR03sDs_FHNoMl"CRF8DC_"8O;H
 NR$3#MF_MNH##oCMlM40R;H
 NRODFR4"un
-";b@R@4::U.::UckRLVNRsl#_ORlsN_RO#N;44
-@bR@d4:6.:4::d64HURMkPRMN4_8OO_#MRk48_NO#_OR4N4;R
+";b@R@46:d::4gd.6:6MRHPMRk48_NO#_OR4kM_ON8_RO#N;4j
+@bR@d4:n4:4::dn4H(RMsPRNOl_#NRsl#_OR4N4;R
 b@:@j4::44R:.0CskRk0sCsR0k
 C;b@R@j::44::4.NRVDR#CV#NDCNRVD;#C
 @bR@U4::U.::8cRODRFC88_ODRFC88_Ob;
-R4@@::dc4dn:c6:.RPFsRCFD8#_O_F4RD_C8O4#_R4N4RjN4;R
-b@:@4d4c:.c:d:R.6HRMPF8DC_RO#F8DC_RO#F8DC__O#4b;
-R4@@::d64d.:6U:.R8NMP8RNO#_ORON8_RO#NR4jk_M4N_8OO
-#;C
-;
-
+R4@@::dc4d.:c4:.RPFsRCFD8#_ORCFD8#_OR4N4RjN4;R
+b@:@4d46:46:d:R.6FRsPN_8OON#R8OO_#4RN4MRk48_NO#_O;;
+C

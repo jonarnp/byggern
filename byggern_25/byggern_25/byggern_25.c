@@ -15,32 +15,26 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+#include "bit_op.h"
 #include "drivers/usart.h"
+#include "drivers/xmem.h"
 
-#define toggle_bit(reg,bit) (reg^= (1 << bit))
+#include "tests/sram_test.h"
+#include "tests/adc_test.h"
 
 int main(void)
 {
 	cli();
-	USART_Init(MYUBRR,true);
 	DDRB = 0x01;
+	USART_Init(MYUBRR,true);
+	XMEM_En();
 	sei();
+	
+	SRAM_test();
 	while(1)
 	{
-		////TODO:: Please write your application code
-		//toggle_bit(PORTB,PB0);
-		//printf("a");
-		_delay_ms(1);
-		//if(USART_DataReceived())
-		//{
-			////printf("Received data: %c\n", USART_Receive());
-			//USART_Transmit(USART_Receive());
-		//}
-		//USART_Transmit(USART_Receive());
+		//ADC_gal_test();
+		_delay_ms(1);	
 	}
 }
 
-ISR(USART0_RXC_vect)
-{
-	USART_Transmit(USART_Receive());
-}

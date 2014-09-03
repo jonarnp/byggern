@@ -1,6 +1,8 @@
 #include <avr/io.h>
 #include <stdio.h>
 
+#include "sram_test.h"
+
 void SRAM_test(void)
 {
 	// Start address for the SRAM

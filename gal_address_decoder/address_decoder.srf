@@ -5,7 +5,7 @@
 #Hostname: SANNTID08
 
 $ Start of Compile
-#Wed Sep 03 12:16:06 2014
+#Wed Sep 03 15:05:17 2014
 
 Synopsys VHDL Compiler, version comp500rc, Build 070R, built Apr 20 2010
 Copyright (C) 1994-2010, Synopsys Inc.  All Rights Reserved
@@ -20,7 +20,7 @@ Post processing for work.address_decoder.behavioral
 @W: CL159 :"Z:\byggern\gal_address_decoder\address_decoder.vhd":11:2:11:3|Input a8 is unused
 @END
 Process took 0h:00m:01s realtime, 0h:00m:01s cputime
-# Wed Sep 03 12:16:06 2014
+# Wed Sep 03 15:05:17 2014
 
 ###########################################################]
 Synopsys CPLD Technology Mapper, Version map500lat, Build 127R, Built Apr 21 2010
@@ -33,13 +33,13 @@ Simple gate primitives:
 IBUF            2 uses
 OBUF            4 uses
 AND2            2 uses
-INV             2 uses
+INV             4 uses
 
 
 @N: FC100 |Timing Report not generated for this device, please use place and route tools for timing analysis.
 D-2009.12LC-1
 Mapper successful!
 Process took 0h:00m:01s realtime, 0h:00m:01s cputime
-# Wed Sep 03 12:16:07 2014
+# Wed Sep 03 15:05:18 2014
 
 ###########################################################]
