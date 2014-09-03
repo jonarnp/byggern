@@ -1,0 +1,10 @@
+JDF B
+// Created by Version 1.4 
+PROJECT gal_address_decoder
+DESIGN gal_address_decoder Normal
+DEVKIT GAL16V8D-15QP
+ENTRY Pure VHDL
+MODULE address_decoder.vhd
+MODSTYLE address_decoder Normal
+SYNTHESIS_TOOL Synplify
+TOPMODULE address_decoder
