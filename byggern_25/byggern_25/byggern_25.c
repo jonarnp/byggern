@@ -33,7 +33,8 @@ int main(void)
 		_delay_ms(1);
 		//if(USART_DataReceived())
 		//{
-			//printf("Received data: %c\n", USART_Receive());
+			////printf("Received data: %c\n", USART_Receive());
+			//USART_Transmit(USART_Receive());
 		//}
 		//USART_Transmit(USART_Receive());
 	}
@@ -41,5 +42,5 @@ int main(void)
 
 ISR(USART0_RXC_vect)
 {
-	printf("Received data: %c\n", USART_Receive());
+	USART_Transmit(USART_Receive());
 }
