@@ -6,20 +6,20 @@
 #
 # Created by Synplify VHDL Compiler version comp500rc, Build 070R from Synplicity, Inc.
 # Copyright 1994-2010 Synopsys, Inc. , All rights reserved.
-# Synthesis Netlist written on Wed Sep 03 10:27:33 2014
+# Synthesis Netlist written on Wed Sep 03 12:16:06 2014
 #
 #
 #OPTIONS:"|-top|address_decoder|-dfltencoding|sequential|-encrypt|-pro|-lite|-ll|2000|-ui|-fid2|-ram|-sharing|on|-autosm|-ignore_undefined_lib|-lib|work"
 #CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\bin\\c_vhdl.exe":1272017192
 #CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\lib\\vhd\\location.map":1216910970
 #CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\lib\\vhd\\std.vhd":1272017908
-#CUR:"Z:\\byggern\\address_decoder.vhd":1409732831
+#CUR:"Z:\\byggern\\gal_address_decoder\\address_decoder.vhd":1409739351
 #CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\lib\\vhd\\std1164.vhd":1272017908
 #CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\lib\\vhd\\arith.vhd":1272017906
 #CUR:"C:\\ISPLEVER_CLASSIC1_4\\synpbase\\lib\\vhd\\unsigned.vhd":1272017910
 f "C:\ISPLEVER_CLASSIC1_4\synpbase\lib\vhd\std.vhd"; # file 0
 af .is_vhdl 1;
-f "Z:\byggern\address_decoder.vhd"; # file 1
+f "Z:\byggern\gal_address_decoder\address_decoder.vhd"; # file 1
 af .is_vhdl 1;
 f "C:\ISPLEVER_CLASSIC1_4\synpbase\lib\vhd\std1164.vhd"; # file 2
 af .is_vhdl 1;
@@ -33,21 +33,24 @@ ftell;
 @E@MR@n4::n(::R.4I	FsR8N8s#C#_O8CFs8CRELCNFPHs;ND
 RNP3PH#ER8D4N;
 PHR3#E_P84DR;P
-NR$3#Ml_VN"bRI	FsRZ\":L\\$Coos\M\Ns88C_##8FCO83CsP\E8";
-"
+NR$3#Ml_VN"bRI	FsRZ\":L\\$Coos\M\o_NDNs88C_##8FCO8\Cs\8N8s#C#_O8CFs8C38PE\""
+;
+
+
+
 @HR@U4::U.::NcR4N4R4
 4;N3HRs_0DFosHMCNlR4"N4
-";NDHRF"ORu;4"
+";NDHRF"ORu;c"
 @HR@g4::g.::NcR4NjR4
 j;N3HRs_0DFosHMCNlR4"Nj
-";NDHRF"ORu;."
+";NDHRF"ORu;d"
 @HR@44:j::.4dj:RRNgN
 g;N3HRs_0DFosHMCNlRg"N"N;
-HFRDOuR"d
+HFRDOuR".
 ";
 @HR@44:4::.4d4:RRNUN
 U;N3HRs_0DFosHMCNlRU"N"N;
-HFRDOuR"c
+HFRDOuR"4
 ";
 @FR@44:d::.4(d:RlsN_RO#s_NlO
 #;N3HRs_0DFosHMCNlRN"sl#_O"N;

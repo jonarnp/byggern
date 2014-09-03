@@ -1,15 +1,15 @@
 #-- Synopsys, Inc.
 #-- Version D-2009.12LC-1
-#-- Project file Z:\byggern\run_options.txt
-#-- Written on Wed Sep 03 10:27:32 2014
+#-- Project file Z:\byggern\gal_address_decoder\run_options.txt
+#-- Written on Wed Sep 03 12:16:06 2014
 
 
 #project files
 add_file -vhdl -lib work "./address_decoder.vhd"
 
 
-#implementation: "byggern"
-impl -add byggern -type fpga
+#implementation: "gal_address_decoder"
+impl -add gal_address_decoder -type fpga
 
 #device options
 set_option -technology ispGAL
@@ -51,5 +51,5 @@ set_option -write_apr_constraint 1
 project -result_file "./address_decoder.edi"
 
 #set log file 
-set_option log_file "Z:/byggern/address_decoder.srf" 
-impl -active "byggern"
+set_option log_file "Z:/byggern/gal_address_decoder/address_decoder.srf" 
+impl -active "gal_address_decoder"

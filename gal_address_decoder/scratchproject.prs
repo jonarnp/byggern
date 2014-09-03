@@ -1,15 +1,15 @@
 #-- Synopsys, Inc.
 #-- Version D-2009.12LC-1
-#-- Project file Z:\byggern\scratchproject.prs
-#-- Written on Wed Sep 03 10:27:32 2014
+#-- Project file Z:\byggern\gal_address_decoder\scratchproject.prs
+#-- Written on Wed Sep 03 12:16:06 2014
 
 
 #project files
-add_file -vhdl -lib work "Z:/byggern/address_decoder.vhd"
+add_file -vhdl -lib work "Z:/byggern/gal_address_decoder/address_decoder.vhd"
 
 
-#implementation: "byggern"
-impl -add Z:\byggern -type fpga
+#implementation: "gal_address_decoder"
+impl -add Z:\byggern\gal_address_decoder -type fpga
 
 #device options
 set_option -technology ispGAL
@@ -48,8 +48,8 @@ set_option -resource_sharing 1
 set_option -write_apr_constraint 1
 
 #set result format/file last
-project -result_file "Z:/byggern/address_decoder.edi"
+project -result_file "Z:/byggern/gal_address_decoder/address_decoder.edi"
 
 #set log file 
-set_option log_file "Z:/byggern/address_decoder.srf" 
-impl -active "byggern"
+set_option log_file "Z:/byggern/gal_address_decoder/address_decoder.srf" 
+impl -active "gal_address_decoder"

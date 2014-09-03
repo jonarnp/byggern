@@ -5,22 +5,22 @@
 #Hostname: SANNTID08
 
 $ Start of Compile
-#Wed Sep 03 12:16:06 2014
+#Wed Sep 03 10:27:32 2014
 
 Synopsys VHDL Compiler, version comp500rc, Build 070R, built Apr 20 2010
 Copyright (C) 1994-2010, Synopsys Inc.  All Rights Reserved
 
 @N: CD720 :"C:\ISPLEVER_CLASSIC1_4\synpbase\lib\vhd\std.vhd":123:18:123:21|Setting time resolution to ns
-@N:"Z:\byggern\gal_address_decoder\address_decoder.vhd":6:7:6:21|Top entity is set to address_decoder.
+@N:"Z:\byggern\address_decoder.vhd":6:7:6:21|Top entity is set to address_decoder.
 VHDL syntax check successful!
-@N: CD630 :"Z:\byggern\gal_address_decoder\address_decoder.vhd":6:7:6:21|Synthesizing work.address_decoder.behavioral 
+@N: CD630 :"Z:\byggern\address_decoder.vhd":6:7:6:21|Synthesizing work.address_decoder.behavioral 
 Post processing for work.address_decoder.behavioral
-@W: CL240 :"Z:\byggern\gal_address_decoder\address_decoder.vhd":16:2:16:8|oled_dc is not assigned a value (floating) - a simulation mismatch is possible 
-@W: CL159 :"Z:\byggern\gal_address_decoder\address_decoder.vhd":10:2:10:3|Input a9 is unused
-@W: CL159 :"Z:\byggern\gal_address_decoder\address_decoder.vhd":11:2:11:3|Input a8 is unused
+@W: CL240 :"Z:\byggern\address_decoder.vhd":16:2:16:8|oled_dc is not assigned a value (floating) - a simulation mismatch is possible 
+@W: CL159 :"Z:\byggern\address_decoder.vhd":10:2:10:3|Input a9 is unused
+@W: CL159 :"Z:\byggern\address_decoder.vhd":11:2:11:3|Input a8 is unused
 @END
 Process took 0h:00m:01s realtime, 0h:00m:01s cputime
-# Wed Sep 03 12:16:06 2014
+# Wed Sep 03 10:27:33 2014
 
 ###########################################################]
 Synopsys CPLD Technology Mapper, Version map500lat, Build 127R, Built Apr 21 2010
@@ -40,6 +40,6 @@ INV             2 uses
 D-2009.12LC-1
 Mapper successful!
 Process took 0h:00m:01s realtime, 0h:00m:01s cputime
-# Wed Sep 03 12:16:07 2014
+# Wed Sep 03 10:27:34 2014
 
 ###########################################################]

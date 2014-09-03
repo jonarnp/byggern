@@ -6,11 +6,11 @@ Running in Lattice mode
 
 Starting:    C:\ISPLEVER_CLASSIC1_4\synpbase\bin\mbin\synbatch.exe
 Install:     C:\ISPLEVER_CLASSIC1_4\synpbase
-Date:        Wed Sep 03 10:27:32 2014
+Date:        Wed Sep 03 12:16:06 2014
 Version:     D-2009.12LC-1
 
 
-Arguments:   -product synplify_pro  -batch z:/byggern\address_decoder.prj
+Arguments:   -product synplify_pro  -batch z:/byggern/gal_address_decoder\address_decoder.prj
 ProductType: synplify_pro
 
 
@@ -18,9 +18,9 @@ ProductType: synplify_pro
 
 
 
-Running synthesis on address_decoder:byggern
+Running synthesis on address_decoder:gal_address_decoder
 
-log file: "Z:\byggern\address_decoder.srf"
+log file: "Z:\byggern\gal_address_decoder\address_decoder.srf"
 
 
 
@@ -28,12 +28,12 @@ Running flow compile_flow ...
 
 
 Running HDL Compiler...
-Start Time:10:27:32
+Start Time:12:16:06
 
 
 Compiler Completed
 Return Code: 0
-Completion Time:10:27:33
+Completion Time:12:16:06
 
 
 Running flow synthesis ...
@@ -42,12 +42,12 @@ Launching mapper in pro mode
 
 
 Running ispGAL Mapper...
-Start Time:10:27:34
+Start Time:12:16:07
 
 
 ispGAL Mapper Completed
 Return Code: 0
-Completion Time:10:27:34
+Completion Time:12:16:07
 
 exit status=0
 
