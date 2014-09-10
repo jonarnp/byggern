@@ -18,9 +18,8 @@
 #include "bit_op.h"
 #include "drivers/usart.h"
 #include "drivers/xmem.h"
-
-#include "tests/sram_test.h"
-#include "tests/adc_test.h"
+#include "tests/joy_test.h"
+//#include "drivers/joy.h"
 
 int main(void)
 {
@@ -28,13 +27,19 @@ int main(void)
 	DDRB = 0x01;
 	USART_Init(MYUBRR,true);
 	XMEM_En();
+	//JOY_init();
 	sei();
 	
-	SRAM_test();
+	JOY_calibrate();	
 	while(1)
 	{
 		//ADC_gal_test();
-		_delay_ms(1);	
+		_delay_ms(100);
+		//test = ADC_read(4);
+		//printf("ADC channel 0 %d\n",test);
+		//printf("Pin test %d\n", get_bit(PINB,PINB1));
+		//ADC_read_test();
+		Test_joy();
 	}
 }
 

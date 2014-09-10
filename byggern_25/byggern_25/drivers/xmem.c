@@ -6,10 +6,14 @@
  */ 
 
 #include <avr/io.h>
+#include "..\bit_op.h"
 #include "xmem.h"
 
 void XMEM_En(void)
 {
 	/* Enables the External Memory Interface */
-	MCUCR |= (1<<SRE);
+	set_bit(MCUCR,SRE);
+	
+	/* Mask out 4 MSB for JTAG */
+	set_bit(SFIOR,XMM2);
 }

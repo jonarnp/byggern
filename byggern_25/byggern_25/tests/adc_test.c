@@ -28,15 +28,10 @@ void ADC_gal_test(void)
 
 void ADC_read_test(void)
 {
-	// Start address for the ADC
-	volatile char *ext_adc = (char *) 0x1400;
-
-	uint16_t i;
-	uint8_t testvalue;
-
 	printf("Starting ADC read test...\r\n");
-
-	for (i = 0; i < 0x400; i++) {
-		printf("ext_adc[%d] = %d\r\n", i, ext_adc[i]);
+	uint8_t i;
+	
+	for (i = 1; i <= 4; i++) {
+		printf("ADC channel %d - Raw value %d\n",i,ADC_read(i));
 	}
 }
