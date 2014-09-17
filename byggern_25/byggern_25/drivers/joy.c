@@ -84,6 +84,7 @@ void JOY_calibrate()
 	
 			
 	printf("Calibration completed, xMin %d xMax %d\n",Calib_values.xMin,Calib_values.xMax);
+	printf("Calibration completed, xk1 %d xk2 %d yk1 %d yk2 %d\n",Calib_values.x_k1,Calib_values.x_k2,Calib_values.y_k1,Calib_values.y_k2);
 }
 
 bool JOY_button()
@@ -97,28 +98,69 @@ JOY_pos_t JOY_getPosition()
 	JOY_pos_t pos;
 	int16_t V_x = ADC_read(JOY_X_CH)-Calib_values.xMiddle;
 	int16_t V_y = ADC_read(JOY_Y_CH)-Calib_values.yMiddle;
+	
 	//printf("Vx = %d Vy = %d",V_x,V_y);
 	if (V_x>0)
 	{
-		pos.x = (100*V_x)/Calib_values.x_k1;
-	}
-	else
-	{
 		pos.x = (100*V_x)/Calib_values.x_k2;
 	}
-	if (V_y>0)
-	{
-		pos.y = (100*V_y)/Calib_values.y_k1;
-	}
 	else
+	{
+		pos.x = (100*V_x)/Calib_values.x_k1;
+	}
+	
+	if (V_y>0)
 	{
 		pos.y = (100*V_y)/Calib_values.y_k2;
 	}
+	else
+	{
+		pos.y = (100*V_y)/Calib_values.y_k1;
+	}
+	
+	/* Within calibrated values */
+	if (pos.x < -100)
+	{
+		pos.x = -100;
+	}
+	else if (pos.x > 100)
+	{
+		pos.x = 100;
+	}
+	
+	if (pos.y < -100)
+	{
+		pos.y = -100;
+	}
+	else if (pos.y > 100)
+	{
+		pos.y = 100;
+	}
+	
 	return pos;
 }
 
 JOY_dir_t JOY_getDirection()
-{
-	JOY_dir_t dir;
-	return dir;
+{	
+	JOY_pos_t pos = JOY_getPosition();
+	
+	if(pos.x > JOY_DIR_TH)
+	{
+		return RIGHT;
+	}
+	else if (pos.x < -JOY_DIR_TH)
+	{
+		return LEFT;
+	}
+	
+	if(pos.y > JOY_DIR_TH)
+	{
+		return UP;
+	}
+	else if (pos.y < -JOY_DIR_TH)
+	{
+		return DOWN;
+	}
+	
+	return MIDDLE;
 }

@@ -126,6 +126,12 @@
     <Compile Include="drivers\joy.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="drivers\slider.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="drivers\slider.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="drivers\usart.c">
       <SubType>compile</SubType>
     </Compile>
@@ -148,6 +154,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="tests\joy_test.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="tests\slider_test.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="tests\slider_test.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="tests\sram_test.c">

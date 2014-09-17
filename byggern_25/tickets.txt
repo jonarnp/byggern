@@ -1,0 +1,2 @@
+1. in joy.c: JOY_getDirection()
+	- handle two directions. i.e. right and up

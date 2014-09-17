@@ -27,12 +27,16 @@
 #define JOY_calib_button_Pin PINB0
 #define JOY_calib_button_DDR DDRB
 
+/* Joystick direction threshold */
+#define JOY_DIR_TH 25
+
 typedef struct JOY_pos {
 	int16_t x;
 	int16_t y;
 } JOY_pos_t;
 
 typedef enum JOY_dir {
+	MIDDLE,
 	LEFT,
 	RIGHT,
 	UP,

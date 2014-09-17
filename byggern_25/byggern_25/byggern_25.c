@@ -19,7 +19,9 @@
 #include "drivers/usart.h"
 #include "drivers/xmem.h"
 #include "tests/joy_test.h"
-//#include "drivers/joy.h"
+#include "drivers/joy.h"
+#include "tests/slider_test.h"
+#include "drivers/slider.h"
 
 int main(void)
 {
@@ -27,10 +29,12 @@ int main(void)
 	DDRB = 0x01;
 	USART_Init(MYUBRR,true);
 	XMEM_En();
-	//JOY_init();
+	JOY_init();
+	//SLIDER_init();
 	sei();
 	
 	JOY_calibrate();	
+	//SLIDER_calibrate();
 	while(1)
 	{
 		//ADC_gal_test();
@@ -40,6 +44,7 @@ int main(void)
 		//printf("Pin test %d\n", get_bit(PINB,PINB1));
 		//ADC_read_test();
 		Test_joy();
+		//Test_slider();
 	}
 }
 

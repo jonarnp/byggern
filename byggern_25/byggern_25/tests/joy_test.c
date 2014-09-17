@@ -14,4 +14,7 @@ void Test_joy()
 	JOY_pos_t pos = JOY_getPosition();
 
 	printf("Joystick position: X=%d , Y=%d\n", pos.x, pos.y);
+	
+	JOY_dir_t dir = JOY_getDirection();
+	printf("Joystick position: enum=%d\n", dir);
 }
