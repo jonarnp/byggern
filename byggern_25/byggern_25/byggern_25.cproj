@@ -126,6 +126,12 @@
     <Compile Include="drivers\joy.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="drivers\oled.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="drivers\oled.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="drivers\slider.c">
       <SubType>compile</SubType>
     </Compile>
@@ -142,6 +148,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="drivers\xmem.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="fonts\font_5x7.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="tests\adc_test.c">
@@ -177,6 +186,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="drivers" />
+    <Folder Include="fonts" />
     <Folder Include="tests" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />

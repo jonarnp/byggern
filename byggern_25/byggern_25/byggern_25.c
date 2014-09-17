@@ -14,6 +14,7 @@
 #include <util/delay.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <avr/pgmspace.h>
 
 #include "bit_op.h"
 #include "drivers/usart.h"
@@ -22,6 +23,7 @@
 #include "drivers/joy.h"
 #include "tests/slider_test.h"
 #include "drivers/slider.h"
+#include "drivers/oled.h"
 
 int main(void)
 {
@@ -29,21 +31,32 @@ int main(void)
 	DDRB = 0x01;
 	USART_Init(MYUBRR,true);
 	XMEM_En();
-	JOY_init();
-	//SLIDER_init();
+	//JOY_init();
+	SLIDER_init();
 	sei();
 	
-	JOY_calibrate();	
+	//JOY_calibrate();	
 	//SLIDER_calibrate();
+	_delay_ms(1000);
+	oled_init();
+	uint8_t i=0;
+	oled_clear_line(1);
+	
 	while(1)
 	{
-		//ADC_gal_test();
+		if (++i >=255) i=0;
+		
+		oled_clear();
+		//oled_putchar('B');
+		oled_print("Test mellomrom\n Line 2");
 		_delay_ms(100);
+		//ADC_gal_test();
+		//_delay_ms(100);
 		//test = ADC_read(4);
 		//printf("ADC channel 0 %d\n",test);
 		//printf("Pin test %d\n", get_bit(PINB,PINB1));
 		//ADC_read_test();
-		Test_joy();
+		//Test_joy();
 		//Test_slider();
 	}
 }

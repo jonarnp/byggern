@@ -1,7 +1,7 @@
 #-- Synopsys, Inc.
 #-- Version D-2009.12LC-1
 #-- Project file Z:\byggern\gal_address_decoder\run_options.txt
-#-- Written on Wed Sep 03 15:05:17 2014
+#-- Written on Wed Sep 17 10:16:25 2014
 
 
 #project files

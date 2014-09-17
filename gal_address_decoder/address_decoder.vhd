@@ -31,7 +31,8 @@ end address_decoder;
 architecture behavioral of address_decoder is
 begin
 	-- implement the functionality here
-	oled_cs <= a11 OR a10;
+	oled_cs <= (a11 OR a10);
 	adc_cs <= a11 OR (NOT a10);
 	ram_cs <= NOT a11;
+	oled_dc <= a9;
 end behavioral;

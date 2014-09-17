@@ -1,9 +1,7 @@
-Warning 4154: Signal 'a9' (pin 2) is not used in the design -
-neither the signal nor its pin will be reassigned.
 Warning 4154: Signal 'a8' (pin 1) is not used in the design -
 neither the signal nor its pin will be reassigned.
 $DEVICE         P16V8AS    fit gal_address_decoder.tt3
-$PINS    8  a8:1   a9:2   oled_dc:16   oled_cs:17   adc_cs:18   ram_cs:19   a10:3   
+$PINS    8  a8:1   oled_dc:16   oled_cs:17   adc_cs:18   ram_cs:19   a9:2   a10:3   
 a11:4   
 --------------------------------------------------------------
 
