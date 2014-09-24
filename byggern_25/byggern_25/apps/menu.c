@@ -29,7 +29,7 @@ const unsigned char PROGMEM main_menu_str[4][20] = {
 };
 
 // States
-state_t current_state;
+static state_t current_state;
 
 //Variables
 menu_action_t menu_select;
@@ -94,12 +94,12 @@ void menu_update()
 		menu_select.select_iterations = 0;
 	}	
 	
-	if (menu_select.goDown || menu_select.goUp || menu_select.select) menu_update_screen();
+	if (menu_select.goDown || menu_select.goUp || menu_select.select) menu_update_state();
 }
 
-void menu_update_screen()
+void menu_update_state()
 {
-	if (menu_select.goUp) 
+	if (menu_select.goUp)
 	{
 		selected_line--;
 		menu_select.goUp = false;
@@ -109,10 +109,6 @@ void menu_update_screen()
 		selected_line++;
 		menu_select.goDown = false;
 	}
-	
-	oled_clear();
-	oled_goto_column(0);
-	oled_goto_line(0);
 	switch(current_state)
 	{
 		case main_s:
@@ -120,7 +116,52 @@ void menu_update_screen()
 			if (selected_line < play) selected_line = settings;
 			if (selected_line > settings) selected_line = play;
 		
-			//char *str;
+			if (menu_select.select)
+			{
+				switch (selected_line)
+				{
+					case play:
+						current_state = play_s;
+						break;
+					case highscore:
+						current_state = highscore_s;
+						break;
+					case settings:
+						current_state = settings_s;
+						break;
+				}
+			}
+			break;
+		case play_s:
+			if (menu_select.select) current_state = main_s;
+			break;
+		
+		case settings_s:
+			if (menu_select.select) current_state = main_s;
+			break;
+		
+		case highscore_s:
+			if (menu_select.select) current_state = main_s;
+			break;
+			
+	}
+	menu_select.select = false;
+	menu_update_screen();
+}
+
+void menu_update_screen()
+{
+	printf("Update screen, goDown: %d, goUp: %d, select: %d\n",menu_select.goDown,menu_select.goUp,menu_select.select);
+	printf("Current state: %d\n",current_state);
+	
+	
+	oled_clear();
+	oled_goto_column(0);
+	oled_goto_line(0);
+	switch(current_state)
+	{
+		case main_s:
+		
 			oled_print_p(main_menu_str[0]);
 			
 			oled_goto_column(0);
@@ -128,8 +169,7 @@ void menu_update_screen()
 			oled_print_p(main_menu_str[1]);
 			if (selected_line == play)
 			{
-					oled_print(" *");
-					if (menu_select.select) current_state = play_s;
+				oled_print(" *");
 			}
 			
 			oled_goto_column(0);
@@ -138,7 +178,6 @@ void menu_update_screen()
 			if (selected_line == highscore)
 			{
 				oled_print(" *");
-				if (menu_select.select) current_state = highscore_s;
 			}
 			
 			oled_goto_column(0);
@@ -147,24 +186,21 @@ void menu_update_screen()
 			if (selected_line == settings)
 			{
 				oled_print(" *");
-				if (menu_select.select) current_state = settings_s;
 			}
 			break;
 		
 		case play_s:
 			oled_print("PLAAAAAAAAY");
-			if (menu_select.select) current_state = main_s;
 			break;
 		
 		case settings_s:
-		oled_print("Settings??? hihi");
-		if (menu_select.select) current_state = main_s;
-		break;
+			printf("Into settings\n");
+			oled_print("Settings??? hihi");
+			break;
 		
 		case highscore_s:
-		oled_print("Gruppe 25 :)");
-		if (menu_select.select) current_state = main_s;
-		break;
+			oled_print("Gruppe 25 :)");
+			break;
 	}
-	menu_select.select = false;
+	printf("End of update screen, goDown: %d, goUp: %d, select: %d\n",menu_select.goDown,menu_select.goUp,menu_select.select);
 }
