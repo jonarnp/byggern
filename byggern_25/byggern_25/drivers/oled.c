@@ -13,8 +13,8 @@
 volatile char *oled_command = (char *) OLED_COMMAND;
 volatile char *oled_data = (char *) OLED_DATA;
 
-uint8_t current_line = 0xB0;
-uint8_t current_column = 0x21;
+uint8_t current_line = 0;	//0xB0;
+uint8_t current_column = 0;
 
 void oled_init()
 {
@@ -40,30 +40,54 @@ void oled_init()
 	*oled_command = 0xa4; //out follows RAM content
 	*oled_command = 0xa6; //set normal display
 	*oled_command = 0xaf; // display on
+	
+	
 }
 
+/*
+Outputs a char to the OLED screen. 
+*/
 void oled_putchar(char c)
-{
-	*oled_command = current_line;
+{	
+	uint8_t remaining_col = OLED_COLUMN_SPAN-current_column; // Remaining columns on current line
+	
+	if (remaining_col<C_WIDTH)
+	{
+		// Clear remaining columns
+		for (current_column; current_column <= OLED_COLUMN_SPAN;current_column++)
+		{
+			*oled_data = 0x00;
+		}
+		
+		// Select leftmost column
+		current_column = 0;
+		oled_select_column(current_column);
+		
+		// Select next line. Reset to 0 if end of screen
+		if (++current_line > OLED_LINE_SPAN) current_line = 0;
+		oled_select_line(current_line);
+	}
 	
 	for (uint8_t i = 0; i < C_WIDTH; i++)
 	{
 		*oled_data = pgm_read_byte(&myfont[c-' '][i]);
+		++current_column;
 	}
 }
 
+/*
+String print function.
+*/
 void oled_print(char* data)
 {
 	while (*data != '\0')
 	{
 		if(*data == '\n')
 		{
-			current_line++;
-			if(current_line > 0xB7) current_line = 0xB0; 
+			if(++current_line > OLED_LINE_SPAN) current_line = 0; 
 			*data++;
 			
-			*oled_command = 0x21; //reset coloumn to left
-			*oled_command = 0x00;
+			oled_select_column(0);
 		}
 		else
 		{
@@ -72,33 +96,103 @@ void oled_print(char* data)
 	}
 }
 
-
-void oled_clear_line(line)
+void oled_print_p(const char* data)
 {
-	*oled_command = 0x21; //Select column addresses
-	*oled_command = 0x00;
-	*oled_command = 0x7F;
-	//
-	//*oled_command = 0x22; //Select page address
-	//*oled_command = line;
-	//*oled_command = line;
-	
-	*oled_command = 0xB0 + line; //Select Page Address
+	while (pgm_read_byte(data) != '\0')
+	{
+		if(pgm_read_byte(data) == '\n')
+		{
+			if(++current_line > OLED_LINE_SPAN) current_line = 0;
+			data++;
+			
+			oled_select_column(0);
+		}
+		else
+		{
+			oled_putchar(pgm_read_byte(data++));
+		}
+	}
+}
 
-	//*oled_command = 0x00;
+void oled_goto_line(uint8_t line)
+{
+	if (line > OLED_LINE_SPAN)
+	{
+		current_line = 0;
+	}
+	else
+	{
+		current_line = line;
+	}
+	oled_select_line(current_line);
+}
+
+void oled_goto_column(uint8_t column)
+{
+		if (column > OLED_COLUMN_SPAN)
+		{
+			current_column = 0;
+		}
+		else
+		{
+			current_column = column;
+		}
+		oled_select_column(current_column);
+}
+
+oled_position_t oled_getPos()
+{
+	oled_position_t pos;
+	pos.column = current_column;
+	pos.line = current_line;
 	
-	for (uint8_t i = 0; i<128;i++)
+	return pos;
+}
+
+/*
+Clear single line. Keeps column pointer at the same place after clearing the line
+*/
+void oled_clear_line(uint8_t line)
+{
+	oled_select_line(line);
+	
+	for (uint8_t i = 0; i<= OLED_COLUMN_SPAN ;i++)
 	{
 		*oled_data = 0x00;
 	}
 }
 
+/*
+Clear entire screen. Keeps column and line pointer at the same place after clearing the screen
+*/
 void oled_clear()
 {
-	for (uint8_t i = 0; i < 8; i++)
+	for (uint8_t i = 0; i <= OLED_LINE_SPAN; i++)
 	{
 		oled_clear_line(i);	
 	}
-	current_line = 0xB0; //Set line to top
-	current_column = 0x21; //Set coloumn left
+	
+	// Select "old" line and column
+	oled_select_line(current_line);
+	oled_select_column(current_column);
+}
+
+
+
+// Private functions //
+
+void oled_select_column(uint8_t col_nr)
+{
+	// Page addressing mode
+	uint8_t nibble1 = (col_nr & 0x0F);
+	uint8_t nibble2 = ((col_nr & 0xF0) >> 4);
+	
+	//Select column
+	*oled_command = 0x10 + nibble2;
+	*oled_command = 0x00 + nibble1;
+}
+
+void oled_select_line(uint8_t line_nr)
+{
+	*oled_command = 0xB0 + line_nr;
 }

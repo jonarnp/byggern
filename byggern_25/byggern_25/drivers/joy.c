@@ -89,8 +89,7 @@ void JOY_calibrate()
 
 bool JOY_button()
 {
-	bool pushed;
-	return pushed;
+	return !get_bit(JOY_button_Port,JOY_button_Pin);
 }
 
 JOY_pos_t JOY_getPosition()
@@ -99,7 +98,6 @@ JOY_pos_t JOY_getPosition()
 	int16_t V_x = ADC_read(JOY_X_CH)-Calib_values.xMiddle;
 	int16_t V_y = ADC_read(JOY_Y_CH)-Calib_values.yMiddle;
 	
-	//printf("Vx = %d Vy = %d",V_x,V_y);
 	if (V_x>0)
 	{
 		pos.x = (100*V_x)/Calib_values.x_k2;

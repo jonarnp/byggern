@@ -18,9 +18,9 @@
 #define JOY_Y_CH 2
 
 /* Joystick button pin */
-#define JOY_button_Port PIND
-#define JOY_button_Pin PIND3
-#define JOY_button_DDR DDRD
+#define JOY_button_Port PINB
+#define JOY_button_Pin PINB2
+#define JOY_button_DDR DDRB
 
 /* Joystick calibration button pin */
 #define JOY_calib_button_Port PINB

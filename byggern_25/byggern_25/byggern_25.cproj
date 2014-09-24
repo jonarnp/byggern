@@ -41,7 +41,7 @@
     <com_atmel_avrdbg_tool_atmelice>
       <ToolOptions>
         <InterfaceProperties>
-          <JtagDbgClock>200000</JtagDbgClock>
+          <JtagDbgClock>1000000</JtagDbgClock>
         </InterfaceProperties>
         <InterfaceName>JTAG</InterfaceName>
       </ToolOptions>
@@ -108,6 +108,12 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="apps\menu.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="apps\menu.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="bit_op.h">
       <SubType>compile</SubType>
     </Compile>
@@ -153,6 +159,12 @@
     <Compile Include="fonts\font_5x7.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="format.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="format.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="tests\adc_test.c">
       <SubType>compile</SubType>
     </Compile>
@@ -187,6 +199,7 @@
   <ItemGroup>
     <Folder Include="drivers" />
     <Folder Include="fonts" />
+    <Folder Include="apps" />
     <Folder Include="tests" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />

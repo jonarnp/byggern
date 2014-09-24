@@ -24,6 +24,9 @@
 #include "tests/slider_test.h"
 #include "drivers/slider.h"
 #include "drivers/oled.h"
+#include "format.h"
+
+bool test = false;
 
 int main(void)
 {
@@ -42,14 +45,30 @@ int main(void)
 	uint8_t i=0;
 	oled_clear_line(1);
 	
+	oled_clear();
+	menu_init();
+	JOY_init();
+	JOY_calibrate();
 	while(1)
 	{
+		
 		if (++i >=255) i=0;
 		
-		oled_clear();
 		//oled_putchar('B');
-		oled_print("Test mellomrom\n Line 2");
-		_delay_ms(100);
+		if (1)
+		{	
+			menu_update();
+			
+			uint8_t f1;
+			f1 = 5;
+			
+			//oled_print(int16_to_str(f1));
+			//oled_print("Ja");
+			//oled_print("test: ");
+			//oled_print(str);
+			//oled_print("Test test test noe sja gs sd asgm askmfhnaskjgfnakls d");
+			test = true;
+		}
 		//ADC_gal_test();
 		//_delay_ms(100);
 		//test = ADC_read(4);
