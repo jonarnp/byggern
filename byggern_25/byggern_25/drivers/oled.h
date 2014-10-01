@@ -27,6 +27,9 @@ void oled_putchar(char c);
 
 void oled_print(char* data);
 
+/*
+Print char from PROGMEM
+*/
 void oled_print_p(const char* data);
 
 void oled_goto_line(uint8_t line);

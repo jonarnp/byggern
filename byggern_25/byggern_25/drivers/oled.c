@@ -40,8 +40,6 @@ void oled_init()
 	*oled_command = 0xa4; //out follows RAM content
 	*oled_command = 0xa6; //set normal display
 	*oled_command = 0xaf; // display on
-	
-	
 }
 
 /*

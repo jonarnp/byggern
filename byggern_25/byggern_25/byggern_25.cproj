@@ -126,6 +126,27 @@
     <Compile Include="drivers\adc.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="drivers\can\can_ctrl.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="drivers\can\can_ctrl.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="drivers\can\can_msg.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="drivers\can\can_msg.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="drivers\can\MCP2515.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="drivers\can\spi.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="drivers\can\spi.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="drivers\joy.c">
       <SubType>compile</SubType>
     </Compile>
@@ -198,6 +219,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="drivers" />
+    <Folder Include="drivers\can" />
     <Folder Include="fonts" />
     <Folder Include="apps" />
     <Folder Include="tests" />

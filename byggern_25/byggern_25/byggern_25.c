@@ -43,12 +43,11 @@ int main(void)
 	_delay_ms(1000);
 	oled_init();
 	uint8_t i=0;
-	oled_clear_line(1);
-	
+
 	oled_clear();
-	menu_init();
 	JOY_init();
 	JOY_calibrate();
+	menu_init();
 	while(1)
 	{
 		

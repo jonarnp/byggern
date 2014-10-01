@@ -122,26 +122,32 @@ void menu_update_state()
 				{
 					case play:
 						current_state = play_s;
+						selected_line = 0;
 						break;
 					case highscore:
 						current_state = highscore_s;
+						selected_line = 0;
 						break;
 					case settings:
 						current_state = settings_s;
+						selected_line = 0;
 						break;
 				}
 			}
 			break;
 		case play_s:
 			if (menu_select.select) current_state = main_s;
+			selected_line = 0;
 			break;
 		
 		case settings_s:
 			if (menu_select.select) current_state = main_s;
+			selected_line = 0;
 			break;
 		
 		case highscore_s:
 			if (menu_select.select) current_state = main_s;
+			selected_line = 0;
 			break;
 			
 	}

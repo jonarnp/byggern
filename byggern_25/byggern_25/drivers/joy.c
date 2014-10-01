@@ -8,9 +8,12 @@
 #include <avr/io.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <avr/pgmspace.h>
 #include "joy.h"
 #include "adc.h"
 #include "..\bit_op.h"
+#include "oled.h"
+#include "../format.h"
 
 typedef struct Calib 
 {
@@ -29,10 +32,17 @@ typedef struct Calib
 
 Calib_t Calib_values;
 
+const unsigned char PROGMEM calib_str[4][7] = {
+	{"Xmin: "},
+	{"Xmax: "},
+	{"Ymin: "},
+	{"Ymax: "}	
+};
+
 void JOY_init()
 {
 	ADC_Init();
-	
+	oled_init();
 	/* Set joystick button as input */
 	clear_bit(JOY_button_DDR,JOY_button_Pin);
 	
@@ -43,12 +53,32 @@ void JOY_init()
 void JOY_calibrate()
 {
 	printf("Calibrating joystick. Move joystick to all extrema, release it and then push calib button\n");
-	
+	oled_clear();
 	Calib_values.xMax = ADC_read(JOY_X_CH);
 	Calib_values.xMin = Calib_values.xMax;
 	Calib_values.yMax = ADC_read(JOY_Y_CH);
 	Calib_values.yMin = Calib_values.yMax;
-			
+	
+	// Print text to OLED
+	oled_goto_line(0);
+	oled_goto_column(0);
+	oled_print_p(PSTR("Move joystick in all extrema to calibrate."));
+	oled_goto_line(2);
+	oled_goto_column(0);
+	oled_print_p(calib_str[0]);
+	oled_goto_line(2);
+	oled_goto_column(63);
+	oled_print_p(calib_str[1]);
+	oled_goto_line(3);
+	oled_goto_column(0);
+	oled_print_p(calib_str[2]);
+	oled_goto_line(3);
+	oled_goto_column(63);
+	oled_print_p(calib_str[3]);
+	oled_goto_line(4);
+	oled_goto_column(0);
+	oled_print_p(PSTR("After extrema is reached, leave joystick at rest and press left slider button."));
+				
 	while(!get_bit(JOY_calib_button_Port, JOY_calib_button_Pin)){
 		uint8_t xTemp = ADC_read(JOY_X_CH);
 		uint8_t yTemp = ADC_read(JOY_Y_CH);
@@ -56,19 +86,63 @@ void JOY_calibrate()
 		if(xTemp > Calib_values.xMax){
 			Calib_values.xMax = xTemp;
 			printf("xMax set to: %d\n", Calib_values.xMax);
+			
+			//Update OLED
+			oled_clear_line(2);
+			oled_goto_line(2);
+			oled_goto_column(0);
+			oled_print_p(calib_str[0]);
+			oled_print(uint8_to_str(Calib_values.xMin));
+			
+			oled_goto_column(63);
+			oled_print_p(calib_str[1]);
+			oled_print(uint8_to_str(Calib_values.xMax));
 		} 
 		if (xTemp < Calib_values.xMin){
 			Calib_values.xMin = xTemp;
 			printf("xMin set to: %d\n", Calib_values.xMin);
+			
+			//Update OLED
+			oled_clear_line(2);
+			oled_goto_line(2);
+			oled_goto_column(0);
+			oled_print_p(calib_str[0]);
+			oled_print(uint8_to_str(Calib_values.xMin));
+			
+			oled_goto_column(63);
+			oled_print_p(calib_str[1]);
+			oled_print(uint8_to_str(Calib_values.xMax));
 		}
 		
 		if(yTemp > Calib_values.yMax){
 			Calib_values.yMax = yTemp;
 			printf("yMax set to: %d\n", Calib_values.yMax);
+			
+			//Update OLED
+			oled_clear_line(3);
+			oled_goto_line(3);
+			oled_goto_column(0);
+			oled_print_p(calib_str[2]);
+			oled_print(uint8_to_str(Calib_values.yMin));
+			
+			oled_goto_column(63);
+			oled_print_p(calib_str[3]);
+			oled_print(uint8_to_str(Calib_values.yMax));
 		}
 		if (yTemp < Calib_values.yMin){
 			Calib_values.yMin = yTemp;
 			printf("yMin set to: %d\n", Calib_values.yMin);
+			
+			//Update OLED
+			oled_clear_line(3);
+			oled_goto_line(3);
+			oled_goto_column(0);
+			oled_print_p(calib_str[2]);
+			oled_print(uint8_to_str(Calib_values.yMin));
+			
+			oled_goto_column(63);
+			oled_print_p(calib_str[3]);
+			oled_print(uint8_to_str(Calib_values.yMax));
 		}
 	}
 	printf("Button pushed\n");
