@@ -26,12 +26,16 @@
 #define SS_DDR DDRB
 
 #define MSB_FIRST 1
+#define READ_DUMMY 0b01001110
 
 void SPI_init();
 
-void SPI_send();
+void SPI_send(unsigned char cData);
 
-char SPI_read();
+unsigned char SPI_read();
 
+void SPI_select();
+
+void SPI_deselect();
 
 #endif /* SPI_H_ */

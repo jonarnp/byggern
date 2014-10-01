@@ -74,6 +74,9 @@ Copyright 2003 Kimberly Otten Software Consulting
 #define MCP_TX01_MASK	0x14
 #define MCP_TX_MASK		0x54
 
+#define MCP_TXRTSCTRL	0x0d
+#define MCP_TXB0DLC		0x35
+
 // Define SPI Instruction Set
 
 #define MCP_WRITE		0x02

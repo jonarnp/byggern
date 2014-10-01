@@ -31,11 +31,8 @@ void SPI_init()
 	}
 }
 
-void SPI_send(char cData)
+void SPI_send(unsigned char cData)
 {
-	//Select slave
-	clear_bit(SS_Port,SS_Pin);	
-	
 	//Start transmission
 	SPDR = cData;	
 	
@@ -43,16 +40,25 @@ void SPI_send(char cData)
 	while(!(SPSR & (1<<SPIF)));
 }
 
-char SPI_read()
-{
-	//Select slave
-	clear_bit(SS_Port,SS_Pin);
-		
+unsigned char SPI_read()
+{		
 	//Start dummy transmission
-	SPDR = 0x00;
+	SPDR = READ_DUMMY;
 		
 	//Wait for dummy transmission to complete
 	while(!(SPSR & (1<<SPIF)));
 	
 	return SPDR;
+}
+
+void SPI_select()
+{
+	//Select slave
+	clear_bit(SS_Port,SS_Pin);
+}
+
+void SPI_deselect()
+{
+	//Deselect slave
+	set_bit(SS_Port,SS_Pin);
 }

@@ -25,6 +25,7 @@
 #include "drivers/slider.h"
 #include "drivers/oled.h"
 #include "format.h"
+#include "drivers/can/can_ctrl.h"
 
 bool test = false;
 
@@ -48,9 +49,11 @@ int main(void)
 	JOY_init();
 	JOY_calibrate();
 	menu_init();
+	mcp2515_init();
 	while(1)
 	{
-		
+		printf("Status: 0x%02x\n", mcp2515_read_status());
+		_delay_ms(100);
 		if (++i >=255) i=0;
 		
 		//oled_putchar('B');
