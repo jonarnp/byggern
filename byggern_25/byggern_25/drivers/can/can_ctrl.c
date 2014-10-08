@@ -29,8 +29,26 @@ uint8_t mcp2515_init()
 	//Configure
 	mcp2515_write(MCP_TXRTSCTRL,0x00);	//Set TXnRTS pins as digital input
 	
+	//set receive identifiers
+	mcp2515_select_rx_identifier((uint8_t)0,RXF0);
+	mcp2515_select_rx_identifier((uint8_t)1,RXF1);
+	mcp2515_select_rx_identifier((uint8_t)2,RXF2);
+	mcp2515_select_rx_identifier((uint8_t)3,RXF3);
+	mcp2515_select_rx_identifier((uint8_t)4,RXF4);
+	mcp2515_select_rx_identifier((uint8_t)5,RXF5);
+	
+	// Enable interrupt on receive
+	mcp2515_write(MCP_CANINTE,0x03);
+	
+	//Enable filtering/masking of receive buffers
+	mcp2515_bit_modify(MCP_RXB0CTRL,0b01100100,0xFF);
+	mcp2515_bit_modify(MCP_RXB1CTRL,0b01100000,0xFF);
+	
 	// Set loopback mode
 	mcp2515_write(MCP_CANCTRL, MODE_LOOPBACK);
+	
+	// Define INT pin as input on MCU
+	clear_bit(MCP_Int_DDR,MCP_Int_Pin);
 	
 	// Set normal mode
 	//mcp2515_write(MCP_CANCTRL, MODE_NORMAL);
@@ -62,12 +80,19 @@ void mcp2515_write(uint8_t address, uint8_t data)
 
 void mcp2515_request_to_send(uint8_t buffer_nr)
 {
-	/*
-	HER ER VI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	Legg inn buffer_nr i sendegreia.
-	*/
 	SPI_select();
-	SPI_send(MCP_RTS_ALL); // Send request-to-send command. Could use MCP_RTS_TX[0|1|2]
+	switch(buffer_nr)
+	{
+		case 0:
+			SPI_send(MCP_RTS_TX0); // Send request-to-send command.
+			break;
+		case 1:
+			SPI_send(MCP_RTS_TX1); // Send request-to-send command.
+			break;
+		case 2:
+			SPI_send(MCP_RTS_TX2); // Send request-to-send command.
+			break;
+	}
 	SPI_deselect();
 }
 
@@ -100,7 +125,7 @@ uint8_t mcp2515_read_status()
 	return result;
 }
 
-void mcp2515_transmit(uint8_t buffer_nr, unsigned char* data, uint8_t length)
+void mcp2515_load_tx_data(uint8_t buffer_nr, uint8_t* data, uint8_t length)
 {
 	if (length > 8) length = 8;
 	SPI_select();
@@ -114,14 +139,116 @@ void mcp2515_transmit(uint8_t buffer_nr, unsigned char* data, uint8_t length)
 	mcp2515_write(MCP_TXB0DLC + buffer_nr*0x10,length-1);
 }
 
-void mcp2515_select_tx_address(uint8_t buffer_nr, uint16_t address)
+void mcp2515_select_tx_identifier(uint8_t buffer_nr, uint16_t ID)
 {
 	// Send load TX buffer command, start at TXBnSIDH
-	uint8_t address_low = (address <<5);
-	uint8_t address_high = (address >>3)&0xFF;
+	uint8_t ident_low = (ID <<5);
+	uint8_t ident_high = (ID >>3)&0xFF;
 	SPI_select();
 	SPI_send(MCP_LOAD_TX0+2*buffer_nr);
-	SPI_send(address_high);
-	SPI_send(address_low);
+	SPI_send(ident_high);
+	SPI_send(ident_low);
+	SPI_deselect();
+}
+
+void mcp2515_buffer_recieve(buffer_recieve_t *recieved)
+{
+	uint8_t status = mcp2515_read_status();
+	uint8_t ident_low;
+	uint8_t ident_high;
+	uint8_t ext_ident_low;
+	uint8_t ext_ident_high;
+	uint8_t dlc;
+	if (status&0x01)
+	{
+		SPI_select();
+		SPI_send(MCP_READ_RX0);
+		ident_high = SPI_read();
+		ident_low = SPI_read();
+		ext_ident_high = SPI_read();
+		ext_ident_low = SPI_read();
+		dlc = SPI_read();
+		
+		// read length
+		recieved->length = (dlc & 0x0F);
+		
+		// read data
+		for (uint8_t i = 0; i < recieved->length; i++)
+		{
+			recieved->data[i] = SPI_read();
+		}
+		SPI_deselect();
+		mcp2515_bit_modify(MCP_CANINTF,0x01,0);
+		recieved->id = (((uint16_t)ident_high)<<3) +(ident_low>>5);
+	}
+	if ((status & 0x02)>>1)
+	{
+		SPI_select();
+		SPI_send(MCP_READ_RX1);
+		ident_high = SPI_read();
+		ident_low = SPI_read();
+		ext_ident_high = SPI_read();
+		ext_ident_low = SPI_read();
+		dlc = SPI_read();
+		
+		// read length
+		recieved->length = (dlc & 0x0F);
+		
+		// read data
+		for (uint8_t i = 0; i < recieved->length; i++)
+		{
+			recieved->data[i] = SPI_read();
+		}
+		SPI_deselect();
+		mcp2515_bit_modify(MCP_CANINTF,0x02,0);
+		recieved->id = (((uint16_t)ident_high)<<3) +(ident_low>>5);
+	}
+}
+/*
+//alt 1
+void mcp2515_buffer_recieve(buffer_recieve_t *)
+
+
+// alt 2
+static buffer_recieve_t
+
+// alt 3
+malloc
+*/
+
+/*
+This routine can only be used when MCP2515 is in configuration mode!
+*/
+void mcp2515_select_rx_identifier(uint8_t recieve_filter,uint16_t identifier)
+{
+	uint8_t ident_low = (identifier <<5);
+	uint8_t ident_high = (identifier >>3)&0xFF;
+	uint8_t address = 0;
+	switch(recieve_filter)
+	{
+		case 0:
+			address = MCP_RXF0SIDH;
+			break;
+		case 1:
+			address = MCP_RXF1SIDH;
+			break;
+		case 2:
+			address = MCP_RXF2SIDH;
+			break;
+		case 3:
+			address = MCP_RXF3SIDH;
+			break;
+		case 4:
+			address = MCP_RXF4SIDH;
+			break;
+		case 5:
+			address = MCP_RXF5SIDH;
+			break;
+	}
+	SPI_select();
+	SPI_send(MCP_WRITE);
+	SPI_send(address); // Send address	
+	SPI_send(ident_high);
+	SPI_send(ident_low);
 	SPI_deselect();
 }

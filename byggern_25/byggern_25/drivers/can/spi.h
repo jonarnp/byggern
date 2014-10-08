@@ -9,7 +9,7 @@
 #ifndef SPI_H_
 #define SPI_H_
 
-#define MOSI_Port PINB
+#define MOSI_Port PORTB
 #define MOSI_Pin PINB5
 #define MOSI_DDR DDRB
 
@@ -21,12 +21,12 @@
 #define SCK_Pin PINB7
 #define SCK_DDR DDRB
 
-#define SS_Port PINB
+#define SS_Port PORTB
 #define SS_Pin PINB4
 #define SS_DDR DDRB
 
 #define MSB_FIRST 1
-#define READ_DUMMY 0b01001110
+#define READ_DUMMY 0x00
 
 void SPI_init();
 
