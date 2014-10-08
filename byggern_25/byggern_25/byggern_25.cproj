@@ -192,6 +192,12 @@
     <Compile Include="tests\adc_test.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="tests\can_test.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="tests\can_test.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="tests\joy_test.c">
       <SubType>compile</SubType>
     </Compile>

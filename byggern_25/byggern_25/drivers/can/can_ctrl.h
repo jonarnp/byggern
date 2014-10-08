@@ -47,6 +47,8 @@ void mcp2515_load_tx_data(uint8_t buffer_nr, uint8_t* data, uint8_t length);
 
 void mcp2515_select_tx_identifier(uint8_t buffer_nr, uint16_t ID);
 
-void mcp2515_buffer_recieve(buffer_recieve_t *recieved);
+void mcp2515_set_tx_priority(uint8_t buffer_nr, uint8_t priority);
+
+void mcp2515_mcp2515_read_rx_buffer(buffer_recieve_t *recieved);
 
 #endif /* CAN_CTRL_H_ */
