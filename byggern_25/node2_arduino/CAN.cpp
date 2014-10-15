@@ -160,12 +160,17 @@ void CANClass::begin(uint32_t bit_time) {
 
     /* Set mask to not filter any bits (allow all identifiers) */
     mcp2515_set_rx_mask (0, 0, 0);
+    mcp2515_set_rx_mask (1, 0, 0);
 
     /* Set a filter for both standard and extended message types.  Since the
      * extended bit in the filter registers in not maskable, an acceptance
      * filter has to be explicitly set to accept both types. */
-    mcp2515_set_rx_filter (0, 0, 0);
-    mcp2515_set_rx_filter (1, 0, 1);
+    mcp2515_set_rx_filter (0, RXF0, 0);
+    mcp2515_set_rx_filter (1, RXF1, 0);
+    mcp2515_set_rx_filter (2, RXF2, 0);
+    mcp2515_set_rx_filter (3, RXF3, 0);
+    mcp2515_set_rx_filter (4, RXF4, 0);
+    mcp2515_set_rx_filter (5, RXF5, 0);
 }
 
 void CANClass::end() {

@@ -66,6 +66,8 @@
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\SPI</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\SPI\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Servo</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Servo\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
@@ -100,6 +102,8 @@
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\SPI</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\SPI\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Servo</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Servo\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
@@ -222,6 +226,8 @@ build.arch=AVR
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\SPI</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\SPI\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Servo</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Servo\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
@@ -256,6 +262,8 @@ build.arch=AVR
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\SPI</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\SPI\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Servo</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Servo\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
@@ -356,6 +364,15 @@ build.arch=AVR
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="CAN.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Can_ID.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="game_control.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="game_control.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="mcp2515.cpp">

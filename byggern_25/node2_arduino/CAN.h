@@ -16,6 +16,13 @@
 #ifndef CAN_h
 #define CAN_h
 
+#define RXF0 0x100
+#define RXF1 0x200
+#define RXF2 0x300
+#define RXF3 0x425
+#define RXF4 0x500
+#define RXF5 0x600
+
 #include "Arduino.h"
 
 #include <inttypes.h>
