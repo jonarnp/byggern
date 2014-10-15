@@ -17,9 +17,15 @@
 extern "C" void __cxa_pure_virtual() {;}
 
 //
-void printBuf(byte rx_status, byte length, uint32_t frame_id, byte filter, byte buffer, byte *frame_data, byte ext);
 //
 
 #include "C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega\pins_arduino.h" 
 #include "C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino\arduino.h"
 #include "C:\Users\Flua\Documents\GiT\Byggern\byggern_25\node2_arduino\node2_arduino.ino"
+#include "C:\Users\Flua\Documents\GiT\Byggern\byggern_25\node2_arduino\CAN.cpp"
+#include "C:\Users\Flua\Documents\GiT\Byggern\byggern_25\node2_arduino\CAN.h"
+#include "C:\Users\Flua\Documents\GiT\Byggern\byggern_25\node2_arduino\mcp2515.cpp"
+#include "C:\Users\Flua\Documents\GiT\Byggern\byggern_25\node2_arduino\mcp2515.h"
+#include "C:\Users\Flua\Documents\GiT\Byggern\byggern_25\node2_arduino\mcp2515_regs.h"
+#include "C:\Users\Flua\Documents\GiT\Byggern\byggern_25\node2_arduino\my_spi.h"
+#include "C:\Users\Flua\Documents\GiT\Byggern\byggern_25\node2_arduino\spi.cpp"

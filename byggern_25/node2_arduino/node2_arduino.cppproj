@@ -64,10 +64,6 @@
           <ListValues>
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino</Value>
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega</Value>
-            <Value>C:\Users\Flua\Documents\Arduino\libraries\CAN</Value>
-            <Value>C:\Users\Flua\Documents\Arduino\libraries\CAN\utility</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\SoftwareSerial</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\SoftwareSerial\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\SPI</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\SPI\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries</Value>
@@ -102,10 +98,6 @@
           <ListValues>
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino</Value>
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega</Value>
-            <Value>C:\Users\Flua\Documents\Arduino\libraries\CAN</Value>
-            <Value>C:\Users\Flua\Documents\Arduino\libraries\CAN\utility</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\SoftwareSerial</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\SoftwareSerial\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\SPI</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\SPI\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries</Value>
@@ -228,10 +220,6 @@ build.arch=AVR
           <ListValues>
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino</Value>
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega</Value>
-            <Value>C:\Users\Flua\Documents\Arduino\libraries\CAN</Value>
-            <Value>C:\Users\Flua\Documents\Arduino\libraries\CAN\utility</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\SoftwareSerial</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\SoftwareSerial\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\SPI</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\SPI\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries</Value>
@@ -266,10 +254,6 @@ build.arch=AVR
           <ListValues>
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino</Value>
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega</Value>
-            <Value>C:\Users\Flua\Documents\Arduino\libraries\CAN</Value>
-            <Value>C:\Users\Flua\Documents\Arduino\libraries\CAN\utility</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\SoftwareSerial</Value>
-            <Value>C:\Program Files (x86)\Arduino\libraries\SoftwareSerial\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\SPI</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\SPI\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries</Value>
@@ -368,7 +352,28 @@ build.arch=AVR
     </VisualMicroSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CAN.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="CAN.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="mcp2515.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="mcp2515.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="mcp2515_regs.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="my_spi.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="node2_arduino.ino">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="spi.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Visual Micro\.node2_arduino.vsarduino.h">

@@ -1,181 +1,56 @@
-//Code by Patrick Cruce(pcruce_at_igpp.ucla.edu) 
-//Uses CAN extended library, designed for Arduino with 16 Mhz oscillator
-//Library found at: http://code.google.com/p/canduino/source/browse/trunk/#trunk%2FLibrary%2FCAN
-//This runs a simple test of the hardware with the MCP 2515 CAN Controller in loopback mode.
-//If using over physical bus rather than loopback, and you have high bus 
-//utilization, you'll want to turn the baud of the serial port up or log
-//to SD card, because frame drops can occur due to the reader code being
-//occupied with writing to the port.
-//In our testing over a 40 foot cable, we didn't have any problems with
-//synchronization or frame drops due to SPI,controller, or propagation delays
-//even at 1 Megabit.  But we didn't do any tests that required arbitration
-//with multiple nodes.
-
-#include <CAN.h>
-#include <SoftwareSerial.h>
 #include <SPI.h>
+#include "CAN.h"
 
-#define BUS_SPEED 1000
+/* This program demonstrates simple use of the CAN library
+ * by sending a single number that increments each time. 
+ * It also displays any number that it receives.  You can
+ * program this onto two Arduinos and they will send numbers
+ * to each other and print what they receive.  */
 
-//global variable used to determine whether loop should
-//be in Tx or Rx mode.
-int state;
+/* If you don't have two CAN shields, this program can run on
+ * just one by setting the mode to CAN_MODE_LOOPBACK instead
+ * of CAN_MODE_NORMAL.  It will internally send the numbers
+ * to itself instead of sending them over the bus.  */
 
-void setup() {                
+unsigned long last;
+unsigned long now;
+int i;
+int val;
+CanMessage sendMessage;
+CanMessage receiveMessage;
+CanMessage message;
 
-  
+void setup()
+{
+  CAN.begin(CAN_SPEED_125000);
+  CAN.setMode (CAN_MODE_NORMAL);
   Serial.begin(9600);
   
-  // initialize CAN bus class
-  // this class initializes SPI communications with MCP2515
-  CAN.begin();
-  CAN.baudConfig(BUS_SPEED);
   
-  
-  //Wait 10 seconds so that I can still upload even
-  //if the previous iteration spams the serial port
-  delay(1000);
- #if  defined(__AVR_ATmega168__) || defined(__AVR_ATmega328P__)
-  state = 0;
-  CAN.setMode(NORMAL);  // set to "NORMAL" for standard com
- #else
- state = 1;
-
-
-  /*CAN.setMaskOrFilter(MASK_0,   0b11111111, 0b11100000, 0b00000000, 0b00000000);
-  CAN.setMaskOrFilter(FILTER_0, 0b11111111, 0b11100000, 0b00000000, 0b00000000); //DISALLOW ext packets.
-  CAN.setMaskOrFilter(FILTER_1, 0b10111111, 0b11100000, 0b00000000, 0b00000000);
-  CAN.setMaskOrFilter(MASK_1,   0b00000000, 0b00000000, 0b00001111, 0b11111111);  
-  CAN.setMaskOrFilter(FILTER_2, 0b00000000, 0b00001000, 0b00001101, 0b11111111);
-  CAN.setMaskOrFilter(FILTER_3, 0b00000000, 0b00001000, 0b00001101, 0b11111111);
-  CAN.setMaskOrFilter(FILTER_4, 0b00000000, 0b00001000, 0b00001111, 0b11111111);
-  CAN.setMaskOrFilter(FILTER_5, 0b00000000, 0b00001000, 0b00001101, 0b11111111);*/
-
- 
-  CAN.setMode(NORMAL);  // set to "NORMAL" for standard com
-  CAN.toggleRxBuffer0Acceptance(false, true);
-  CAN.toggleRxBuffer1Acceptance(false, true);
-
-  #endif
- 
-   
+  //pinMode(53,OUTPUT);
 }
 
-byte inc = 0;
+void loop()
+{
+	  //digitalWrite(53, HIGH);   // turn the LED on (HIGH is the voltage level)
+	  //delay(1000);               // wait for a second
+	  //digitalWrite(53, LOW);    // turn the LED off by making the voltage LOW
+	  //delay(1000);
+	  
+  /* Send a new value every second */
+  now = millis();
+  if (now > last + 1000) {
+    last = now;
 
-void printBuf(byte rx_status, byte length, uint32_t frame_id, byte filter, byte buffer, byte *frame_data, byte ext) {
-       
-      Serial.print("[Rx] Status:");
-      Serial.print(rx_status,HEX);
-      
-      Serial.print(" Len:");
-      Serial.print(length,HEX);
-      
-      Serial.print(" Frame:");
-      Serial.print(frame_id,HEX);
+    //sendMessage.clear ();
+    //sendMessage.setIntData (i);
+    //sendMessage.send ();
+    i++;
+  }
 
-      Serial.print(" EXT?:");
-      Serial.print(ext==1,HEX);
-       
-      Serial.print(" Filter:");
-      Serial.print(filter,HEX);
-
-      Serial.print(" Buffer:");
-      Serial.print(buffer,HEX);
-      
-      Serial.print(" Data:[");
-      for (int i=0;i<8;i++) {
-        if (i>0) Serial.print(" ");
-        Serial.print(frame_data[i],HEX);
-      }
-      Serial.println("]"); 
-}
-
-void loop() {
-  
-  byte length,rx_status,filter,ext;
-  uint32_t frame_id;
-  byte frame_data[8];
-  
- 
-  switch(state) {
-    case 0: //Tx
-    Serial.println("sending an ext packet.");
-     
-      frame_data[0] = 0x55;
-      frame_data[1] = 0xA4;
-      frame_data[2] = 0x04;
-      frame_data[3] = 0xF4;
-      frame_data[4] = 0x14;
-      frame_data[5] = 0xC4;
-      frame_data[6] = 0xFC;
-      frame_data[7] = 0x1D + inc;
-  
-      frame_id = 0x1230000;
-      length = 8;
-      
-      
-
-  
-      CAN.load_ff_0(length,&frame_id,frame_data, true);
-      delay(6000);      
-          Serial.println("sending a standard packet.");
-     
-      frame_data[0] = 0x55;
-      frame_data[1] = 0xA4;
-      frame_data[2] = 0x04;
-      frame_data[3] = 0xF4;
-      frame_data[4] = 0x14;
-      frame_data[5] = 0xC4;
-      frame_data[6] = 0xFC;
-      frame_data[7] = 0x1D;
-  
-      frame_id = 0x5ff;
-      length = 8;
-      
-      
-  
-      CAN.load_ff_0(length,&frame_id,frame_data, false);
-      
-      delay(6000);
-      inc++;
-      
-      break;
-    case 1: //Rx
-      //clear receive buffers, just in case.
-      frame_data[0] = 0x00;
-      frame_data[1] = 0x00;
-      frame_data[2] = 0x00;
-      frame_data[3] = 0x00;
-      frame_data[4] = 0x00;
-      frame_data[5] = 0x00;
-      frame_data[6] = 0x00;
-      frame_data[7] = 0x00;
-  
-      frame_id = 0x0000;
-  
-      length = 0;
-      
-      rx_status = CAN.readStatus();
-
-      if ((rx_status & 0x40) == 0x40) {
-       CAN.readDATA_ff_0(&length,frame_data,&frame_id, &ext, &filter);
-        printBuf(rx_status, length, frame_id, filter, 0, frame_data, ext);
-        CAN.clearRX0Status();
-        rx_status = CAN.readStatus();
-        Serial.println(rx_status,HEX);
-      }
-      
-      if ((rx_status & 0x80) == 0x80) {
-       CAN.readDATA_ff_1(&length,frame_data,&frame_id, &ext, &filter);
-        printBuf(rx_status, length, frame_id, filter, 1, frame_data, ext);       
-        CAN.clearRX1Status();
-        rx_status = CAN.readStatus();
-        Serial.println(rx_status,HEX);
-      }
-      
-   //delay(1000);   
-      
-      break;      
+  /* Receive data if available */
+  if (CAN.available()) {
+	  message = CAN.getMessage ();
+	  message.print (HEX);
   }
 }
