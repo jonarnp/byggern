@@ -40,6 +40,11 @@ Read a message from the CAN queue. If no messages are present, 0 is returned.
 uint8_t read_can_message(can_rx_message_t *message);
 
 /*
+Returns the number of messages in the recieve queue.
+*/
+uint8_t number_of_rx_in_queue();
+
+/*
 Returns true if a queue overlow has occured. It resets the queue overflow flag when read.
 */
 bool CAN_queue_overflow();

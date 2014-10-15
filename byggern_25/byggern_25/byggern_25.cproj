@@ -114,6 +114,18 @@
     <Compile Include="apps\menu.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="apps\pong.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="apps\pong.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="apps\send_joy_pos.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="apps\send_joy_pos.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="bit_op.h">
       <SubType>compile</SubType>
     </Compile>

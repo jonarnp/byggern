@@ -48,14 +48,13 @@ uint8_t mcp2515_init()
 	mcp2515_write(MCP_RXM1SIDH,0xFF);
 	mcp2515_write(MCP_RXM1SIDL,0xE0);
 	
-	// Set loopback mode
-	mcp2515_write(MCP_CANCTRL, MODE_LOOPBACK);
+	// Set mode
+	//mcp2515_write(MCP_CANCTRL, MODE_LOOPBACK); // Loopback
+	mcp2515_write(MCP_CANCTRL, MODE_NORMAL); // Normal
 	
 	// Define INT pin as input on MCU
 	clear_bit(MCP_Int_DDR,MCP_Int_Pin);
 	
-	// Set normal mode
-	//mcp2515_write(MCP_CANCTRL, MODE_NORMAL);
 	
 	return 0;
 }

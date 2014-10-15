@@ -9,20 +9,22 @@
 #ifndef MENU_H_
 #define MENU_H_
 
-#define SELECT_DELAY 254
+#define SELECT_DELAY 1
 
 typedef enum state{
 	main_s,
 	play_s,
 	highscore_s,
-	settings_s
+	settings_s,
+	pong_s
 }state_t;
 
-#define MAIN_MENU_LENGTH 3
+#define MAIN_MENU_LENGTH 4
 typedef enum main_menu{
 	play,
 	highscore,
-	settings
+	settings,
+	pong
 }main_menu_t;
 
 void menu_init();

@@ -15,6 +15,20 @@
 void can_test()
 {
 	static uint8_t nummer = 1;
+	
+	can_tx_message_t message;
+	message.id = 0x200;
+	message.length = 6;
+	message.data[0] = 'J';
+	message.data[1] = 'a';
+	message.data[2] = 'd';
+	message.data[3] = 'a';
+	message.data[4] = '\0';
+	message.data[5] = nummer;
+	message.priority = 0;
+	transmit_can_message(message);
+	printf("Data sendt\n");
+			
 	//if (!get_bit(MCP_Int_Port,MCP_Int_Pin)) read_can_buffer();
 	if(USART_DataReceived())
 	{
@@ -22,7 +36,7 @@ void can_test()
 		if (c=='a')
 		{
 			can_tx_message_t message;
-			message.id = 0x100;
+			message.id = 0x200;
 			message.length = 6;
 			message.data[0] = 'J';
 			message.data[1] = 'a';
@@ -32,6 +46,7 @@ void can_test()
 			message.data[5] = nummer;
 			message.priority = 0;
 			transmit_can_message(message);
+			printf("Data sendt\n");
 			++nummer;
 		}
 		if(c=='r')

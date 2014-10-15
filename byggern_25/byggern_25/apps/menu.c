@@ -10,6 +10,7 @@
 #include <avr/pgmspace.h>
 #include "../drivers/joy.h"
 #include <stdbool.h>
+#include "../apps/pong.h"
 
 typedef struct menu_action {
 	uint8_t up_iterations;
@@ -21,11 +22,12 @@ typedef struct menu_action {
 }menu_action_t;
 
 // Strings
-const unsigned char PROGMEM main_menu_str[4][20] = {
+const unsigned char PROGMEM main_menu_str[5][20] = {
 	{"Main menu"},
 	{"  -Play"},
 	{"  -Highscore"},
-	{"  -Settings"}
+	{"  -Settings"},
+	{"  -Pong"}
 };
 
 // States
@@ -114,7 +116,7 @@ void menu_update_state()
 		case main_s:
 			// Check for over/under-roll
 			if (selected_line < play) selected_line = settings;
-			if (selected_line > settings) selected_line = play;
+			if (selected_line > pong) selected_line = play;
 		
 			if (menu_select.select)
 			{
@@ -132,10 +134,19 @@ void menu_update_state()
 						current_state = settings_s;
 						selected_line = 0;
 						break;
+					case pong:
+						current_state = pong_s;
+						selected_line = 0;
+						break;
 				}
 			}
 			break;
 		case play_s:
+			if (menu_select.select) current_state = main_s;
+			selected_line = 0;
+			break;
+			
+		case highscore_s:
 			if (menu_select.select) current_state = main_s;
 			selected_line = 0;
 			break;
@@ -145,11 +156,11 @@ void menu_update_state()
 			selected_line = 0;
 			break;
 		
-		case highscore_s:
+		case pong_s:
 			if (menu_select.select) current_state = main_s;
 			selected_line = 0;
 			break;
-			
+
 	}
 	menu_select.select = false;
 	menu_update_screen();
@@ -157,8 +168,8 @@ void menu_update_state()
 
 void menu_update_screen()
 {
-	printf("Update screen, goDown: %d, goUp: %d, select: %d\n",menu_select.goDown,menu_select.goUp,menu_select.select);
-	printf("Current state: %d\n",current_state);
+	//printf("Update screen, goDown: %d, goUp: %d, select: %d\n",menu_select.goDown,menu_select.goUp,menu_select.select);
+	//printf("Current state: %d\n",current_state);
 	
 	
 	oled_clear();
@@ -193,6 +204,14 @@ void menu_update_screen()
 			{
 				oled_print(" *");
 			}
+			
+			oled_goto_column(0);
+			oled_goto_line(4);
+			oled_print_p(main_menu_str[4]);
+			if (selected_line == pong)
+			{
+				oled_print(" *");
+			}
 			break;
 		
 		case play_s:
@@ -207,6 +226,10 @@ void menu_update_screen()
 		case highscore_s:
 			oled_print("Gruppe 25 :)");
 			break;
+		case pong_s:
+			oled_print("Pong it up!");
+			
+			break;
 	}
-	printf("End of update screen, goDown: %d, goUp: %d, select: %d\n",menu_select.goDown,menu_select.goUp,menu_select.select);
+	//printf("End of update screen, goDown: %d, goUp: %d, select: %d\n",menu_select.goDown,menu_select.goUp,menu_select.select);
 }

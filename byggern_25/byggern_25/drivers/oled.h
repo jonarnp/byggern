@@ -25,7 +25,11 @@ void oled_init();
 
 void oled_putchar(char c);
 
+void oled_putchar_underscore(char c);
+
 void oled_print(char* data);
+
+void oled_print_underscore(char* data);
 
 /*
 Print char from PROGMEM
@@ -41,5 +45,7 @@ oled_position_t oled_getPos();
 void oled_clear_line(uint8_t line);
 
 void oled_clear();
+
+void oled_print_byte(uint8_t byte);
 
 #endif /* OLED_H_ */

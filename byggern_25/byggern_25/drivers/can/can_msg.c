@@ -75,6 +75,11 @@ uint8_t read_can_message(can_rx_message_t *message)
 	return 1;
 }
 
+uint8_t number_of_rx_in_queue()
+{
+	return count;
+}
+
 bool CAN_queue_overflow()
 {
 	bool temp = queue_overflow;

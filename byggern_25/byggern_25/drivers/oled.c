@@ -73,6 +73,40 @@ void oled_putchar(char c)
 	}
 }
 
+void oled_putchar_underscore(char c)
+{
+	uint8_t remaining_col = OLED_COLUMN_SPAN-current_column; // Remaining columns on current line
+	
+	if (remaining_col<C_WIDTH)
+	{
+		// Put underscore on remaining columns
+		for (current_column; current_column <= OLED_COLUMN_SPAN;current_column++)
+		{
+			*oled_data = 0x80;
+		}
+		
+		// Select leftmost column
+		current_column = 0;
+		oled_select_column(current_column);
+		
+		// Select next line. Reset to 0 if end of screen
+		if (++current_line > OLED_LINE_SPAN) current_line = 0;
+		oled_select_line(current_line);
+	}
+	
+	for (uint8_t i = 0; i < C_WIDTH; i++)
+	{
+		*oled_data = pgm_read_byte(&myfont[c-' '][i]) | 0x80;
+		++current_column;
+	}
+	
+	// Put underscore on remaining columns
+	for (current_column; current_column <= OLED_COLUMN_SPAN;current_column++)
+	{
+		*oled_data = 0x80;
+	}
+}
+
 /*
 String print function.
 */
@@ -93,6 +127,25 @@ void oled_print(char* data)
 		}
 	}
 }
+
+void oled_print_underscore(char* data)
+{
+	while (*data != '\0')
+	{
+		if(*data == '\n')
+		{
+			if(++current_line > OLED_LINE_SPAN) current_line = 0;
+			*data++;
+			
+			oled_select_column(0);
+		}
+		else
+		{
+			oled_putchar_underscore(*data++);
+		}
+	}
+}
+
 
 void oled_print_p(const char* data)
 {
@@ -175,7 +228,10 @@ void oled_clear()
 	oled_select_column(current_column);
 }
 
-
+void oled_print_byte(uint8_t byte)
+{
+	*oled_data = byte;
+}
 
 // Private functions //
 

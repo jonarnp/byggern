@@ -27,6 +27,8 @@
 #include "format.h"
 #include "drivers/can/can_ctrl.h"
 #include "drivers/can/can_msg.h"
+#include "apps/send_joy_pos.h"
+#include "apps/pong.h"
 //#include "drivers/can/spi.h"
 
 bool test = false;
@@ -51,75 +53,17 @@ int main(void)
 	JOY_init();
 	JOY_calibrate();
 	menu_init();
-	//mcp2515_init();
 	can_init();
+	send_joy_pos_init();
 	while(1)
 	{
+		//play_pong();
 		menu_update();
-		can_test();
-		
-		//uint8_t RXFSIDH = mcp2515_read(0x10);
-		//uint8_t RXFSIDL = mcp2515_read(0x11);
-		//uint16_t ID = (((uint16_t)RXFSIDH)<<3) +(RXFSIDL>>5);
-		//
-		//printf("RXFSIDH = %02x, RXFSIDL = %02x\nID is %04x\n",RXFSIDH,RXFSIDL,ID);
-		//
-		//uint8_t CANCTRL = mcp2515_read(0x0F);
-		//printf("CanCTRL = %02x\n",CANCTRL);
-		
-		_delay_ms(1000);
-		//printf("LowMask: %02x HighMask %02x\n\n",mcp2515_read(0x21),mcp2515_read(0x20));
-		
-		//uint8_t status = mcp2515_read_status();
-		//printf("Status: 0x%02x. RXIF0 = %d, RXIF1 = %d.\n", status,status&0x01,(status&0x02)>>1);
-		
-		//_delay_ms(100);
-		//if (++i >=255) i=0;
-		//mcp2515_select_tx_identifier(0,RXF0);
-				
-		//if (!get_bit(MCP_Int_Port,MCP_Int_Pin))
-		//{
-			//printf("Can received!!!\n");
-			//buffer_recieve_t data;
-			//mcp2515_buffer_recieve(&data);
-			//printf("Recieved CAN message is:\nID: %03x\nLength: %d\n",data.id,data.length);
-			//for (uint8_t i = 0; i<data.length;i++)
-			//{
-				//printf("Data[%d] : %02x\n",i,data.data[i]);
-			//}
-		//}
-//
-		//
-		//if(++i>10)
-		//{
-			//i=0;
-			//can_tx_message_t melding;
-			//melding.data[0] = 0x52;
-			//melding.data[1] = 0x21;
-			//melding.data[2] = 0x72;
-			//melding.data[3] = 0xe8;
-			//melding.data[4] = 0x59;
-			//melding.length = 5;
-			//melding.priority = 0;
-			//melding.id = 0x425;
-			//
-			//uint8_t testing[3] = {0x1e,0x22,0x35};
-			////mcp2515_select_tx_identifier(0, 0x425);
-			////mcp2515_load_tx_data(0,testing,3);
-			////mcp2515_request_to_send(0);
-			//
-			//transmit_can_message(melding);
-			//printf("Sending data\n");
-		//}
+		transmit_joy_pos();
+		//can_test();
 
-		//ADC_gal_test();
-		//_delay_ms(100);
-		//test = ADC_read(4);
-		//printf("ADC channel 0 %d\n",test);
-		//printf("Pin test %d\n", get_bit(PINB,PINB1));
-		//ADC_read_test();
-		//Test_joy();
-		//Test_slider();
+		_delay_ms(10);
+
 	}
 }
 
