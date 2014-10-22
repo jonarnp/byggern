@@ -20,6 +20,7 @@
 #define SLIDER_calib_button_Pin PINB0
 #define SLIDER_calib_button_DDR DDRB
 
+/* Position [0,100] */
 typedef struct SLIDER_pos {
 	int16_t left;
 	int16_t right;

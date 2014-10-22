@@ -11,16 +11,20 @@
 #define PONG_H_
 
 typedef struct ball {
-	int16_t x_pos;
-	int16_t y_pos;
-	int16_t x_vel;
-	int16_t y_vel;
+	uint16_t x_pos;
+	uint16_t y_pos;
+	uint16_t x_vel;
+	uint16_t y_vel;
 }ball_t;
 
-typedef struct slider {
-	uint8_t y_pos;
-}slider_t;
+/* Position [0,55] */
+typedef struct game_slider {
+	uint16_t y_pos;
+	uint8_t col;
+}game_slider_t;
 
 void play_pong();
+
+void pong_init();
 
 #endif /* PONG_H_ */

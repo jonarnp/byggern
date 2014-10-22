@@ -39,12 +39,8 @@ int main(void)
 	DDRB = 0x01;
 	USART_Init(MYUBRR,false);
 	XMEM_En();
-	//JOY_init();
-	SLIDER_init();
 	sei();
 	
-	//JOY_calibrate();	
-	//SLIDER_calibrate();
 	_delay_ms(1000);
 	oled_init();
 	uint8_t i=0;
@@ -55,9 +51,15 @@ int main(void)
 	menu_init();
 	can_init();
 	send_joy_pos_init();
+	
+	SLIDER_init();
+	SLIDER_calibrate();
+	
+
+	pong_init();
 	while(1)
 	{
-		//play_pong();
+		play_pong();
 		menu_update();
 		transmit_joy_pos();
 		//can_test();
