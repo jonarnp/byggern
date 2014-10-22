@@ -105,7 +105,7 @@ void pong_update()
 	//Give points if ball goes behind game sliders and reset ball position
 	else if ((ball_now.x_pos/10) <= s1.col)
 	{
-		draw_ball_byte(ball_now, 0x00);
+		draw_ball_byte(ball_prev, 0x00);
 		ball_now.x_pos = PONG_RES_WIDTH/2;
 		ball_now.y_pos = PONG_RES_HEIGHT/2;
 		ball_prev = ball_now;
@@ -113,7 +113,7 @@ void pong_update()
 	}
 	else if ((ball_now.x_pos/10) >= s2.col)
 	{
-		draw_ball_byte(ball_now, 0x00);
+		draw_ball_byte(ball_prev, 0x00);
 		ball_now.x_pos = PONG_RES_WIDTH/2;
 		ball_now.y_pos = PONG_RES_HEIGHT/2;
 		ball_prev = ball_now;
