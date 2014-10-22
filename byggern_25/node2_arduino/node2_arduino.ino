@@ -5,6 +5,8 @@
 #include "CAN.h"
 #include "Can_ID.h"
 #include "game_control.h"
+#include <Wire/Wire.h>
+#include "bit_op.h"
 
 /* This program demonstrates simple use of the CAN library
  * by sending a single number that increments each time. 
@@ -31,7 +33,6 @@ Game_control gameBoard;
 
 void setup()
 {
-	cli();
 	CAN.begin(CAN_SPEED_125000);
 	CAN.setMode (MCP2515_MODE_CONFIG);
   
@@ -42,13 +43,19 @@ void setup()
   
 	gameBoard.init();
 	
-	TIMSK1 |= (1<<TOIE1);
-	sei();
 	pinMode(37,OUTPUT);
 }
 
 void loop()
 {
+	delay(10);
+	int16_t encoder = gameBoard.read_encoder();
+	//Serial.print("Encoder reading is: ");
+	//Serial.print(encoder);
+	//Serial.print("\n");
+	////Serial.print("Score is: ");
+	//Serial.print(gameBoard.get_score());
+	//Serial.print("\n\n");
 	  if (CAN.available()) {
 	  
 	  message = CAN.getMessage ();
@@ -58,8 +65,9 @@ void loop()
 		    int16_t x,y;
 		    x = (message.data[0]<<8)+message.data[1];
 		    y = (message.data[2]<<8)+message.data[3];
-			//Serial.print("Recieved joystick data: \n x: ");
-			//Serial.print(x);
+			Serial.print("Recieved joystick data: \n x: ");
+			Serial.print(x);
+			Serial.print("\n");
 			//Serial.print("\n y: ");
 			//Serial.print(y);
 			//Serial.print("\n Parsed to int8_t : ");
@@ -78,6 +86,7 @@ void loop()
 			{
 				servo_pos = (int8_t)x;
 			}
+			
 			//Serial.print(servo_pos);
 			//Serial.print("\n");
 			gameBoard.set_servo(servo_pos);

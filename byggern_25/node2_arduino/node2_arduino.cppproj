@@ -68,6 +68,8 @@
             <Value>C:\Program Files (x86)\Arduino\libraries\SPI\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\Servo</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\Servo\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Wire</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Wire\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
@@ -104,6 +106,8 @@
             <Value>C:\Program Files (x86)\Arduino\libraries\SPI\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\Servo</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\Servo\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Wire</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Wire\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
@@ -228,6 +232,8 @@ build.arch=AVR
             <Value>C:\Program Files (x86)\Arduino\libraries\SPI\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\Servo</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\Servo\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Wire</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Wire\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
@@ -264,6 +270,8 @@ build.arch=AVR
             <Value>C:\Program Files (x86)\Arduino\libraries\SPI\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\Servo</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\Servo\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Wire</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\Wire\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
@@ -360,6 +368,9 @@ build.arch=AVR
     </VisualMicroSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="bit_op.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="CAN.cpp">
       <SubType>compile</SubType>
     </Compile>
