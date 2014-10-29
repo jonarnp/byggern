@@ -49,36 +49,30 @@ void setup()
 void loop()
 {
 	delay(10);
-	int16_t encoder = gameBoard.read_encoder();
-	//Serial.print("Encoder reading is: ");
-	//Serial.print(encoder);
-	//Serial.print("\n");
-	////Serial.print("Score is: ");
-	//Serial.print(gameBoard.get_score());
-	//Serial.print("\n\n");
+
 	  if (CAN.available()) {
-	  
 	  message = CAN.getMessage ();
-	  //message.print (HEX);
-	  if (message.id == JOY_POS_ID)
+
+	  if (message.id == GAME_CONTROLS)
 	  {
-		    int16_t x,y;
-		    x = (message.data[0]<<8)+message.data[1];
-		    y = (message.data[2]<<8)+message.data[3];
-			Serial.print("Recieved joystick data: \n x: ");
-			Serial.print(x);
-			Serial.print("\n");
+		    int16_t desired_servo_pos,desired_motor_speed;
+		    desired_servo_pos = (message.data[0]<<8)+message.data[1];
+		    desired_motor_speed = (message.data[2]<<8)+message.data[3];
+			bool push = message.data[4];
+			//Serial.print("Recieved joystick data: \n x: ");
+			//Serial.print(x);
+			//Serial.print("\n");
 			//Serial.print("\n y: ");
 			//Serial.print(y);
 			//Serial.print("\n Parsed to int8_t : ");
 			
 			int8_t servo_pos;
-			
-			if (x>100)
+			gameBoard.set_motor_speed(y);
+			if (desired_servo_pos>100)
 			{
 				servo_pos = 100;
 			}
-			else if (x<-100)
+			else if (desired_servo_pos<-100)
 			{
 				servo_pos = -100;
 			}
@@ -86,7 +80,11 @@ void loop()
 			{
 				servo_pos = (int8_t)x;
 			}
-			
+			if (push)
+			{
+				gameBoard.push_solenoid();
+				//Serial.print("Push!\n");
+			}
 			//Serial.print(servo_pos);
 			//Serial.print("\n");
 			gameBoard.set_servo(servo_pos);

@@ -21,6 +21,8 @@
 
 //DAC
 #define DAC_ADDRESS 0b0101000
+#define DAC_MIN 70		// Motor starts to run at about 1.5 V
+
 //Commands
 #define DAC_CH1_COMM 0x00
 
@@ -48,6 +50,16 @@
 #define DIR_PORT PORTF
 #define DIR_PIN PINF3
 
+//Motor controller
+#define P_GAIN 5 //Proportional gain in 0.1 basis
+#define FF_DIVIDER 3
+
+//Solenoid
+#define SOL_DDR DDRF
+#define SOL_PORT PORTF
+#define SOL_PIN PINF2
+#define SOL_POS_WIDTH 4 //Defines the solenoid pulse width in 10 ms basis
+
 class Game_control
 {
  protected:
@@ -61,13 +73,13 @@ class Game_control
 	*/
 	void set_servo(int8_t position);
 	
+	void set_motor_speed(int8_t speed);
+	
+	void push_solenoid();
+	
 	uint16_t get_score();
 	
 	bool check_for_goal();
-	
-	void set_DAC(uint8_t data);
-	
-	int16_t read_encoder();
 };
 
 

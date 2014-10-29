@@ -9,7 +9,15 @@
 #ifndef CAN_ID_H_
 #define CAN_ID_H_
 
-#define JOY_POS_ID 0x100
+#define GAME_CONTROLS 0x100
+/*
+CAN message which includes all setpoints for the game board.
+data[0] = MSB of desired servo position, sendt as int16
+data[1] = LSB of desired servo position, sendt as int16
+data[2] = MSB of desired motor speed, sendt as int16
+data[3] = LSB of desired motor speed, sendt as int16
+data[4] = Solenoid fire, sendt as uint8. Treat it as a bool
+*/
 
 
 
