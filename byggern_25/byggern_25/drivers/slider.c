@@ -28,6 +28,9 @@ void SLIDER_init()
 	
 	/* Set slider calibration button as input */
 	clear_bit(SLIDER_calib_button_DDR,SLIDER_calib_button_Pin);
+	
+	clear_bit(SLIDER_left_button_DDR,SLIDER_right_button_Pin);
+	clear_bit(SLIDER_right_button_DDR,SLIDER_right_button_Pin);
 }
 
 void SLIDER_calibrate()
@@ -96,4 +99,14 @@ SLIDER_pos_t SLIDER_getPosition()
 	}
 	
 	return pos;
+}
+
+bool SLIDER_left_button()
+{
+	return get_bit(SLIDER_left_button_Port,SLIDER_left_button_Pin);
+}
+
+bool SLIDER_right_button()
+{
+	return get_bit(SLIDER_right_button_Port,SLIDER_right_button_Pin);
 }

@@ -6,9 +6,11 @@
  */ 
 
 #include <stdio.h>
+#include <stdbool.h>
 #include "send_joy_pos.h"
 #include "../drivers/joy.h"
 #include "../drivers/can/can_msg.h"
+#include "../drivers/slider.h"
 
 void send_joy_pos_init()
 {
@@ -26,8 +28,9 @@ void transmit_joy_pos()
 	message.data[1] = (uint8_t)(joy_pos.x & 0x00FF);
 	message.data[2] = (uint8_t)((joy_pos.y & 0xFF00)>>8);
 	message.data[3] = (uint8_t)(joy_pos.y & 0x00FF);
+	message.data[4] = SLIDER_right_button();
 	
-	message.length = 4;
+	message.length = 5;
 		
 	transmit_can_message(message);
 }

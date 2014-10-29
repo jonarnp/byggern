@@ -12,6 +12,7 @@
 #include "../drivers/oled.h"
 #include "../drivers/slider.h"
 
+#define MAX_SCORE 99
 #define GAME_PX_WIDTH 128
 #define GAME_PX_HEIGHT 56
 #define PONG_RES_WIDTH ((10*GAME_PX_WIDTH) - 1)	//((10*OLED_COLUMN_SPAN) + 9)	/* 1279 */
@@ -21,13 +22,17 @@
 #define SLIDER_1_COLOUMN 4
 #define SLIDER_2_COLOUMN (OLED_COLUMN_SPAN-SLIDER_1_COLOUMN)
 
+bool finished = false;
 ball_t ball_now;
 ball_t ball_prev;
 game_slider_t s1, s2;
 game_slider_t s1_prev, s2_prev;
 uint8_t score_p1, score_p2;
+uint16_t bounces;
 
+void reset_ball();
 void pong_update();
+void update_score(uint8_t player);
 void draw_score();
 void update_screen();
 void update_game_sliders();
@@ -40,14 +45,13 @@ void play_pong()
 	//pong_init();
 	//update_screen();
 	
-	bool finished = false;
-	//while(!finished)
-	//{
+	
+	if(!finished) //while(!finished)
+	{
 		pong_update();
 		update_screen();
 		_delay_ms(10);
-		
-	//}
+	}
 }
 
 void pong_init()
@@ -59,15 +63,11 @@ void pong_init()
 	oled_goto_column(0);
 	oled_goto_line(0);
 	oled_print_underscore_p(PSTR(" Player 1:    Player 2:  "));
-	score_p1 = 10;
-	score_p2 = 10;
+	score_p1 = 0;
+	score_p2 = 0;
 	draw_score();
 	
-	ball_now.x_pos = PONG_RES_WIDTH/2;
-	ball_now.y_pos = PONG_RES_HEIGHT/2;
-	ball_now.x_vel = 5;
-	ball_now.y_vel = 3;
-	ball_prev = ball_now;
+	reset_ball();
 	
 	s1.y_pos = 0;
 	s1.col = SLIDER_1_COLOUMN;
@@ -75,6 +75,18 @@ void pong_init()
 	s2.col = SLIDER_2_COLOUMN;
 	s1_prev = s1;
 	s2_prev = s2;
+}
+
+void reset_ball()
+{
+	bounces = 0;
+	
+	ball_now.x_pos = PONG_RES_WIDTH/2;
+	ball_now.y_pos = PONG_RES_HEIGHT/2;
+	ball_now.x_vel = 3;
+	ball_now.y_vel = 0;
+	
+	ball_prev = ball_now;
 }
 
 void pong_update()
@@ -100,39 +112,86 @@ void pong_update()
 	}
 	
 	//Change x direction of ball when colliding with game sliders
-	if ((ball_now.x_pos/10) == s1.col && (ball_now.y_pos/10) >= (s1.y_pos-1) && (ball_now.y_pos/10) <= s1.y_pos+SLIDER_HEIGHT)
+	if ((ball_now.x_pos/10) <= (s1.col+1) && (ball_now.y_pos/10) >= (s1.y_pos-1) && (ball_now.y_pos/10) <= s1.y_pos+SLIDER_HEIGHT)
 	{
+		int8_t dist_slider_mid = (ball_now.y_pos/10) - s1.y_pos - (SLIDER_HEIGHT/2);
+		ball_now.y_vel = dist_slider_mid;
 		ball_now.x_vel = -ball_now.x_vel;
+		ball_now.x_vel++;
+		bounces++;
+		//printf("ball x, y: %d, %d; slider: %d\n", ball_now.x_pos, ball_now.y_pos, s1.y_pos);
 	}
-	else if ((ball_now.x_pos/10) == s2.col && (ball_now.y_pos/10) >= (s2.y_pos-1) && (ball_now.y_pos/10) <= s2.y_pos+SLIDER_HEIGHT)
+	else if ((ball_now.x_pos/10) >= (s2.col-1) && (ball_now.y_pos/10) >= (s2.y_pos-1) && (ball_now.y_pos/10) <= s2.y_pos+SLIDER_HEIGHT)
 	{
+		int8_t dist_slider_mid = (ball_now.y_pos/10) - s2.y_pos - (SLIDER_HEIGHT/2);
+		ball_now.y_vel = dist_slider_mid;
 		ball_now.x_vel = -ball_now.x_vel;
+		ball_now.x_vel--;
+		bounces++;
+		//printf("ball x, y: %d, %d; slider: %d\n", ball_now.x_pos, ball_now.y_pos, s1.y_pos);
 	}
 	//Give points if ball goes behind game sliders and reset ball position
 	else if ((ball_now.x_pos/10) <= s1.col)
 	{
-		score_p2 += 1;
-		draw_score();
-		
 		draw_ball_byte(ball_prev, 0x00);
-		ball_now.x_pos = PONG_RES_WIDTH/2;
-		ball_now.y_pos = PONG_RES_HEIGHT/2;
-		ball_prev = ball_now;
-		printf("Point to Player 2!\n");
+		reset_ball();
+		
+		update_score(2);
+		
+		//printf("Point to Player 2!\n");
 	}
 	else if ((ball_now.x_pos/10) >= s2.col)
-	{
-		score_p1 += 1;
-		draw_score();
-		
+	{	
 		draw_ball_byte(ball_prev, 0x00);
-		ball_now.x_pos = PONG_RES_WIDTH/2;
-		ball_now.y_pos = PONG_RES_HEIGHT/2;
-		ball_prev = ball_now;
-		printf("Point to Player 1!\n");
+		reset_ball();
+		ball_now.x_vel = -ball_now.x_vel;
+		
+		update_score(1);
+		
+		//printf("Point to Player 1!\n");
 	}
 
 	//printf("Ball pos: %d, %d\n", ball_now.x_pos, ball_now.y_pos);
+}
+
+void update_score(uint8_t player)
+{
+	if (player == 1)
+	{
+		score_p1 += 1;
+		
+		if(score_p1 >= MAX_SCORE)
+		{
+			finished = true;
+			oled_clear();
+			oled_goto_line(2);
+			oled_goto_column(28);
+			oled_print_p(PSTR("Player 1 wins!"));
+			
+			oled_goto_line(4);
+			oled_goto_column(15);
+			oled_print_p(PSTR("Player 2, you suck!"));
+		}
+	}
+	else
+	{
+		score_p2 += 1;
+		
+		if(score_p2 >= MAX_SCORE)
+		{
+			finished = true;
+			oled_clear();
+			oled_goto_line(2);
+			oled_goto_column(28);
+			oled_print_p(PSTR("Player 2 wins!"));
+			
+			oled_goto_line(4);
+			oled_goto_column(15);
+			oled_print_p(PSTR("Player 1, you suck!"));
+		}
+	}
+	
+	draw_score();
 }
 
 void draw_score()
@@ -150,10 +209,6 @@ void draw_score()
 	snprintf(buffer, 10, "%d", score_p2);
 	oled_print_underscore(buffer);
 }
-
-/*
-* Ved veggkollisjon endre fortegn på ball.?_vel
-*/
 
 void update_screen()
 {
