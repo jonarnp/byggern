@@ -42,6 +42,12 @@ void oled_init()
 	*oled_command = 0xaf; // display on
 }
 
+void oled_print_byte(uint8_t byte)
+{
+	*oled_data = byte;
+	current_column += 1;
+}
+
 /*
 Outputs a char to the OLED screen. 
 */
@@ -79,10 +85,10 @@ void oled_putchar_underscore(char c)
 	
 	if (remaining_col<C_WIDTH)
 	{
-		// Put underscore on remaining columns
+		// Clear remaining columns
 		for (current_column; current_column <= OLED_COLUMN_SPAN;current_column++)
 		{
-			*oled_data = 0x80;
+			*oled_data = 0x00;
 		}
 		
 		// Select leftmost column
@@ -98,12 +104,6 @@ void oled_putchar_underscore(char c)
 	{
 		*oled_data = pgm_read_byte(&myfont[c-' '][i]) | 0x80;
 		++current_column;
-	}
-	
-	// Put underscore on remaining columns
-	for (current_column; current_column <= OLED_COLUMN_SPAN;current_column++)
-	{
-		*oled_data = 0x80;
 	}
 }
 
@@ -161,6 +161,24 @@ void oled_print_p(const char* data)
 		else
 		{
 			oled_putchar(pgm_read_byte(data++));
+		}
+	}
+}
+
+void oled_print_underscore_p(const char* data)
+{
+	while (pgm_read_byte(data) != '\0')
+	{
+		if(pgm_read_byte(data) == '\n')
+		{
+			if(++current_line > OLED_LINE_SPAN) current_line = 0;
+			data++;
+			
+			oled_select_column(0);
+		}
+		else
+		{
+			oled_putchar_underscore(pgm_read_byte(data++));
 		}
 	}
 }
@@ -226,11 +244,6 @@ void oled_clear()
 	// Select "old" line and column
 	oled_select_line(current_line);
 	oled_select_column(current_column);
-}
-
-void oled_print_byte(uint8_t byte)
-{
-	*oled_data = byte;
 }
 
 // Private functions //

@@ -7,6 +7,7 @@
 
 #include <stdbool.h>
 #include <util/delay.h>
+#include <avr/pgmspace.h>
 #include "pong.h"
 #include "../drivers/oled.h"
 #include "../drivers/slider.h"
@@ -24,8 +25,10 @@ ball_t ball_now;
 ball_t ball_prev;
 game_slider_t s1, s2;
 game_slider_t s1_prev, s2_prev;
+uint8_t score_p1, score_p2;
 
 void pong_update();
+void draw_score();
 void update_screen();
 void update_game_sliders();
 void draw_slider_byte(game_slider_t s, uint8_t byte);
@@ -55,7 +58,10 @@ void pong_init()
 	oled_clear();
 	oled_goto_column(0);
 	oled_goto_line(0);
-	oled_print_underscore(" Player 1:    Player 2: ");
+	oled_print_underscore_p(PSTR(" Player 1:    Player 2:  "));
+	score_p1 = 10;
+	score_p2 = 10;
+	draw_score();
 	
 	ball_now.x_pos = PONG_RES_WIDTH/2;
 	ball_now.y_pos = PONG_RES_HEIGHT/2;
@@ -88,23 +94,26 @@ void pong_update()
 	//printf("Read pos: %d, %d\n", read_pos.left, read_pos.right);
 	
 	//Change y direction of ball when colliding with top or bottom wall
-	if (ball_now.y_pos >= PONG_RES_HEIGHT || ball_now.y_pos <= 0)
+	if (ball_now.y_pos > (PONG_RES_HEIGHT-10) || ball_now.y_pos < 10)
 	{
 		ball_now.y_vel = -ball_now.y_vel;
 	}
 	
 	//Change x direction of ball when colliding with game sliders
-	if ((ball_now.x_pos/10) == s1.col && (ball_now.y_pos/10) >= s1.y_pos && (ball_now.y_pos/10) <= s1.y_pos+SLIDER_HEIGHT)
+	if ((ball_now.x_pos/10) == s1.col && (ball_now.y_pos/10) >= (s1.y_pos-1) && (ball_now.y_pos/10) <= s1.y_pos+SLIDER_HEIGHT)
 	{
 		ball_now.x_vel = -ball_now.x_vel;
 	}
-	else if ((ball_now.x_pos/10) == s2.col && (ball_now.y_pos/10) >= s2.y_pos && (ball_now.y_pos/10) <= s2.y_pos+SLIDER_HEIGHT)
+	else if ((ball_now.x_pos/10) == s2.col && (ball_now.y_pos/10) >= (s2.y_pos-1) && (ball_now.y_pos/10) <= s2.y_pos+SLIDER_HEIGHT)
 	{
 		ball_now.x_vel = -ball_now.x_vel;
 	}
 	//Give points if ball goes behind game sliders and reset ball position
 	else if ((ball_now.x_pos/10) <= s1.col)
 	{
+		score_p2 += 1;
+		draw_score();
+		
 		draw_ball_byte(ball_prev, 0x00);
 		ball_now.x_pos = PONG_RES_WIDTH/2;
 		ball_now.y_pos = PONG_RES_HEIGHT/2;
@@ -113,6 +122,9 @@ void pong_update()
 	}
 	else if ((ball_now.x_pos/10) >= s2.col)
 	{
+		score_p1 += 1;
+		draw_score();
+		
 		draw_ball_byte(ball_prev, 0x00);
 		ball_now.x_pos = PONG_RES_WIDTH/2;
 		ball_now.y_pos = PONG_RES_HEIGHT/2;
@@ -121,6 +133,22 @@ void pong_update()
 	}
 
 	//printf("Ball pos: %d, %d\n", ball_now.x_pos, ball_now.y_pos);
+}
+
+void draw_score()
+{
+	char buffer[4];
+	oled_goto_line(0);
+	
+	//Player 1
+	oled_goto_column(50);
+	snprintf(buffer, 10, "%d", score_p1);
+	oled_print_underscore(buffer);
+	
+	//Player 2
+	oled_goto_column(115);
+	snprintf(buffer, 10, "%d", score_p2);
+	oled_print_underscore(buffer);
 }
 
 /*

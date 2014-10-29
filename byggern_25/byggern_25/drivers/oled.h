@@ -23,6 +23,8 @@ typedef struct oled_position{
 
 void oled_init();
 
+void oled_print_byte(uint8_t byte);
+
 void oled_putchar(char c);
 
 void oled_putchar_underscore(char c);
@@ -36,6 +38,9 @@ Print char from PROGMEM
 */
 void oled_print_p(const char* data);
 
+void oled_print_underscore_p(const char* data);
+
+
 void oled_goto_line(uint8_t line);
 
 void oled_goto_column(uint8_t column);
@@ -45,7 +50,5 @@ oled_position_t oled_getPos();
 void oled_clear_line(uint8_t line);
 
 void oled_clear();
-
-void oled_print_byte(uint8_t byte);
 
 #endif /* OLED_H_ */
