@@ -208,8 +208,8 @@ void runIRfilter()
 {
 	int16_t IR_VAL = analogRead(IR_PIN);
 	IR_filt = ((alfa*IR_filt) + ((100-alfa)*IR_VAL))/100;
-	Serial.print(IR_filt);
-	Serial.print("\n");
+	//Serial.print(IR_filt);
+	//Serial.print("\n");
 }
 /*
 Check of the solenoid shoud be reset.

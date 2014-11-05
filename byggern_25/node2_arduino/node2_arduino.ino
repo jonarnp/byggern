@@ -5,7 +5,7 @@
 #include "CAN.h"
 #include "Can_ID.h"
 #include "game_control.h"
-#include <Wire/Wire.h>
+#include <Wire.h>
 #include "bit_op.h"
 
 /* This program demonstrates simple use of the CAN library
@@ -67,7 +67,7 @@ void loop()
 			//Serial.print("\n Parsed to int8_t : ");
 			
 			int8_t servo_pos;
-			gameBoard.set_motor_speed(y);
+			gameBoard.set_motor_speed(desired_motor_speed);
 			if (desired_servo_pos>100)
 			{
 				servo_pos = 100;
@@ -78,7 +78,7 @@ void loop()
 			}
 			else
 			{
-				servo_pos = (int8_t)x;
+				servo_pos = (int8_t)desired_servo_pos;
 			}
 			if (push)
 			{
