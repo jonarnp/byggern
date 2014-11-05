@@ -9,6 +9,7 @@
 #include "../drivers/oled.h"
 #include <avr/pgmspace.h>
 #include "../drivers/joy.h"
+#include "../drivers/slider.h"
 #include <stdbool.h>
 #include "../apps/pong.h"
 
@@ -30,6 +31,13 @@ const unsigned char PROGMEM main_menu_str[5][20] = {
 	{"  -Pong"}
 };
 
+const unsigned char PROGMEM settings_menu_str[4][20] = {
+	{"Settings"},
+	{"  -Back"},
+	{"  -Joystick"},
+	{"  -Sliders"}
+};
+
 // States
 static state_t current_state;
 
@@ -42,9 +50,7 @@ void menu_update_screen();
 void menu_init()
 {
 	current_state = main_s;
-	oled_init();
 	oled_clear();
-	JOY_init();
 	
 	// Initialize menu action
 	menu_select.down_iterations = 0;
@@ -101,6 +107,7 @@ void menu_update()
 
 void menu_update_state()
 {
+	//printf("menu_update_state: %d\n", current_state);
 	if (menu_select.goUp)
 	{
 		selected_line--;
@@ -115,7 +122,7 @@ void menu_update_state()
 	{
 		case main_s:
 			// Check for over/under-roll
-			if (selected_line < play) selected_line = settings;
+			if (selected_line < play) selected_line = pong;
 			if (selected_line > pong) selected_line = play;
 		
 			if (menu_select.select)
@@ -152,8 +159,33 @@ void menu_update_state()
 			break;
 		
 		case settings_s:
-			if (menu_select.select) current_state = main_s;
-			selected_line = 0;
+			if (menu_select.select) 
+			{
+				// Check for over/under-roll
+				if (selected_line < back) selected_line = calibrate_sliders;
+				if (selected_line > calibrate_sliders) selected_line = back;
+						
+				if (menu_select.select)
+				{
+					switch (selected_line)
+					{
+						case back:
+							current_state = main_s;
+							selected_line = 0;
+							break;
+						case calibrate_joy:
+							//current_state = calibrate_joy;
+							selected_line = 0;
+							JOY_calibrate(); //should not be here
+							break;
+						case calibrate_sliders:
+							//current_state = calibrate_sliders;
+							selected_line = 0;
+							SLIDER_calibrate(); //should not be here
+							break;
+					}
+				}
+			}
 			break;
 		
 		case pong_s:
@@ -219,8 +251,31 @@ void menu_update_screen()
 			break;
 		
 		case settings_s:
-			printf("Into settings\n");
-			oled_print("Settings??? hihi");
+			oled_print_p(settings_menu_str[0]);
+			
+			oled_goto_column(0);
+			oled_goto_line(1);
+			oled_print_p(settings_menu_str[1]);
+			if (selected_line == back)
+			{
+				oled_print(" *");
+			}
+			
+			oled_goto_column(0);
+			oled_goto_line(2);
+			oled_print_p(settings_menu_str[2]);
+			if (selected_line == calibrate_joy)
+			{
+				oled_print(" *");
+			}
+			
+			oled_goto_column(0);
+			oled_goto_line(3);
+			oled_print_p(settings_menu_str[3]);
+			if (selected_line == calibrate_sliders)
+			{
+				oled_print(" *");
+			}
 			break;
 		
 		case highscore_s:
@@ -232,4 +287,9 @@ void menu_update_screen()
 			break;
 	}
 	//printf("End of update screen, goDown: %d, goUp: %d, select: %d\n",menu_select.goDown,menu_select.goUp,menu_select.select);
+}
+
+state_t get_current_state()
+{
+	return current_state;
 }

@@ -8,8 +8,10 @@
 #include <avr/io.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <avr/pgmspace.h>
 #include "slider.h"
 #include "adc.h"
+#include "oled.h"
 #include "..\bit_op.h"
 
 typedef struct Slider_calib
@@ -21,6 +23,13 @@ typedef struct Slider_calib
 } Slider_calib_t;
 
 Slider_calib_t Slider_calib_values;
+
+const unsigned char PROGMEM slider_calib_str[4][7] = {
+	{"lmin: "},
+	{"lmax: "},
+	{"rmin: "},
+	{"rmax: "}
+};
 
 void SLIDER_init()
 {
@@ -35,12 +44,33 @@ void SLIDER_init()
 
 void SLIDER_calibrate()
 {
-	printf("Calibrating sliders. Move sliders to all extrema, release it and then push calib button\n");
-		
+	printf("Calibrating sliders. Move sliders to all endpoints, then push calib button\n");
+	oled_clear();
+	
 	Slider_calib_values.lMax = ADC_read(SLIDER_LEFT_CH);
 	Slider_calib_values.lMin = Slider_calib_values.lMax;
 	Slider_calib_values.rMax = ADC_read(SLIDER_RIGHT_CH);
 	Slider_calib_values.rMin = Slider_calib_values.rMax;
+	
+	// Print text to OLED
+	oled_goto_line(0);
+	oled_goto_column(0);
+	oled_print_p(PSTR("Move sliders to all endpoints."));
+	oled_goto_line(2);
+	oled_goto_column(0);
+	oled_print_p(slider_calib_str[0]);
+	oled_goto_line(2);
+	oled_goto_column(63);
+	oled_print_p(slider_calib_str[1]);
+	oled_goto_line(3);
+	oled_goto_column(0);
+	oled_print_p(slider_calib_str[2]);
+	oled_goto_line(3);
+	oled_goto_column(63);
+	oled_print_p(slider_calib_str[3]);
+	oled_goto_line(4);
+	oled_goto_column(0);
+	oled_print_p(PSTR("After extrema is reached, press left slider button."));
 		
 	while(!get_bit(SLIDER_calib_button_Port, SLIDER_calib_button_Pin)){
 		uint8_t lTemp = ADC_read(SLIDER_LEFT_CH);
@@ -49,19 +79,63 @@ void SLIDER_calibrate()
 		if(lTemp > Slider_calib_values.lMax){
 			Slider_calib_values.lMax = lTemp;
 			printf("lMax set to: %d\n", Slider_calib_values.lMax);
+			
+			//Update OLED
+			oled_clear_line(2);
+			oled_goto_line(2);
+			oled_goto_column(0);
+			oled_print_p(slider_calib_str[0]);
+			oled_print(uint8_to_str(Slider_calib_values.lMin));
+						
+			oled_goto_column(63);
+			oled_print_p(slider_calib_str[1]);
+			oled_print(uint8_to_str(Slider_calib_values.lMax));
 		}
 		if (lTemp < Slider_calib_values.lMin){
 			Slider_calib_values.lMin = lTemp;
 			printf("lMin set to: %d\n", Slider_calib_values.lMin);
+			
+			//Update OLED
+			oled_clear_line(2);
+			oled_goto_line(2);
+			oled_goto_column(0);
+			oled_print_p(slider_calib_str[0]);
+			oled_print(uint8_to_str(Slider_calib_values.lMin));
+						
+			oled_goto_column(63);
+			oled_print_p(slider_calib_str[1]);
+			oled_print(uint8_to_str(Slider_calib_values.lMax));
 		}
 			
 		if(rTemp > Slider_calib_values.rMax){
 			Slider_calib_values.rMax = rTemp;
 			printf("rMax set to: %d\n", Slider_calib_values.rMax);
+			
+			//Update OLED
+			oled_clear_line(3);
+			oled_goto_line(3);
+			oled_goto_column(0);
+			oled_print_p(slider_calib_str[2]);
+			oled_print(uint8_to_str(Slider_calib_values.rMin));
+						
+			oled_goto_column(63);
+			oled_print_p(slider_calib_str[3]);
+			oled_print(uint8_to_str(Slider_calib_values.rMax));
 		}
 		if (rTemp < Slider_calib_values.rMin){
 			Slider_calib_values.rMin = rTemp;
 			printf("rMin set to: %d\n", Slider_calib_values.rMin);
+			
+			//Update OLED
+			oled_clear_line(3);
+			oled_goto_line(3);
+			oled_goto_column(0);
+			oled_print_p(slider_calib_str[2]);
+			oled_print(uint8_to_str(Slider_calib_values.rMin));
+						
+			oled_goto_column(63);
+			oled_print_p(slider_calib_str[3]);
+			oled_print(uint8_to_str(Slider_calib_values.rMax));
 		}
 	}
 	printf("Button pushed\n");

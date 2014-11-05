@@ -32,7 +32,7 @@ typedef struct Joy_calib
 
 Joy_calib_t Joy_calib_values;
 
-const unsigned char PROGMEM calib_str[4][7] = {
+const unsigned char PROGMEM joy_calib_str[4][7] = {
 	{"Xmin: "},
 	{"Xmax: "},
 	{"Ymin: "},
@@ -65,16 +65,16 @@ void JOY_calibrate()
 	oled_print_p(PSTR("Move joystick in all extrema to calibrate."));
 	oled_goto_line(2);
 	oled_goto_column(0);
-	oled_print_p(calib_str[0]);
+	oled_print_p(joy_calib_str[0]);
 	oled_goto_line(2);
 	oled_goto_column(63);
-	oled_print_p(calib_str[1]);
+	oled_print_p(joy_calib_str[1]);
 	oled_goto_line(3);
 	oled_goto_column(0);
-	oled_print_p(calib_str[2]);
+	oled_print_p(joy_calib_str[2]);
 	oled_goto_line(3);
 	oled_goto_column(63);
-	oled_print_p(calib_str[3]);
+	oled_print_p(joy_calib_str[3]);
 	oled_goto_line(4);
 	oled_goto_column(0);
 	oled_print_p(PSTR("After extrema is reached, leave joystick at rest and press left slider button."));
@@ -91,11 +91,11 @@ void JOY_calibrate()
 			oled_clear_line(2);
 			oled_goto_line(2);
 			oled_goto_column(0);
-			oled_print_p(calib_str[0]);
+			oled_print_p(joy_calib_str[0]);
 			oled_print(uint8_to_str(Joy_calib_values.xMin));
 			
 			oled_goto_column(63);
-			oled_print_p(calib_str[1]);
+			oled_print_p(joy_calib_str[1]);
 			oled_print(uint8_to_str(Joy_calib_values.xMax));
 		} 
 		if (xTemp < Joy_calib_values.xMin){
@@ -106,11 +106,11 @@ void JOY_calibrate()
 			oled_clear_line(2);
 			oled_goto_line(2);
 			oled_goto_column(0);
-			oled_print_p(calib_str[0]);
+			oled_print_p(joy_calib_str[0]);
 			oled_print(uint8_to_str(Joy_calib_values.xMin));
 			
 			oled_goto_column(63);
-			oled_print_p(calib_str[1]);
+			oled_print_p(joy_calib_str[1]);
 			oled_print(uint8_to_str(Joy_calib_values.xMax));
 		}
 		
@@ -122,11 +122,11 @@ void JOY_calibrate()
 			oled_clear_line(3);
 			oled_goto_line(3);
 			oled_goto_column(0);
-			oled_print_p(calib_str[2]);
+			oled_print_p(joy_calib_str[2]);
 			oled_print(uint8_to_str(Joy_calib_values.yMin));
 			
 			oled_goto_column(63);
-			oled_print_p(calib_str[3]);
+			oled_print_p(joy_calib_str[3]);
 			oled_print(uint8_to_str(Joy_calib_values.yMax));
 		}
 		if (yTemp < Joy_calib_values.yMin){
@@ -137,11 +137,11 @@ void JOY_calibrate()
 			oled_clear_line(3);
 			oled_goto_line(3);
 			oled_goto_column(0);
-			oled_print_p(calib_str[2]);
+			oled_print_p(joy_calib_str[2]);
 			oled_print(uint8_to_str(Joy_calib_values.yMin));
 			
 			oled_goto_column(63);
-			oled_print_p(calib_str[3]);
+			oled_print_p(joy_calib_str[3]);
 			oled_print(uint8_to_str(Joy_calib_values.yMax));
 		}
 	}

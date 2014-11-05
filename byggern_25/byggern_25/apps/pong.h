@@ -10,6 +10,8 @@
 #ifndef PONG_H_
 #define PONG_H_
 
+#define FPS 24
+
 typedef struct ball {
 	uint16_t x_pos;
 	uint16_t y_pos;

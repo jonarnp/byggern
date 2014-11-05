@@ -9,8 +9,10 @@
 #include <util/delay.h>
 #include <avr/pgmspace.h>
 #include "pong.h"
+#include "menu.h"
 #include "../drivers/oled.h"
 #include "../drivers/slider.h"
+#include "../drivers/joy.h"
 
 #define MAX_SCORE 99
 #define GAME_PX_WIDTH 128
@@ -22,13 +24,14 @@
 #define SLIDER_1_COLOUMN 4
 #define SLIDER_2_COLOUMN (OLED_COLUMN_SPAN-SLIDER_1_COLOUMN)
 
-bool finished = false;
+bool finished;
 ball_t ball_now;
 ball_t ball_prev;
 game_slider_t s1, s2;
 game_slider_t s1_prev, s2_prev;
 uint8_t score_p1, score_p2;
 uint16_t bounces;
+uint8_t iterations;
 
 void reset_ball();
 void pong_update();
@@ -42,22 +45,37 @@ void draw_ball_byte(ball_t b, uint8_t draw);
 
 void play_pong()
 {
-	//pong_init();
-	//update_screen();
+	pong_init();
+	update_screen();
 	
+	uint8_t ms_delay = 1000/FPS;
 	
-	if(!finished) //while(!finished)
+	while(!finished) //if(!finished)
 	{
 		pong_update();
 		update_screen();
-		_delay_ms(10);
+		_delay_ms(ms_delay);
+		
+		if (JOY_button())
+		{
+			if (iterations++ > SELECT_DELAY) 
+			{
+				finished = true;
+				iterations = 0;
+				//printf("finished playing pong\n");
+			}
+		}
+		else
+		{
+			iterations = 0;
+		}
 	}
 }
 
 void pong_init()
 {
-	//SLIDER_init();
-	//SLIDER_calibrate(); //done in main for now
+	finished = false;
+	iterations = 0;
 	
 	oled_clear();
 	oled_goto_column(0);

@@ -29,43 +29,66 @@
 #include "drivers/can/can_msg.h"
 #include "apps/send_joy_pos.h"
 #include "apps/pong.h"
-//#include "drivers/can/spi.h"
+#include "apps/menu.h"
 
-bool test = false;
+void setup();
+
+
+state_t system_state;
 
 int main(void)
 {
-	cli();
-	DDRB = 0x01;
-	USART_Init(MYUBRR,false);
-	XMEM_En();
-	sei();
-	
-	_delay_ms(1000);
-	oled_init();
-	uint8_t i=0;
+	setup();
 
-	oled_clear();
-	JOY_init();
-	JOY_calibrate();
-	menu_init();
-	can_init();
-	send_joy_pos_init();
-	
-	SLIDER_init();
-	SLIDER_calibrate();
-	
-
-	pong_init();
 	while(1)
 	{
-		play_pong();
-		menu_update();
-		transmit_joy_pos();
-		//can_test();
-
+		system_state = get_current_state();
+		
+		switch(system_state)
+		{
+			case main_s:
+				//printf("byggern_25.c: main_s\n");
+				menu_update();
+				break;
+				
+			case play_s:
+				//printf("byggern_25.c: play_s\n");
+				transmit_joy_pos();
+				break;
+				
+			case highscore_s:
+				//printf("byggern_25.c: highscore_s\n");
+				break;
+				
+			case settings_s:
+				//printf("byggern_25.c: settings_s\n");
+				menu_update();
+				break;
+				
+			case pong_s:
+				//printf("byggern_25.c: pong_s\n");
+				play_pong();
+				menu_init(); //when finished playing
+				break;
+		}
 		_delay_ms(10);
-
 	}
 }
 
+void setup()
+{
+	DDRB = 0x01;
+	USART_Init(MYUBRR,false);
+	XMEM_En();
+	oled_init();
+	oled_clear();
+	SLIDER_init();
+	JOY_init();
+	send_joy_pos_init();
+	_delay_ms(100);
+	
+	JOY_calibrate();
+	SLIDER_calibrate();
+	
+	menu_init();
+}
