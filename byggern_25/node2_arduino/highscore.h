@@ -31,9 +31,13 @@ class Highscore
  public:
 	void init();
 	
-	void write_highscore(char* name, uint16_t score);
+	void write_highscore(char name[NAME_LENGTH], uint16_t score);
 	
-	uint8_t read_highscore(highscore_element_t* highscore);
+	void read_highscore(highscore_element_t* highscore);
+	
+	void reset_highscore();
+	
+	void send_highscore();
 };
 
 

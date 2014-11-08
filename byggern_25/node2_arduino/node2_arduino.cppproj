@@ -70,6 +70,8 @@
             <Value>C:\Program Files (x86)\Arduino\libraries\Servo\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\Wire</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\Wire\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\EEPROM</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\EEPROM\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
@@ -108,6 +110,8 @@
             <Value>C:\Program Files (x86)\Arduino\libraries\Servo\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\Wire</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\Wire\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\EEPROM</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\EEPROM\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
@@ -234,6 +238,8 @@ build.arch=AVR
             <Value>C:\Program Files (x86)\Arduino\libraries\Servo\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\Wire</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\Wire\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\EEPROM</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\EEPROM\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
@@ -272,6 +278,8 @@ build.arch=AVR
             <Value>C:\Program Files (x86)\Arduino\libraries\Servo\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\Wire</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\Wire\utility</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\EEPROM</Value>
+            <Value>C:\Program Files (x86)\Arduino\libraries\EEPROM\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\libraries</Value>
             <Value>C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
@@ -380,10 +388,16 @@ build.arch=AVR
     <Compile Include="Can_ID.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="highscore.cpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="game_control.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="game_control.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="highscore.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="mcp2515.cpp">
@@ -399,6 +413,12 @@ build.arch=AVR
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="node2_arduino.ino">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="servo_control.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="servo_control.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="spi.cpp">

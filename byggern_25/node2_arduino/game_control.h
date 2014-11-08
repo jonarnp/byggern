@@ -79,6 +79,8 @@ class Game_control
 	
 	uint16_t get_score();
 	
+	void reset_score();
+	
 	bool check_for_goal();
 };
 

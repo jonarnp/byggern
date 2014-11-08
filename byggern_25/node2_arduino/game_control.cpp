@@ -85,9 +85,9 @@ void Game_control::set_servo(int8_t position)
 	{
 		pwm_value = MAX_SERVO_PWM;
 	}
-	Serial.print("Servo:");
-	Serial.print(pwm_value);
-	Serial.print("\n");
+	//Serial.print("Servo:");
+	//Serial.print(pwm_value);
+	//Serial.print("\n");
 	Game_servo.writeMicroseconds(pwm_value);
 }
 
@@ -127,6 +127,14 @@ uint16_t Game_control::get_score()
 	return score;
 }
 
+/*
+Reset the score.
+*/
+void Game_control::reset_score()
+{
+	score = 0;
+}
+	
 /*
 Check for a goal.
 */
