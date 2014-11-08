@@ -424,6 +424,12 @@ build.arch=AVR
     <Compile Include="spi.cpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="spotifyControl.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="spotifyControl.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="Visual Micro\.node2_arduino.vsarduino.h">
       <SubType>compile</SubType>
     </Compile>
