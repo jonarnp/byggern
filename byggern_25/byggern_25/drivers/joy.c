@@ -172,41 +172,41 @@ JOY_pos_t JOY_getPosition()
 	int16_t V_x = ADC_read(JOY_X_CH)-Joy_calib_values.xMiddle;
 	int16_t V_y = ADC_read(JOY_Y_CH)-Joy_calib_values.yMiddle;
 	
-	if (V_x>0)
+	if (V_x>JOY_MIDDLE)
 	{
-		pos.x = (100*V_x)/Joy_calib_values.x_k2;
+		pos.x = (JOY_MAX*V_x)/Joy_calib_values.x_k2;
 	}
 	else
 	{
-		pos.x = (100*V_x)/Joy_calib_values.x_k1;
+		pos.x = (JOY_MAX*V_x)/Joy_calib_values.x_k1;
 	}
 	
-	if (V_y>0)
+	if (V_y>JOY_MIDDLE)
 	{
-		pos.y = (100*V_y)/Joy_calib_values.y_k2;
+		pos.y = (JOY_MAX*V_y)/Joy_calib_values.y_k2;
 	}
 	else
 	{
-		pos.y = (100*V_y)/Joy_calib_values.y_k1;
+		pos.y = (JOY_MAX*V_y)/Joy_calib_values.y_k1;
 	}
 	
 	/* Within calibrated values */
-	if (pos.x < -100)
+	if (pos.x < JOY_MIN)
 	{
-		pos.x = -100;
+		pos.x = JOY_MIN;
 	}
-	else if (pos.x > 100)
+	else if (pos.x > JOY_MAX)
 	{
-		pos.x = 100;
+		pos.x = JOY_MAX;
 	}
 	
-	if (pos.y < -100)
+	if (pos.y < JOY_MIN)
 	{
-		pos.y = -100;
+		pos.y = JOY_MIN;
 	}
-	else if (pos.y > 100)
+	else if (pos.y > JOY_MAX)
 	{
-		pos.y = 100;
+		pos.y = JOY_MAX;
 	}
 	
 	return pos;

@@ -27,6 +27,4 @@ typedef struct game_slider {
 
 void play_pong();
 
-void pong_init();
-
 #endif /* PONG_H_ */

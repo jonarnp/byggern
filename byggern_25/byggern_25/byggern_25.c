@@ -27,7 +27,7 @@
 #include "format.h"
 #include "drivers/can/can_ctrl.h"
 #include "drivers/can/can_msg.h"
-#include "apps/send_joy_pos.h"
+#include "apps/game_board.h"
 #include "apps/pong.h"
 #include "apps/menu.h"
 
@@ -53,11 +53,14 @@ int main(void)
 				
 			case play_s:
 				//printf("byggern_25.c: play_s\n");
-				transmit_joy_pos();
+				play_game_board();
+				menu_init(); //when finished playing
 				break;
 				
 			case highscore_s:
 				//printf("byggern_25.c: highscore_s\n");
+				//receive_highscore_list();
+				menu_update();
 				break;
 				
 			case settings_s:
@@ -84,11 +87,12 @@ void setup()
 	oled_clear();
 	SLIDER_init();
 	JOY_init();
-	send_joy_pos_init();
 	_delay_ms(100);
 	
 	JOY_calibrate();
+	_delay_ms(100);
 	SLIDER_calibrate();
+	_delay_ms(100);
 	
 	menu_init();
 }

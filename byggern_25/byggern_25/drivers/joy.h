@@ -30,6 +30,11 @@
 /* Joystick direction threshold */
 #define JOY_DIR_TH 25
 
+/* Max and min joystick values */
+#define JOY_MAX 100
+#define JOY_MIN -100
+#define JOY_MIDDLE 0
+
 typedef struct JOY_pos {
 	int16_t x;
 	int16_t y;

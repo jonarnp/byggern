@@ -108,6 +108,12 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="apps\highscore.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="apps\highscore.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="apps\menu.c">
       <SubType>compile</SubType>
     </Compile>
@@ -120,10 +126,10 @@
     <Compile Include="apps\pong.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="apps\send_joy_pos.c">
+    <Compile Include="apps\game_board.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="apps\send_joy_pos.h">
+    <Compile Include="apps\game_board.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="bit_op.h">

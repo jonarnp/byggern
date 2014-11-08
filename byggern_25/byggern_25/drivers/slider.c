@@ -47,9 +47,9 @@ void SLIDER_calibrate()
 	printf("Calibrating sliders. Move sliders to all endpoints, then push calib button\n");
 	oled_clear();
 	
-	Slider_calib_values.lMax = ADC_read(SLIDER_LEFT_CH);
+	Slider_calib_values.lMax = 127; /* Half of max adc value */
 	Slider_calib_values.lMin = Slider_calib_values.lMax;
-	Slider_calib_values.rMax = ADC_read(SLIDER_RIGHT_CH);
+	Slider_calib_values.rMax = 127; /* Half of max adc value */
 	Slider_calib_values.rMin = Slider_calib_values.rMax;
 	
 	// Print text to OLED
@@ -150,26 +150,26 @@ SLIDER_pos_t SLIDER_getPosition()
 	int16_t V_r = ADC_read(SLIDER_RIGHT_CH);
 	//printf("Vx = %d Vy = %d",V_l,V_r);
 	
-	pos.left = (100*(V_l-Slider_calib_values.lMin))/(Slider_calib_values.lMax-Slider_calib_values.lMin);
-	pos.right = (100*(V_r-Slider_calib_values.rMin))/(Slider_calib_values.rMax-Slider_calib_values.rMin);
+	pos.left = (SLIDER_MAX*(V_l-Slider_calib_values.lMin))/(Slider_calib_values.lMax-Slider_calib_values.lMin);
+	pos.right = (SLIDER_MAX*(V_r-Slider_calib_values.rMin))/(Slider_calib_values.rMax-Slider_calib_values.rMin);
 	
 	/* Within calibrated values */
-	if(pos.left < 0)
+	if(pos.left < SLIDER_MIN)
 	{
-		pos.left = 0;
+		pos.left = SLIDER_MIN;
 	}
-	else if(pos.left > 100)
+	else if(pos.left > SLIDER_MAX)
 	{
-		pos.left = 100;
+		pos.left = SLIDER_MAX;
 	}
 	
-	if(pos.right < 0)
+	if(pos.right < SLIDER_MIN)
 	{
-		pos.right = 0;
+		pos.right = SLIDER_MIN;
 	}
-	else if(pos.right > 100)
+	else if(pos.right > SLIDER_MAX)
 	{
-		pos.right = 100;
+		pos.right = SLIDER_MAX;
 	}
 	
 	return pos;

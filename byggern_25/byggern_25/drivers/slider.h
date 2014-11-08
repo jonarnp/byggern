@@ -30,6 +30,10 @@
 #define SLIDER_right_button_Pin PINB1
 #define SLIDER_right_button_DDR DDRB
 
+/* Max and min slider values */
+#define SLIDER_MAX 100
+#define SLIDER_MIN 0
+
 /* Position [0,100] */
 typedef struct SLIDER_pos {
 	int16_t left;

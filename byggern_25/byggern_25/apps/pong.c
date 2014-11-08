@@ -33,6 +33,7 @@ uint8_t score_p1, score_p2;
 uint16_t bounces;
 uint8_t iterations;
 
+void pong_init();
 void reset_ball();
 void pong_update();
 void update_score(uint8_t player);

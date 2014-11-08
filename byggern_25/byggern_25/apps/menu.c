@@ -6,6 +6,7 @@
  */ 
 
 #include "menu.h"
+#include "highscore.h"
 #include "../drivers/oled.h"
 #include <avr/pgmspace.h>
 #include "../drivers/joy.h"
@@ -159,31 +160,28 @@ void menu_update_state()
 			break;
 		
 		case settings_s:
-			if (menu_select.select) 
+			// Check for over/under-roll
+			if (selected_line < back) selected_line = calibrate_sliders;
+			if (selected_line > calibrate_sliders) selected_line = back;
+					
+			if (menu_select.select)
 			{
-				// Check for over/under-roll
-				if (selected_line < back) selected_line = calibrate_sliders;
-				if (selected_line > calibrate_sliders) selected_line = back;
-						
-				if (menu_select.select)
+				switch (selected_line)
 				{
-					switch (selected_line)
-					{
-						case back:
-							current_state = main_s;
-							selected_line = 0;
-							break;
-						case calibrate_joy:
-							//current_state = calibrate_joy;
-							selected_line = 0;
-							JOY_calibrate(); //should not be here
-							break;
-						case calibrate_sliders:
-							//current_state = calibrate_sliders;
-							selected_line = 0;
-							SLIDER_calibrate(); //should not be here
-							break;
-					}
+					case back:
+						current_state = main_s;
+						selected_line = 0;
+						break;
+					case calibrate_joy:
+						//current_state = calibrate_joy;
+						selected_line = 0;
+						JOY_calibrate(); //should not be here
+						break;
+					case calibrate_sliders:
+						//current_state = calibrate_sliders;
+						selected_line = 0;
+						SLIDER_calibrate(); //should not be here
+						break;
 				}
 			}
 			break;
@@ -279,10 +277,11 @@ void menu_update_screen()
 			break;
 		
 		case highscore_s:
-			oled_print("Gruppe 25 :)");
+			//oled_print("Gruppe 25 :)");
+			display_highscore_list();
 			break;
 		case pong_s:
-			oled_print("Pong it up!");
+			//oled_print("Pong it up!");
 			
 			break;
 	}

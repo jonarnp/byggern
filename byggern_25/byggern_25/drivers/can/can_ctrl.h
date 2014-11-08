@@ -11,12 +11,12 @@
 
 #include <avr/io.h>
 
-#define RXF0 0x100
-#define RXF1 0x200
-#define RXF2 0x300
-#define RXF3 0x425
-#define RXF4 0x500
-#define RXF5 0x600
+#define RXF0 0x010
+#define RXF1 0x011
+#define RXF2 0x012
+#define RXF3 0x013
+#define RXF4 0x014
+#define RXF5 0x015
 
 //Int pin
 #define MCP_Int_Port PIND
