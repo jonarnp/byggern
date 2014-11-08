@@ -10,6 +10,7 @@
 #define MENU_H_
 
 #define SELECT_DELAY 10
+#define SELECT_BUTTON_DELAY 20
 #define MAIN_MENU_LENGTH 4
 #define SETTINGS_MENU_LENGTH 3
 

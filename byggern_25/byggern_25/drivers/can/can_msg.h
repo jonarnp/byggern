@@ -35,6 +35,13 @@ empty command
 
 HIGHSCORE_REQUEST
 empty command
+
+WRITE_HIGHSCORE
+data[0] = First char in name
+data[1] = Second char in name
+data[2] = Third char in name
+data[3] = MSB of highscore, sent as uint16
+data[4] = LSB of highscore, sent as uint16
 */
 
 /*

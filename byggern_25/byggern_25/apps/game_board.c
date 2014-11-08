@@ -14,7 +14,6 @@
 #include "../drivers/can/can_msg.h"
 #include "../drivers/slider.h"
 
-void send_joy_pos_init();
 uint8_t send_start_game();
 void transmit_joy_pos();
 
@@ -24,9 +23,6 @@ void play_game_board()
 	bool finished = false;
 	uint16_t score = 0;
 	can_rx_message_t rx_msg;
-	
-	send_joy_pos_init();
-	_delay_ms(100);
 	
 	//receive_highscore_list();
 
@@ -45,6 +41,7 @@ void play_game_board()
 			{
 				finished = rx_msg.data[0];
 				score = (rx_msg.data[1] << 8) + rx_msg.data[2];
+				//LIVE SCORE PÅ OLED
 			}
 			else
 			{

@@ -60,6 +60,7 @@ int main(void)
 			case highscore_s:
 				//printf("byggern_25.c: highscore_s\n");
 				//receive_highscore_list();
+				//display_highscore_list();
 				menu_update();
 				break;
 				
@@ -87,6 +88,7 @@ void setup()
 	oled_clear();
 	SLIDER_init();
 	JOY_init();
+	send_joy_pos_init();
 	_delay_ms(100);
 	
 	JOY_calibrate();

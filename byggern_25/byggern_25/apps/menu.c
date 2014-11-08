@@ -92,7 +92,7 @@ void menu_update()
 	//printf("Joy_button is : %d\n",JOY_button());
 	if (JOY_button())
 	{
-		if (++menu_select.select_iterations>SELECT_DELAY)
+		if (++menu_select.select_iterations>SELECT_BUTTON_DELAY)
 		{
 			menu_select.select_iterations = 0;
 			menu_select.select = true;
@@ -278,6 +278,7 @@ void menu_update_screen()
 		
 		case highscore_s:
 			//oled_print("Gruppe 25 :)");
+			receive_highscore_list();
 			display_highscore_list();
 			break;
 		case pong_s:

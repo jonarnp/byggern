@@ -12,6 +12,7 @@
 #include "../format.h"
 #include "../drivers/can/can_msg.h"
 #include "../drivers/oled.h"
+#include "../drivers/joy.h"
 
 uint8_t send_highscore_request();
 
@@ -23,26 +24,30 @@ uint8_t receive_highscore_list()
 {
 	can_rx_message_t rx_msg;
 	
+	//printf("Sending highscore request\n");
 	//Successfully sending a request to Node 2 for highscores
 	if (send_highscore_request())
 	{
+		//printf("Successfully sendt highscore request\n");
 		uint8_t i;
 		for(i = 0; i < HIGHSCORE_LENGTH; i++)
 		{
 			while (!read_can_message(&rx_msg)); //loop until highscore message received. possible deadlock..
 			
 			if (rx_msg.id == HIGHSCORE)
-			{
+			{				
 				highscore_list[i].name[0] = rx_msg.data[0];
 				highscore_list[i].name[1] = rx_msg.data[1];
 				highscore_list[i].name[2] = rx_msg.data[2];
 				
 				highscore_list[i].score = (rx_msg.data[3] << 8) + rx_msg.data[4];
+				//printf("Highscore received %d, %d, %d, %d\n", highscore_list[i].name[0], highscore_list[i].name[1], highscore_list[i].name[2], highscore_list[i].score );
 			}
 		}
 	}
 	else 
 	{
+		printf("Failed to send highscore request\n");
 		return 0;
 	}
 	return 1;
@@ -54,7 +59,9 @@ uint8_t send_highscore_request()
 	message.id = HIGHSCORE_REQUEST;
 	message.length = 0;
 	
-	return transmit_can_message(message);
+	uint8_t ret = transmit_can_message(message);
+	//printf("Sending highscore request: %d\n", ret);
+	return ret;
 }
 
 void display_highscore_list()
@@ -101,7 +108,37 @@ bool add_to_highscore(uint16_t score)
 
 highscore_element_t enter_initials(uint16_t score)
 {
+	// Print text to OLED
+	oled_clear();
+	oled_goto_line(0);
+	oled_goto_column(0);
+	oled_print_p(PSTR("Your score "));
+	oled_print(uint16_to_str(score));
 	
+	oled_goto_line(2);
+	oled_goto_column(0);
+	oled_print_p(PSTR("Enter you initials"));
+	
+	//NOT FINISHED
+	while (!JOY_button())
+	{
+		if (JOY_getDirection() == UP)
+		{
+			
+		}
+		else if (JOY_getDirection() == DOWN)
+		{
+			
+		}
+		else if (JOY_getDirection() == LEFT)
+		{
+			
+		}
+		else if (JOY_getDirection() == RIGHT)
+		{
+			
+		}
+	}
 }
 
 void send_new_highscore(highscore_element_t entry)
@@ -111,9 +148,9 @@ void send_new_highscore(highscore_element_t entry)
 	message.data[0] = entry.name[0];
 	message.data[1] = entry.name[1];
 	message.data[2] = entry.name[2];
-	message.data[3] = entry.score;
-	message.data[4] = entry.score;
-	message.length = 0;
+	message.data[3] = (uint8_t)((entry.score & 0xFF00)>>8);
+	message.data[4] = (uint8_t)(entry.score & 0x00FF);
+	message.length = 5;
 	
 	transmit_can_message(message);
 }

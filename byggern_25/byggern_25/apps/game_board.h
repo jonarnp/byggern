@@ -9,6 +9,8 @@
 #ifndef GAME_BOARD_H_
 #define GAME_BOARD_H_
 
+void send_joy_pos_init();
+
 void play_game_board();
 
 #endif /* GAME_BOARD_H_ */
