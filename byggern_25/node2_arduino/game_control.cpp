@@ -85,7 +85,9 @@ void Game_control::set_servo(int8_t position)
 	{
 		pwm_value = MAX_SERVO_PWM;
 	}
-	
+	Serial.print("Servo:");
+	Serial.print(pwm_value);
+	Serial.print("\n");
 	Game_servo.writeMicroseconds(pwm_value);
 }
 

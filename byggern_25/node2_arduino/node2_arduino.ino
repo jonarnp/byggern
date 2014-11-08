@@ -59,12 +59,12 @@ void loop()
 		    desired_servo_pos = (message.data[0]<<8)+message.data[1];
 		    desired_motor_speed = (message.data[2]<<8)+message.data[3];
 			bool push = message.data[4];
-			//Serial.print("Recieved joystick data: \n x: ");
-			//Serial.print(x);
+			//Serial.print("Recieved joystick data: \n desired_motor_speed: ");
+			//Serial.print(desired_motor_speed);
 			//Serial.print("\n");
-			//Serial.print("\n y: ");
-			//Serial.print(y);
-			//Serial.print("\n Parsed to int8_t : ");
+			//Serial.print("\n desired servo pos: ");
+			//Serial.print(desired_servo_pos);
+			//Serial.print("\n");
 			
 			int8_t servo_pos;
 			gameBoard.set_motor_speed(desired_motor_speed);
