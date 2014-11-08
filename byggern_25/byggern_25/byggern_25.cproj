@@ -120,6 +120,12 @@
     <Compile Include="apps\menu.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="apps\music.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="apps\music.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="apps\pong.c">
       <SubType>compile</SubType>
     </Compile>

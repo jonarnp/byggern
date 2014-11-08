@@ -89,6 +89,7 @@ void setup()
 	SLIDER_init();
 	JOY_init();
 	send_joy_pos_init();
+	music_init();
 	_delay_ms(100);
 	
 	JOY_calibrate();

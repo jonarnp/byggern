@@ -13,6 +13,7 @@
 #include "../drivers/slider.h"
 #include <stdbool.h>
 #include "../apps/pong.h"
+#include "../apps/music.h"
 
 typedef struct menu_action {
 	uint8_t up_iterations;
@@ -32,11 +33,12 @@ const unsigned char PROGMEM main_menu_str[5][20] = {
 	{"  -Pong"}
 };
 
-const unsigned char PROGMEM settings_menu_str[4][20] = {
+const unsigned char PROGMEM settings_menu_str[5][20] = {
 	{"Settings"},
 	{"  -Back"},
 	{"  -Joystick"},
-	{"  -Sliders"}
+	{"  -Sliders"},
+	{"  -Toggle music "}
 };
 
 // States
@@ -161,8 +163,8 @@ void menu_update_state()
 		
 		case settings_s:
 			// Check for over/under-roll
-			if (selected_line < back) selected_line = calibrate_sliders;
-			if (selected_line > calibrate_sliders) selected_line = back;
+			if (selected_line < back) selected_line = switch_music;
+			if (selected_line > switch_music) selected_line = back;
 					
 			if (menu_select.select)
 			{
@@ -181,6 +183,16 @@ void menu_update_state()
 						//current_state = calibrate_sliders;
 						selected_line = 0;
 						SLIDER_calibrate(); //should not be here
+						break;
+					case switch_music:
+						if (music_toggle())
+						{
+							printf("Succsess transmitting music_on_off\n");
+						}
+						else
+						{
+							printf("Failed transmitting music_on_off\n");
+						}
 						break;
 				}
 			}
@@ -271,6 +283,22 @@ void menu_update_screen()
 			oled_goto_line(3);
 			oled_print_p(settings_menu_str[3]);
 			if (selected_line == calibrate_sliders)
+			{
+				oled_print(" *");
+			}
+			
+			oled_goto_column(0);
+			oled_goto_line(4);
+			oled_print_p(settings_menu_str[4]);
+			if (music_enabled())
+			{
+				oled_print("OFF");
+			}
+			else
+			{
+				oled_print("ON");
+			}
+			if (selected_line == switch_music)
 			{
 				oled_print(" *");
 			}

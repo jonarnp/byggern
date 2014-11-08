@@ -12,7 +12,7 @@
 #define SELECT_DELAY 10
 #define SELECT_BUTTON_DELAY 20
 #define MAIN_MENU_LENGTH 4
-#define SETTINGS_MENU_LENGTH 3
+#define SETTINGS_MENU_LENGTH 4
 
 typedef enum state{
 	main_s,
@@ -32,7 +32,8 @@ typedef enum main_menu{
 typedef enum settings_menu{
 	back,
 	calibrate_joy,
-	calibrate_sliders
+	calibrate_sliders,
+	switch_music
 } settings_menu_t;
 
 void menu_init();

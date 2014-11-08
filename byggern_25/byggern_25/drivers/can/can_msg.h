@@ -42,6 +42,12 @@ data[1] = Second char in name
 data[2] = Third char in name
 data[3] = MSB of highscore, sent as uint16
 data[4] = LSB of highscore, sent as uint16
+
+SPOTIFY_COMMAND
+data[0] = Spotify command:
+			1 - Toggle music
+			2 - Next song
+			3 - Prev song
 */
 
 /*
