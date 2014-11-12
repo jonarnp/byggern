@@ -21,7 +21,7 @@ void Highscore::init()
 void Highscore::write_highscore(char name[NAME_LENGTH], uint16_t score)
 {
 	int8_t new_place = HIGHSCORE_LENGTH - 1;
-	
+
 	while (new_place >= 0)
 	{
 		if (score <= highscore_list[new_place].score)
@@ -90,9 +90,9 @@ void Highscore::send_highscore()
 {
 	for (uint8_t i = 0 ; i < HIGHSCORE_LENGTH ; i++)
 	{
-		Serial.print("Sending highscore ");
-		Serial.print(i);
-		Serial.print("\n");
+		//Serial.print("Sending highscore ");
+		//Serial.print(i);
+		//Serial.print("\n");
 		CanMessage message;
 		message.id = HIGHSCORE;
 		for (uint8_t j = 0 ; j < NAME_LENGTH ; j++)
@@ -102,13 +102,17 @@ void Highscore::send_highscore()
 		message.data[NAME_LENGTH] = (uint8_t)(highscore_list[i].score >> 8);
 		message.data[NAME_LENGTH + 1] = (uint8_t)( highscore_list[i].score & 0x00FF);
 		message.len = NAME_LENGTH + 2;
-		message.send();
 		
 		while (!CAN.ready());
-		Serial.print("Finished sending highscore ");
-		Serial.print(i);
-		Serial.print("\n");
+		message.send();
+		delay(5);
+		//message.print(HEX);
+		//Serial.print("Finished sending highscore ");
+		//Serial.print(i);
+		//Serial.print("\n");
 	}
+	
+	Serial1.print("Score sendt\n");
 }
 
 void write_to_EEPROM()

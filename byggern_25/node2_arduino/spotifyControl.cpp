@@ -11,14 +11,17 @@
 void SpotifyControl::next_song()
 {
 	Serial.println("next|");
+	Serial1.println("next|");
 }
 	
 void SpotifyControl::prev_song()
 {
 	Serial.println("prev|");
+	Serial1.println("prev|");
 }
 	
 void SpotifyControl::play_pause()
 {
 	Serial.println("pause|");
+	Serial1.println("pause|");
 }

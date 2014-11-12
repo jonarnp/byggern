@@ -38,7 +38,19 @@ empty command
 Frame for adding an entry to the highscore list. The frame setup is the same as the HIGHSCORE frame.
 */
 #define SPOTIFY_COMMAND 0x140
+/*
+SPOTIFY_COMMAND
+data[0] = Spotify command:
+			1 - Toggle music
+			2 - Next song
+			3 - Prev song
+*/
 
+#define RESET_HIGHSCORE 0x150
+/*
+RESET_HIGHSCORE
+empty command. Resets the highscore list
+*/
 
 //CAN transmit identifiers
 

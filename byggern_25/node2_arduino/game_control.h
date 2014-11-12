@@ -9,24 +9,26 @@
 	#include "WProgram.h"
 #endif
 
+//Servo definitions
 #define SERVO_PIN 12
 #define MIN_SERVO_PWM 900
 #define MAX_SERVO_PWM 2100
 
-#define IR_PIN 0
-#define TS 10
-#define TF 100
-#define IR_GOAL 100
-#define IR_NOGOAL 200
+//IR definitions
+#define IR_PIN 0		//IR analog input
+#define TS 10			//IR filter time step
+#define TF 100			//IR filter time constant
+#define IR_GOAL 100		//IR Goal threshold
+#define IR_NOGOAL 160	//IR NoGoal threshold
 
 //DAC
-#define DAC_ADDRESS 0b0101000
-#define DAC_MIN 70		// Motor starts to run at about 1.5 V
+#define DAC_ADDRESS 0b0101000 //DAC I2C address
+#define DAC_MIN 52		// Motor starts to run at about 1.5 V
 
-//Commands
-#define DAC_CH1_COMM 0x00
+//I2C Commands
+#define DAC_CH1_COMM 0x00 //DAC CH1 write command
 
-//Motorbox
+//Motorbox pins
 #define ENCODER_DDR DDRK
 #define ENCODER_PORT PINK
 
@@ -50,9 +52,9 @@
 #define DIR_PORT PORTF
 #define DIR_PIN PINF3
 
-//Motor controller
-#define P_GAIN 5 //Proportional gain in 0.1 basis
-#define FF_DIVIDER 3
+//Motor speed controller
+#define P_GAIN 12 //Proportional gain in 0.1 basis
+#define FF_DIVIDER 8 //Reference feed forward divider
 
 //Solenoid
 #define SOL_DDR DDRF
@@ -66,6 +68,9 @@ class Game_control
 
 
  public:
+	/*
+	Initialize the game control object
+	*/
 	void init();
 	
 	/*
@@ -73,15 +78,30 @@ class Game_control
 	*/
 	void set_servo(int8_t position);
 	
+	/*
+	Set desired motor speed. speed is in the inerval [-100,100]
+	*/
 	void set_motor_speed(int8_t speed);
 	
+	/*
+	Activate solenoid.
+	*/
 	void push_solenoid();
 	
+	/*
+	Get the current score.
+	*/
 	uint16_t get_score();
 	
+	/*
+	Reset the score.
+	*/
 	void reset_score();
 	
-	bool check_for_goal();
+	/*
+	Transmit the current game status to node 1.
+	*/
+	void send_game_status();
 };
 
 

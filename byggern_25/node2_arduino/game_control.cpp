@@ -1,22 +1,23 @@
-// 
-// 
-// 
-
 #include "game_control.h"
 #include <Servo.h>
 #include <Wire.h>
 #include "bit_op.h"
+#include "CAN.h"
+#include "Can_ID.h"
 
+//Servo
 Servo Game_servo;
 
 //Variables for the IR filter
-int32_t IR_filt;
-int32_t alfa;
+int32_t IR_filt;	//Output of the IR filter
+int32_t alfa;		//Filter coefficient
 
+//Game variables
 uint16_t score;
 int16_t speed_ref = 0;
+
+uint8_t sol_iteration = 0;	//Number of iterations the solenoid has been active, in 10ms basis
 bool initialized = false;
-uint8_t sol_iteration = 0;
 
 //Flag for routines run in ISR
 bool tenMSroutine = false;
@@ -24,7 +25,9 @@ bool oneSroutine = false;
 
 void set_DAC(uint8_t data);
 unsigned char Bit_Reverse( unsigned char x );
+int16_t read_encoder();
 void reset_encoder();
+bool check_for_goal();
 
 void Game_control::init()
 {
@@ -75,6 +78,15 @@ Set servo position. position is in the interval [-100,100].
 */
 void Game_control::set_servo(int8_t position)
 {
+	if (position>100)
+	{
+		position = 100;
+	}
+	else if (position<-100)
+	{
+		position = -100;
+	}
+	
 	int16_t pwm_value = MIN_SERVO_PWM + (position+100)*6; //Calculate PWM value. Results in span of 1200us.
 	
 	if (pwm_value < MIN_SERVO_PWM)
@@ -85,9 +97,7 @@ void Game_control::set_servo(int8_t position)
 	{
 		pwm_value = MAX_SERVO_PWM;
 	}
-	//Serial.print("Servo:");
-	//Serial.print(pwm_value);
-	//Serial.print("\n");
+	
 	Game_servo.writeMicroseconds(pwm_value);
 }
 
@@ -107,7 +117,7 @@ void Game_control::set_motor_speed(int8_t speed)
 	else
 	
 	//Calculate internal speed reference.
-	speed_ref = (3*speed)/2;
+	speed_ref = -speed;//(3*speed)/2;
 }
 
 /*
@@ -134,7 +144,149 @@ void Game_control::reset_score()
 {
 	score = 0;
 }
+
+/*
+Transmit the current game status to node 1.
+*/
+void Game_control::send_game_status()
+{
+	//Serial.print("Sending game status\n");
+	CanMessage message;
+	message.id = GAME_STATUS;
+	message.data[0] = (uint8_t)check_for_goal();
+	message.data[1] = (uint8_t)(score >> 8);
+	message.data[2] = (uint8_t)(score & 0xFF);
+	message.len = 3;
+	while (!CAN.ready());
+	message.send();
+	//message.print(HEX);
+}
 	
+/*
+Read the IR value, and iterate the filter.
+*/
+void runIRfilter()
+{
+	int16_t IR_VAL = analogRead(IR_PIN);
+	IR_filt = ((alfa*IR_filt) + ((100-alfa)*IR_VAL))/100;
+	//Serial.print(IR_filt);
+	//Serial.print("\n");
+}
+/*
+Check of the solenoid shoud be reset.
+*/
+void solenoidReset()
+{
+	if (!get_bit(SOL_PORT,SOL_PIN))
+	{
+		//Pos width over?
+		if(++sol_iteration > SOL_POS_WIDTH) set_bit(SOL_PORT,SOL_PIN);
+		//Serial.print(sol_iteration);
+		//Serial.print("\n");
+	}
+}
+/*
+Speed controller
+*/
+void runController()
+{
+	if (initialized)
+	{
+		static int16_t prev_encoder_val = 0;
+		
+		//Read encoder to get speed
+		int16_t encoder_val = read_encoder();
+		int16_t control_signal;
+		
+		uint8_t DAC8;
+		if(speed_ref == 0) //Set motor control to zero
+		{
+			DAC8 = 0;
+			control_signal = 0;
+		}
+		else //Run controller
+		{
+			//Compute control error
+			//Serial.print("Ref: ");
+			//Serial.println(speed_ref);
+			int16_t e = (int16_t)speed_ref - (encoder_val-prev_encoder_val);
+			//Serial.print("e: ");
+			//Serial.println(e);
+			//Compute control signal
+			control_signal = (P_GAIN*e)/10+speed_ref/FF_DIVIDER;
+			
+			//Serial.print("FF: ");
+			//Serial.println(speed_ref/FF_DIVIDER);
+			//Serial.print("FB: ");
+			//Serial.println((P_GAIN*e)/10);
+			//Compute DAC value
+			int16_t DAC16 = DAC_MIN + abs(control_signal);
+			if (DAC16>0xFF)
+			{
+				DAC8 = 0xFF;
+			}
+			else
+			{
+				DAC8 = (uint8_t)DAC16;
+			}
+		}
+		
+		//Set DAC and motor direction
+		set_DAC(DAC8);
+		if (control_signal>0)
+		{
+			clear_bit(DIR_PORT,DIR_PIN);
+		}
+		else
+		{
+			set_bit(DIR_PORT,DIR_PIN);
+		}
+		
+		//Save encoder value for next iteration
+		prev_encoder_val = encoder_val;
+	}
+}
+ISR(TIMER3_OVF_vect)
+{
+	sei(); //Enable nested interrupts
+	
+	//Iteration variables
+	static uint8_t j = 0;
+	static uint16_t k = 0;
+	
+	if ((++j > 4) & !tenMSroutine) //10ms routine
+	{
+		tenMSroutine = true; //Make sure routine is not called until it is finished
+		j=0;
+		
+		runIRfilter(); //Run IR filter routine
+		solenoidReset(); //Check if solenoid should be reset
+		runController(); //Motor speed controller
+		
+		tenMSroutine = false; //Make routine available
+	}
+	if ((++k > 490) & !oneSroutine) //1s routine
+	{
+		oneSroutine = true; //Make sure routine is not called until it is finished
+		k=0;
+		
+		if (!check_for_goal())
+		{
+			score++;
+		}
+		
+		oneSroutine = false; //Make routine available
+	}
+}
+
+unsigned char Bit_Reverse( unsigned char x )
+{
+	x = ((x >> 1) & 0x55) | ((x << 1) & 0xaa);
+	x = ((x >> 2) & 0x33) | ((x << 2) & 0xcc);
+	x = ((x >> 4) & 0x0f) | ((x << 4) & 0xf0);
+	return x;
+}
+
 /*
 Check for a goal.
 */
@@ -211,123 +363,6 @@ int16_t read_encoder()
 	return encoder_value;
 }
 
-/*
-Read the IR value, and iterate the filter.
-*/
-void runIRfilter()
-{
-	int16_t IR_VAL = analogRead(IR_PIN);
-	IR_filt = ((alfa*IR_filt) + ((100-alfa)*IR_VAL))/100;
-	//Serial.print(IR_filt);
-	//Serial.print("\n");
-}
-/*
-Check of the solenoid shoud be reset.
-*/
-void solenoidReset()
-{
-	if (!get_bit(SOL_PORT,SOL_PIN))
-	{
-		//Pos width over?
-		if(++sol_iteration > SOL_POS_WIDTH) set_bit(SOL_PORT,SOL_PIN);
-		//Serial.print(sol_iteration);
-		//Serial.print("\n");
-	}
-}
-/*
-Speed controller
-*/
-void runController()
-{
-	if (initialized)
-	{
-		static int16_t prev_encoder_val = 0;
-		
-		//Read encoder to get speed
-		int16_t encoder_val = read_encoder();
-		int16_t control_signal;
-		
-		uint8_t DAC8;
-		if(speed_ref == 0) //Set motor control to zero
-		{
-			DAC8 = 0;
-			control_signal = 0;
-		}
-		else //Run controller
-		{
-			//Compute control error
-			int16_t e = (int16_t)speed_ref - (encoder_val-prev_encoder_val);
-
-			//Compute control signal
-			control_signal = (P_GAIN*e)/10+speed_ref/FF_DIVIDER;
-			
-			//Compute DAC value
-			int16_t DAC16 = DAC_MIN + abs(control_signal);
-			if (DAC16>0xFF)
-			{
-				DAC8 = 0xFF;
-			}
-			else
-			{
-				DAC8 = (uint8_t)DAC16;
-			}
-		}
-		
-		//Set DAC and motor direction
-		set_DAC(DAC8);
-		if (control_signal>0)
-		{
-			clear_bit(DIR_PORT,DIR_PIN);
-		}
-		else
-		{
-			set_bit(DIR_PORT,DIR_PIN);
-		}
-		
-		//Save encoder value for next iteration
-		prev_encoder_val = encoder_val;
-	}
-}
-ISR(TIMER3_OVF_vect)
-{
-	sei(); //Enable nested interrupts
-	
-	//Iteration variables
-	static uint8_t j = 0;
-	static uint16_t k = 0;
-	
-	if ((++j > 4) & !tenMSroutine) //10ms routine
-	{
-		tenMSroutine = true; //Make sure routine is not called until it is finished
-		j=0;
-		
-		runIRfilter(); //Run IR filter routine
-		solenoidReset(); //Check if solenoid should be reset
-		runController(); //Motor speed controller
-		
-		tenMSroutine = false; //Make routine available
-	}
-	if ((++k > 490) & !oneSroutine) //1s routine
-	{
-		oneSroutine = true; //Make sure routine is not called until it is finished
-		k=0;
-		
-		if (!check_for_goal())
-		{
-			score++;
-		}
-		
-		oneSroutine = false; //Make routine available
-	}
-}
-
-unsigned char Bit_Reverse( unsigned char x )
-{
-	x = ((x >> 1) & 0x55) | ((x << 1) & 0xaa);
-	x = ((x >> 2) & 0x33) | ((x << 2) & 0xcc);
-	x = ((x >> 4) & 0x0f) | ((x << 4) & 0xf0);
-	return x;
-}
 void reset_encoder()
 {
 	//Reset encoder

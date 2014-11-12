@@ -68,6 +68,9 @@ void CanMessage::setData (const char *data, uint8_t len)
 
 void CanMessage::send ()
 {
+	//Serial1.print("Can: ID: ");
+	//Serial1.print(id);
+	//Serial1.print("\n");
     mcp2515_set_msg (0, id, data, len, extended);
     mcp2515_request_tx (0);
 }
