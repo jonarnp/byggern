@@ -21,6 +21,7 @@ CAN send identifiers
 #define HIGHSCORE_REQUEST 0x120
 #define WRITE_HIGHSCORE 0x130
 #define SPOTIFY_COMMAND 0x140
+#define RESET_HIGHSCORE 0x150
 
 /*
 GAME_CONTROLS
@@ -48,6 +49,9 @@ data[0] = Spotify command:
 			1 - Toggle music
 			2 - Next song
 			3 - Prev song
+			
+HIGHSCORE_REQUEST
+empty command. resets highscore list
 */
 
 /*

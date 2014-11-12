@@ -5,17 +5,22 @@
  *  Author: boerikse
  */ 
 
-#include "music.h"
 #include <avr/io.h>
 #include <stdio.h>
+#include "music.h"
 #include "../drivers/can/can_msg.h"
 
+uint8_t music_next_song();
+uint8_t music_prev_song();
+
 bool music_on;
+music_t music_state;
 
 void music_init()
 {
 	can_init();
 	music_on = false;
+	music_state = MENU_MUSIC;
 }
 
 uint8_t music_enabled()
@@ -32,6 +37,16 @@ uint8_t music_toggle()
 	music_on = !music_on;
 	
 	return transmit_can_message(message);
+}
+
+void music_change_state(music_t mode)
+{
+	if (music_on && mode != music_state)
+	{
+		music_state = mode;
+		music_next_song();
+	} 
+	printf("music state: %d\n", music_state);
 }
 
 uint8_t music_next_song()

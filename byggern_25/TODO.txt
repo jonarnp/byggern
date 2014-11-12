@@ -1,1 +1,0 @@
-- Pong : Ballen går "gjennom" sliders når den treffer i øvre del av spillet. Blir regna som at man bommer på ballen, selv om man treffer den. 08.11 - BOE

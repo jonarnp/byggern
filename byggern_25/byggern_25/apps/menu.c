@@ -5,15 +5,17 @@
  *  Author: boerikse
  */ 
 
-#include "menu.h"
-#include "highscore.h"
-#include "../drivers/oled.h"
+#include <stdbool.h>
 #include <avr/pgmspace.h>
+#include "menu.h"
+#include "game_board.h"
+#include "highscore.h"
+#include "pong.h"
+#include "music.h"
+#include "../drivers/oled.h"
 #include "../drivers/joy.h"
 #include "../drivers/slider.h"
-#include <stdbool.h>
-#include "../apps/pong.h"
-#include "../apps/music.h"
+
 
 typedef struct menu_action {
 	uint8_t up_iterations;
@@ -33,12 +35,13 @@ const unsigned char PROGMEM main_menu_str[5][20] = {
 	{"  -Pong"}
 };
 
-const unsigned char PROGMEM settings_menu_str[5][20] = {
+const unsigned char PROGMEM settings_menu_str[6][20] = {
 	{"Settings"},
-	{"  -Back"},
 	{"  -Joystick"},
 	{"  -Sliders"},
-	{"  -Toggle music "}
+	{"  -Toggle music "},
+	{"  -Reset highscore"},
+	{"  -Back"}
 };
 
 // States
@@ -53,6 +56,9 @@ void menu_update_screen();
 void menu_init()
 {
 	current_state = main_s;
+	
+	music_change_state(MENU_MUSIC);
+	
 	oled_clear();
 	
 	// Initialize menu action
@@ -163,17 +169,13 @@ void menu_update_state()
 		
 		case settings_s:
 			// Check for over/under-roll
-			if (selected_line < back) selected_line = switch_music;
-			if (selected_line > switch_music) selected_line = back;
+			if (selected_line < calibrate_joy) selected_line = back;
+			if (selected_line > back) selected_line = calibrate_joy;
 					
 			if (menu_select.select)
 			{
 				switch (selected_line)
 				{
-					case back:
-						current_state = main_s;
-						selected_line = 0;
-						break;
 					case calibrate_joy:
 						//current_state = calibrate_joy;
 						selected_line = 0;
@@ -185,14 +187,16 @@ void menu_update_state()
 						SLIDER_calibrate(); //should not be here
 						break;
 					case switch_music:
-						if (music_toggle())
-						{
-							printf("Succsess transmitting music_on_off\n");
-						}
-						else
-						{
-							printf("Failed transmitting music_on_off\n");
-						}
+						music_toggle();
+						break;
+					case reset_highscore:
+						highscore_reset();
+						current_state = main_s;
+						selected_line = 0;
+						break;
+					case back:
+						current_state = main_s;
+						selected_line = 0;
 						break;
 				}
 			}
@@ -220,6 +224,7 @@ void menu_update_screen()
 	switch(current_state)
 	{
 		case main_s:
+			music_change_state(MENU_MUSIC);
 		
 			oled_print_p(main_menu_str[0]);
 			
@@ -257,16 +262,22 @@ void menu_update_screen()
 			break;
 		
 		case play_s:
-			oled_print("PLAAAAAAAAY");
+			//oled_print("PLAAAAAAAAY");
+			music_change_state(PLAY_MUSIC);
+			play_game_board();
+			
+			menu_init(); //finished playing
 			break;
 		
 		case settings_s:
+			music_change_state(MENU_MUSIC);
+		
 			oled_print_p(settings_menu_str[0]);
 			
 			oled_goto_column(0);
 			oled_goto_line(1);
 			oled_print_p(settings_menu_str[1]);
-			if (selected_line == back)
+			if (selected_line == calibrate_joy)
 			{
 				oled_print(" *");
 			}
@@ -274,7 +285,7 @@ void menu_update_screen()
 			oled_goto_column(0);
 			oled_goto_line(2);
 			oled_print_p(settings_menu_str[2]);
-			if (selected_line == calibrate_joy)
+			if (selected_line == calibrate_sliders)
 			{
 				oled_print(" *");
 			}
@@ -282,7 +293,15 @@ void menu_update_screen()
 			oled_goto_column(0);
 			oled_goto_line(3);
 			oled_print_p(settings_menu_str[3]);
-			if (selected_line == calibrate_sliders)
+			if (music_enabled())
+			{
+				oled_print("ON");
+			}
+			else
+			{
+				oled_print("OFF");
+			}
+			if (selected_line == switch_music)
 			{
 				oled_print(" *");
 			}
@@ -290,28 +309,37 @@ void menu_update_screen()
 			oled_goto_column(0);
 			oled_goto_line(4);
 			oled_print_p(settings_menu_str[4]);
-			if (music_enabled())
+			if (selected_line == reset_highscore)
 			{
-				oled_print("OFF");
+				oled_print(" *");
 			}
-			else
-			{
-				oled_print("ON");
-			}
-			if (selected_line == switch_music)
+			
+			oled_goto_column(0);
+			oled_goto_line(5);
+			oled_print_p(settings_menu_str[5]);
+			if (selected_line == back)
 			{
 				oled_print(" *");
 			}
 			break;
 		
 		case highscore_s:
+			music_change_state(MENU_MUSIC);
+			
 			//oled_print("Gruppe 25 :)");
 			receive_highscore_list();
-			display_highscore_list();
+			display_highscore_list(0);
+			
+			oled_goto_column(0);
+			oled_goto_line(7);
+			oled_print_p(PSTR("-Back *"));
 			break;
 		case pong_s:
 			//oled_print("Pong it up!");
+			music_change_state(PLAY_MUSIC);
+			play_pong();
 			
+			menu_init(); //finished playing
 			break;
 	}
 	//printf("End of update screen, goDown: %d, goUp: %d, select: %d\n",menu_select.goDown,menu_select.goUp,menu_select.select);

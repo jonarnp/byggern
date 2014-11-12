@@ -42,39 +42,38 @@ int main(void)
 
 	while(1)
 	{
-		system_state = get_current_state();
-		
-		switch(system_state)
-		{
-			case main_s:
-				//printf("byggern_25.c: main_s\n");
-				menu_update();
-				break;
-				
-			case play_s:
-				//printf("byggern_25.c: play_s\n");
-				play_game_board();
-				menu_init(); //when finished playing
-				break;
-				
-			case highscore_s:
-				//printf("byggern_25.c: highscore_s\n");
-				//receive_highscore_list();
-				//display_highscore_list();
-				menu_update();
-				break;
-				
-			case settings_s:
-				//printf("byggern_25.c: settings_s\n");
-				menu_update();
-				break;
-				
-			case pong_s:
-				//printf("byggern_25.c: pong_s\n");
-				play_pong();
-				menu_init(); //when finished playing
-				break;
-		}
+		//system_state = get_current_state();
+		//
+		//switch(system_state)
+		//{
+			//case main_s:
+				////printf("byggern_25.c: main_s\n");
+				//menu_update();
+				//break;
+				//
+			//case play_s:
+				////printf("byggern_25.c: play_s\n");
+				//play_game_board();
+				//menu_init(); //when finished playing
+				//break;
+				//
+			//case highscore_s:
+				////printf("byggern_25.c: highscore_s\n");
+				//menu_update();
+				//break;
+				//
+			//case settings_s:
+				////printf("byggern_25.c: settings_s\n");
+				//menu_update();
+				//break;
+				//
+			//case pong_s:
+				////printf("byggern_25.c: pong_s\n");
+				//play_pong();
+				//menu_init(); //when finished playing
+				//break;
+		//}
+		menu_update();
 		_delay_ms(10);
 	}
 }
@@ -98,4 +97,5 @@ void setup()
 	_delay_ms(100);
 	
 	menu_init();
+	//printf("setup finished\n");
 }

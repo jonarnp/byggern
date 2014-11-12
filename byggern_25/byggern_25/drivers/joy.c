@@ -52,7 +52,7 @@ void JOY_init()
 
 void JOY_calibrate()
 {
-	printf("Calibrating joystick. Move joystick to all extrema, release it and then push calib button\n");
+	printf(PSTR("Calibrating joystick. Move joystick to all extrema, release it and then push calib button\n"));
 	oled_clear();
 	Joy_calib_values.xMax = ADC_read(JOY_X_CH);
 	Joy_calib_values.xMin = Joy_calib_values.xMax;
@@ -145,7 +145,7 @@ void JOY_calibrate()
 			oled_print(uint8_to_str(Joy_calib_values.yMax));
 		}
 	}
-	printf("Button pushed\n");
+	printf(PSTR("Button pushed\n"));
 	
 	Joy_calib_values.xMiddle = ADC_read(JOY_X_CH);
 	Joy_calib_values.yMiddle = ADC_read(JOY_Y_CH);
@@ -156,9 +156,9 @@ void JOY_calibrate()
 	Joy_calib_values.y_k1 = (Joy_calib_values.yMiddle - Joy_calib_values.yMin);
 	Joy_calib_values.y_k2 = (Joy_calib_values.yMax - Joy_calib_values.yMiddle);
 	
-			
-	printf("Calibration completed, xMin %d xMax %d\n",Joy_calib_values.xMin,Joy_calib_values.xMax);
-	printf("Calibration completed, xk1 %d xk2 %d yk1 %d yk2 %d\n",Joy_calib_values.x_k1,Joy_calib_values.x_k2,Joy_calib_values.y_k1,Joy_calib_values.y_k2);
+	printf(PSTR("Joystick calibration completed\n"));
+	//printf("Calibration completed, xMin %d xMax %d\n",Joy_calib_values.xMin,Joy_calib_values.xMax);
+	//printf("Calibration completed, xk1 %d xk2 %d yk1 %d yk2 %d\n",Joy_calib_values.x_k1,Joy_calib_values.x_k2,Joy_calib_values.y_k1,Joy_calib_values.y_k2);
 }
 
 bool JOY_button()

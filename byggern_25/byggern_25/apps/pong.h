@@ -19,7 +19,7 @@ typedef struct ball {
 	uint16_t y_vel;
 }ball_t;
 
-/* Position [0,55] */
+/* Position [0, 46] 46 = GAME_PX_HEIGHT-SLIDER_HEIGHT */
 typedef struct game_slider {
 	uint16_t y_pos;
 	uint8_t col;

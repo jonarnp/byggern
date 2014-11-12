@@ -30,10 +30,11 @@ typedef enum main_menu{
 } main_menu_t;
 
 typedef enum settings_menu{
-	back,
 	calibrate_joy,
 	calibrate_sliders,
-	switch_music
+	switch_music,
+	reset_highscore,
+	back
 } settings_menu_t;
 
 void menu_init();

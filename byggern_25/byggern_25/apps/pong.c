@@ -9,7 +9,6 @@
 #include <util/delay.h>
 #include <avr/pgmspace.h>
 #include "pong.h"
-#include "menu.h"
 #include "../drivers/oled.h"
 #include "../drivers/slider.h"
 #include "../drivers/joy.h"
@@ -31,9 +30,9 @@ game_slider_t s1, s2;
 game_slider_t s1_prev, s2_prev;
 uint8_t score_p1, score_p2;
 uint16_t bounces;
-uint8_t iterations;
 
 void pong_init();
+void welcome_msg();
 void reset_ball();
 void pong_update();
 void update_score(uint8_t player);
@@ -57,18 +56,10 @@ void play_pong()
 		update_screen();
 		_delay_ms(ms_delay);
 		
-		if (JOY_button())
+		if (SLIDER_right_button())
 		{
-			if (iterations++ > SELECT_DELAY) 
-			{
-				finished = true;
-				iterations = 0;
-				//printf("finished playing pong\n");
-			}
-		}
-		else
-		{
-			iterations = 0;
+			finished = true;
+			//printf("finished playing pong\n");
 		}
 	}
 }
@@ -76,7 +67,8 @@ void play_pong()
 void pong_init()
 {
 	finished = false;
-	iterations = 0;
+	
+	welcome_msg();
 	
 	oled_clear();
 	oled_goto_column(0);
@@ -94,6 +86,28 @@ void pong_init()
 	s2.col = SLIDER_2_COLOUMN;
 	s1_prev = s1;
 	s2_prev = s2;
+}
+
+void welcome_msg()
+{
+	oled_clear();
+	oled_goto_column(0);
+	oled_goto_line(0);
+	oled_print_p(PSTR("Start Pong with left slider button"));
+	
+	oled_goto_column(0);
+	oled_goto_line(3);
+	oled_print_p(PSTR("Player 1: left slider"));
+	
+	oled_goto_column(0);
+	oled_goto_line(4);
+	oled_print_p(PSTR("Player 2: right slider"));
+	
+	oled_goto_column(0);
+	oled_goto_line(6);
+	oled_print_p(PSTR("Exit with right slider button"));
+	
+	while(!SLIDER_left_button());
 }
 
 void reset_ball()
@@ -120,8 +134,8 @@ void pong_update()
 	ball_now.y_pos += ball_now.y_vel;
 	
 	SLIDER_pos_t read_pos = SLIDER_getPosition();
-	s1.y_pos = (uint16_t)((GAME_PX_HEIGHT-1)*read_pos.left)/100;
-	s2.y_pos = (uint16_t)((GAME_PX_HEIGHT-1)*read_pos.right)/100;
+	s1.y_pos = (uint16_t)((GAME_PX_HEIGHT-SLIDER_HEIGHT)*read_pos.left)/100;
+	s2.y_pos = (uint16_t)((GAME_PX_HEIGHT-SLIDER_HEIGHT)*read_pos.right)/100;
 	//printf("Read pos: %d, %d\n", read_pos.left, read_pos.right);
 	
 	//Change y direction of ball when colliding with top or bottom wall
@@ -131,7 +145,7 @@ void pong_update()
 	}
 	
 	//Change x direction of ball when colliding with game sliders
-	if ((ball_now.x_pos/10) <= (s1.col+1) && (ball_now.y_pos/10) >= (s1.y_pos-1) && (ball_now.y_pos/10) <= s1.y_pos+SLIDER_HEIGHT)
+	if ((ball_now.x_pos/10) <= (s1.col+1) && (ball_now.y_pos/10 + 1) >= s1.y_pos && (ball_now.y_pos/10) <= s1.y_pos+SLIDER_HEIGHT)
 	{
 		int8_t dist_slider_mid = (ball_now.y_pos/10) - s1.y_pos - (SLIDER_HEIGHT/2);
 		ball_now.y_vel = dist_slider_mid;
@@ -140,7 +154,7 @@ void pong_update()
 		bounces++;
 		//printf("ball x, y: %d, %d; slider: %d\n", ball_now.x_pos, ball_now.y_pos, s1.y_pos);
 	}
-	else if ((ball_now.x_pos/10) >= (s2.col-1) && (ball_now.y_pos/10) >= (s2.y_pos-1) && (ball_now.y_pos/10) <= s2.y_pos+SLIDER_HEIGHT)
+	else if ((ball_now.x_pos/10) >= (s2.col-1) && (ball_now.y_pos/10 + 1) >= s2.y_pos && (ball_now.y_pos/10) <= s2.y_pos+SLIDER_HEIGHT)
 	{
 		int8_t dist_slider_mid = (ball_now.y_pos/10) - s2.y_pos - (SLIDER_HEIGHT/2);
 		ball_now.y_vel = dist_slider_mid;
@@ -171,6 +185,7 @@ void pong_update()
 	}
 
 	//printf("Ball pos: %d, %d\n", ball_now.x_pos, ball_now.y_pos);
+	//printf("slider ypos: %d, %d\n", s1.y_pos, s2.y_pos);
 }
 
 void update_score(uint8_t player)

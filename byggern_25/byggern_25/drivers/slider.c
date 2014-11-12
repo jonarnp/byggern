@@ -44,7 +44,7 @@ void SLIDER_init()
 
 void SLIDER_calibrate()
 {
-	printf("Calibrating sliders. Move sliders to all endpoints, then push calib button\n");
+	printf(PSTR("Calibrating sliders. Move sliders to all endpoints, then push calib button\n"));
 	oled_clear();
 	
 	Slider_calib_values.lMax = 127; /* Half of max adc value */
@@ -138,9 +138,10 @@ void SLIDER_calibrate()
 			oled_print(uint8_to_str(Slider_calib_values.rMax));
 		}
 	}
-	printf("Button pushed\n");
+	printf(PSTR("Button pushed\n"));
 		
-	printf("Calibration completed, lMin %d lMax %d\n",Slider_calib_values.lMin,Slider_calib_values.lMax);
+	printf(PSTR("Slider calibration completed\n"));
+	//printf("Calibration completed, lMin %d lMax %d\n",Slider_calib_values.lMin,Slider_calib_values.lMax);
 }
 
 SLIDER_pos_t SLIDER_getPosition()

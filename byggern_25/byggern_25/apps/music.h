@@ -10,14 +10,17 @@
 #ifndef MUSIC_H_
 #define MUSIC_H_
 
+typedef enum music{
+	MENU_MUSIC,
+	PLAY_MUSIC
+} music_t;
+
 void music_init();
 
 uint8_t music_enabled();
 
 uint8_t music_toggle();
 
-uint8_t music_next_song();
-
-uint8_t music_prev_song();
+void music_change_state(music_t mode);
 
 #endif /* MUSIC_H_ */
