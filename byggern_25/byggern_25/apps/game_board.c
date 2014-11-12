@@ -16,6 +16,7 @@
 #include "../drivers/can/can_msg.h"
 #include "../drivers/slider.h"
 #include "../drivers/oled.h"
+#include "../drivers/p1000switches.h"
 
 uint8_t send_start_game();
 void transmit_joy_pos();
@@ -59,7 +60,7 @@ void play_game_board()
 		if (rx_msg.id == GAME_STATUS)
 		{
 			finished = rx_msg.data[0];
-			score = (rx_msg.data[1] << 8) + rx_msg.data[2];
+			score = ((uint16_t)rx_msg.data[1] << 8) + rx_msg.data[2];
 				
 			//Live score
 			oled_goto_line(0);
@@ -102,11 +103,11 @@ void transmit_joy_pos()
 	
 	can_tx_message_t message;
 	message.id = GAME_CONTROLS;
-	message.data[0] = (uint8_t)((joy_pos.x & 0xFF00)>>8);
-	message.data[1] = (uint8_t)(joy_pos.x & 0x00FF);
-	message.data[2] = (uint8_t)((joy_pos.y & 0xFF00)>>8);
-	message.data[3] = (uint8_t)(joy_pos.y & 0x00FF);
-	message.data[4] = SLIDER_right_button();
+	message.data[0] = (uint8_t)((joy_pos.y & 0xFF00)>>8);
+	message.data[1] = (uint8_t)(joy_pos.y & 0x00FF);
+	message.data[2] = (uint8_t)((joy_pos.x & 0xFF00)>>8);
+	message.data[3] = (uint8_t)(joy_pos.x & 0x00FF);
+	message.data[4] = P1000_SW0();
 	
 	message.length = 5;
 		
