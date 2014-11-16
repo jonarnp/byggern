@@ -14,6 +14,7 @@
 
 #ifndef USART_H_
 #define USART_H_
+ 
 /*
  Initialize the USART0 port of the ATmega162. ubbr contains the baud-rate generator value, recieveInterupt selects if receive interupt is to be enabled.
  */

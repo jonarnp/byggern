@@ -9,8 +9,9 @@
 #ifndef SLIDER_TEST_H_
 #define SLIDER_TEST_H_
 
+/*
+Prints slider positions
+*/
 void Test_slider();
-
-
 
 #endif /* SLIDER_TEST_H_ */

@@ -29,7 +29,6 @@ void can_test()
 	transmit_can_message(message);
 	printf("Data sendt\n");
 			
-	//if (!get_bit(MCP_Int_Port,MCP_Int_Pin)) read_can_buffer();
 	if(USART_DataReceived())
 	{
 		char c = USART_Receive();
@@ -61,15 +60,9 @@ void can_test()
 				printf("Recieved CAN message is:\nID: %03x\nLength: %d\n",message.id,message.length);
 				printf("Data: %s\n",&message.data[0]);
 				printf("Nummer: %d\n",message.data [5]);
-				//for (uint8_t i = 0; i<message.length;i++)
-				//{
-				//printf("Data[%d] : %02x\n",i,message.data[i]);
-				//}
 			}
 		}
 	}
 	
 	printf("Overflow? %d\n",CAN_queue_overflow());
-	
-	//printf("Front: %d, Count: %d\n",front,count); REQUIRES THTAT front and count are made available (they shoud not be, unless for testing)
 }
