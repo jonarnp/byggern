@@ -39,7 +39,7 @@ const unsigned char PROGMEM settings_menu_str[6][20] = {
 	{"Settings"},
 	{"  -Joystick"},
 	{"  -Sliders"},
-	{"  -Toggle music "},
+	{"  -Music "},
 	{"  -Reset highscore"},
 	{"  -Back"}
 };

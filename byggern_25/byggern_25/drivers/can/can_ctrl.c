@@ -12,6 +12,38 @@
 #include "can_ctrl.h"
 #include "../../bit_op.h"
 
+/*
+Private functions
+*/
+
+/*
+Read a byte on the mcp2515
+@param uint8_t. mcp2515 register address
+@return uint8_t. Read data
+*/
+uint8_t mcp2515_read(uint8_t address);
+
+/*
+Write a byte to the mcp2515
+@param uint8_t address. mcp2515 register address. 
+@param uint8_t data. Write data
+*/
+void mcp2515_write(uint8_t address, uint8_t data);
+
+/*
+Modify byte at mcp2515 register address
+@param uint8_t address. mcp2515 register address.
+@param uint8_t mask. Bits allowed to change are high
+@param uint8_t data. New register value if bit is allowed to be changed
+*/
+void mcp2515_bit_modify(uint8_t address, uint8_t mask, uint8_t data);
+
+/*
+Re-initialize internal registers on the mcp2515
+*/
+void mcp2515_reset();
+
+
 uint8_t mcp2515_init()
 {
 	uint8_t value;

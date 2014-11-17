@@ -10,21 +10,12 @@
 #ifndef PONG_H_
 #define PONG_H_
 
+/* Frame rate for Pong game */
 #define FPS 24
 
-typedef struct ball {
-	uint16_t x_pos;
-	uint16_t y_pos;
-	uint16_t x_vel;
-	uint16_t y_vel;
-}ball_t;
-
-/* Position [0, 46] 46 = GAME_PX_HEIGHT-SLIDER_HEIGHT */
-typedef struct game_slider {
-	uint16_t y_pos;
-	uint8_t col;
-}game_slider_t;
-
+/* 
+Main Pong function. Will run Pong until game is finished (score reach MAX_SCORE or right slider button pushed).
+*/
 void play_pong();
 
 #endif /* PONG_H_ */

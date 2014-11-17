@@ -13,6 +13,7 @@
 #include "highscore.h"
 #include "../format.h"
 #include "../drivers/joy.h"
+#include "../drivers/can/can_id.h"
 #include "../drivers/can/can_msg.h"
 #include "../drivers/slider.h"
 #include "../drivers/oled.h"
@@ -66,6 +67,7 @@ void play_game_board()
 			oled_goto_line(0);
 			oled_goto_column(70);
 			oled_print(uint16_to_str(score));
+			oled_print("    \0");
 		}
 		else
 		{

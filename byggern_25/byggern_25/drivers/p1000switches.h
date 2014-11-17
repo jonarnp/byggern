@@ -18,12 +18,12 @@
 #define SW0_DDR DDRB
 
 /*
-Initialize the bottom switch on the USB multifunction card
+Initialize the switch button SW0 on the USB multifunction card
 */
 void P1000_init();
 
 /*
-Check switch button
+Check switch button SW0
 @return bool. True if switch button is pushed, False otherwise
 */
 bool P1000_SW0();

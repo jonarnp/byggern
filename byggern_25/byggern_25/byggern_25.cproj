@@ -156,6 +156,9 @@
     <Compile Include="drivers\can\can_ctrl.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="drivers\can\can_id.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="drivers\can\can_msg.c">
       <SubType>compile</SubType>
     </Compile>
