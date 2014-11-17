@@ -16,22 +16,27 @@
 #define USART_H_
  
 /*
- Initialize the USART0 port of the ATmega162. ubbr contains the baud-rate generator value, recieveInterupt selects if receive interupt is to be enabled.
+ Initialize the USART0 port of the ATmega162. 
+ @param ubbr contains the baud-rate generator value. 
+ @param recieveInterupt selects if receive interrupt is to be enabled.
  */
 void USART_Init( unsigned int ubrr, bool recieveInterupt);
 
 /*
 Transmit a single character to the USART0 port
+@param data. Transmitted char
 */
 void USART_Transmit( unsigned char data );
 
 /*
 Read a single character from the USART0 port. The function will halt if no data is received. The function USART_DataReceived can be used to check if data is received.
+@return unsigned char received
 */
 unsigned char USART_Receive( void );
 
 /*
-Check if data is received to the USART port. The function returns a bool, TRUE if data received, FALSE if no data is received.
+Check if data is received to the USART port. 
+@return bool. TRUE if data received, FALSE if no data is received.
 */
 bool USART_DataReceived(void);
 

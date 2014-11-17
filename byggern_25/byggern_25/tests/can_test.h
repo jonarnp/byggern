@@ -11,8 +11,8 @@
 
 /*
 Transmits a 6 byte CAN message with identifier 0x200. 
-If 'a' sent on the serial line (usart), send another CAN message.
-If 'r' sent on the serial line (usart), print incoming CAN message.
+If 'a' received on the USART0 port, send another CAN message.
+If 'r' received on the USART0 port, print incoming CAN message.
 */
 void can_test();
 

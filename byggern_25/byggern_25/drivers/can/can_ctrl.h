@@ -11,6 +11,7 @@
 
 #include <avr/io.h>
 
+/* Accepted CAN receive identifiers. See Can_ID.h for usage */
 #define RXF0 0x010
 #define RXF1 0x011
 #define RXF2 0x012
@@ -18,7 +19,7 @@
 #define RXF4 0x014
 #define RXF5 0x015
 
-//Int pin
+/* Interrupt pin */
 #define MCP_Int_Port PIND
 #define MCP_Int_Pin PIND2
 #define MCP_Int_DDR DDRD
@@ -27,7 +28,7 @@ typedef struct buffer_recieve{
 	uint16_t id;
 	uint8_t length;
 	uint8_t data[8];
-}buffer_recieve_t;
+} buffer_recieve_t;
 
 uint8_t mcp2515_init();
 

@@ -10,7 +10,7 @@
 #define USART_TEST_H_
 
 /*
-Transmits data received on the serial line
+Transmits data received on the USART0 port
 */
 void USART_test(void);
 

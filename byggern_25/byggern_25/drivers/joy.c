@@ -216,15 +216,6 @@ JOY_dir_t JOY_getDirection()
 {	
 	JOY_pos_t pos = JOY_getPosition();
 	
-	if(pos.x > JOY_DIR_TH)
-	{
-		return RIGHT;
-	}
-	else if (pos.x < -JOY_DIR_TH)
-	{
-		return LEFT;
-	}
-	
 	if(pos.y > JOY_DIR_TH)
 	{
 		return UP;
@@ -234,5 +225,14 @@ JOY_dir_t JOY_getDirection()
 		return DOWN;
 	}
 	
+	if(pos.x > JOY_DIR_TH)
+	{
+		return RIGHT;
+	}
+	else if (pos.x < -JOY_DIR_TH)
+	{
+		return LEFT;
+	}
+
 	return MIDDLE;
 }

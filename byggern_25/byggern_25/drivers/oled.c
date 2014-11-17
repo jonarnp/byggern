@@ -10,6 +10,13 @@
 #include <avr/io.h>
 #include "../fonts/font_5x7.h"
 
+/*
+Private functions
+*/
+void oled_select_column(uint8_t col_nr);
+void oled_select_line(uint8_t line_nr);
+
+
 volatile char *oled_command = (char *) OLED_COMMAND;
 volatile char *oled_data = (char *) OLED_DATA;
 
@@ -48,9 +55,6 @@ void oled_print_byte(uint8_t byte)
 	current_column += 1;
 }
 
-/*
-Outputs a char to the OLED screen. 
-*/
 void oled_putchar(char c)
 {	
 	uint8_t remaining_col = OLED_COLUMN_SPAN-current_column; // Remaining columns on current line
@@ -107,9 +111,6 @@ void oled_putchar_underscore(char c)
 	}
 }
 
-/*
-String print function.
-*/
 void oled_print(char* data)
 {
 	while (*data != '\0')
@@ -218,9 +219,6 @@ oled_position_t oled_getPos()
 	return pos;
 }
 
-/*
-Clear single line. Keeps column pointer at the same place after clearing the line
-*/
 void oled_clear_line(uint8_t line)
 {
 	oled_select_line(line);
@@ -231,9 +229,6 @@ void oled_clear_line(uint8_t line)
 	}
 }
 
-/*
-Clear entire screen. Keeps column and line pointer at the same place after clearing the screen
-*/
 void oled_clear()
 {
 	for (uint8_t i = 0; i <= OLED_LINE_SPAN; i++)
@@ -246,8 +241,9 @@ void oled_clear()
 	oled_select_column(current_column);
 }
 
-// Private functions //
-
+/*
+Private functions
+*/
 void oled_select_column(uint8_t col_nr)
 {
 	// Page addressing mode

@@ -30,9 +30,10 @@
 #include "apps/game_board.h"
 #include "apps/pong.h"
 #include "apps/menu.h"
+#include "drivers/p1000switches.h"
 
 /*
-Initializes the system. Sets up the external memory, oled, sliders, joystick and applications
+Initializes the system. Sets up the external memory, oled, sliders, joystick, CAN and applications
 */
 void setup();
 
@@ -59,7 +60,8 @@ void setup()
 	oled_clear();
 	SLIDER_init();
 	JOY_init();
-	send_joy_pos_init();
+	P1000_init();
+	can_init();
 	music_init();
 	_delay_ms(100);
 	

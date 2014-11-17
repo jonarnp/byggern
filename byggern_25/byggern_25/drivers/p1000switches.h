@@ -12,12 +12,20 @@
 #include <avr/io.h>
 #include <stdbool.h>
 
+/* P1000 switch pin */
 #define SW0_Port PINB
 #define SW0_Pin PINB3
 #define SW0_DDR DDRB
 
-void init();
+/*
+Initialize the bottom switch on the USB multifunction card
+*/
+void P1000_init();
 
+/*
+Check switch button
+@return bool. True if switch button is pushed, False otherwise
+*/
 bool P1000_SW0();
 
 #endif /* P1000SWITCHES_H_ */

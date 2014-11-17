@@ -40,14 +40,33 @@ typedef struct SLIDER_pos {
 	int16_t right;
 } SLIDER_pos_t;
 
+/*
+Initialize the ADC and the sliders on the USB multifunction card
+*/
 void SLIDER_init();
 
+/*
+Slider calibration function. Max and min values of the right and left sliders are stored
+Prints calibration sequence both to USART and to OLED screen.
+*/
 void SLIDER_calibrate();
 
+/*
+Reads the slider positions and returns their values
+@return SLIDER_pos_t: int16_t left, int16_t right. Range [0,100]
+*/
 SLIDER_pos_t SLIDER_getPosition();
 
+/*
+Check left slider button
+@return bool. True if button is pushed, False otherwise
+*/
 bool SLIDER_left_button();
 
+/*
+Check right slider button
+@return bool. True if button is pushed, False otherwise
+*/
 bool SLIDER_right_button();
 
 #endif /* SLIDER_H_ */

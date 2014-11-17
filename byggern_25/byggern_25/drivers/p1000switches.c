@@ -1,5 +1,5 @@
 /*
- * CFile1.c
+ * p1000switches.c
  *
  * Created: 12.11.2014 16:18:01
  *  Author: jonarnp
@@ -10,7 +10,7 @@
 #include <stdbool.h>
 #include "../bit_op.h"
 
-void init()
+void P1000_init()
 {
 	/* Set switches as input */
 	clear_bit(SW0_DDR,SW0_Pin);
