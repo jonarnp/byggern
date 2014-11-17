@@ -415,12 +415,6 @@ build.arch=AVR
     <Compile Include="node2_arduino.ino">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="servo_control.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="servo_control.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="spi.cpp">
       <SubType>compile</SubType>
     </Compile>
