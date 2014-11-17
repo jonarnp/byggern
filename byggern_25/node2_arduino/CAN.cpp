@@ -136,18 +136,18 @@ void CanMessage::print (uint8_t format)
 {
     uint8_t i;
 
-    Serial.print (this->id, format);
+    Serial1.print (this->id, format);
 
-    Serial.print (" [");
-    Serial.print (len, DEC);
-    Serial.print ("]:");
+    Serial1.print (" [");
+    Serial1.print (len, DEC);
+    Serial1.print ("]:");
 
     for (i = 0; i < this->len; i++) {
-        Serial.print (" ");
-        Serial.print (this->data[i], format);
+        Serial1.print (" ");
+        Serial1.print (this->data[i], format);
     }
 
-    Serial.println ("");
+    Serial1.println ("");
 }
 
 /*

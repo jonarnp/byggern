@@ -60,7 +60,7 @@
 #define SOL_DDR DDRF
 #define SOL_PORT PORTF
 #define SOL_PIN PINF2
-#define SOL_POS_WIDTH 4 //Defines the solenoid pulse width in 10 ms basis
+#define SOL_POS_WIDTH 2 //Defines the solenoid pulse width in 10 ms basis
 
 class Game_control
 {
@@ -74,12 +74,14 @@ class Game_control
 	void init();
 	
 	/*
-	Set the servo position. Position should be in the interval -100 to 100.
+	Set the servo position. 
+	@param position. Int8_t, should be in the interval [-100, 100].
 	*/
 	void set_servo(int8_t position);
 	
 	/*
-	Set desired motor speed. speed is in the inerval [-100,100]
+	Set desired motor speed. 
+	@param speed. Int8_t, should be in the interval [-100,100].
 	*/
 	void set_motor_speed(int8_t speed);
 	
@@ -90,6 +92,7 @@ class Game_control
 	
 	/*
 	Get the current score.
+	@return uint16_t.
 	*/
 	uint16_t get_score();
 	

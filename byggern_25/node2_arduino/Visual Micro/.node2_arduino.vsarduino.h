@@ -34,8 +34,6 @@ extern "C" void __cxa_pure_virtual() {;}
 #include "C:\Users\Flua\Documents\GiT\byggern\byggern_25\node2_arduino\mcp2515.h"
 #include "C:\Users\Flua\Documents\GiT\byggern\byggern_25\node2_arduino\mcp2515_regs.h"
 #include "C:\Users\Flua\Documents\GiT\byggern\byggern_25\node2_arduino\my_spi.h"
-#include "C:\Users\Flua\Documents\GiT\byggern\byggern_25\node2_arduino\servo_control.cpp"
-#include "C:\Users\Flua\Documents\GiT\byggern\byggern_25\node2_arduino\servo_control.h"
 #include "C:\Users\Flua\Documents\GiT\byggern\byggern_25\node2_arduino\spi.cpp"
 #include "C:\Users\Flua\Documents\GiT\byggern\byggern_25\node2_arduino\spotifyControl.cpp"
 #include "C:\Users\Flua\Documents\GiT\byggern\byggern_25\node2_arduino\spotifyControl.h"

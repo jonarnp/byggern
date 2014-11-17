@@ -21,12 +21,19 @@ class SpotifyControl
 
 
 	public:
-	void init();
-	
+	/*
+	Play next song
+	*/
 	void next_song();
-	
+
+	/*
+	Play previous song
+	*/	
 	void prev_song();
 	
+	/*
+	Play/pause
+	*/
 	void play_pause();
 };
 

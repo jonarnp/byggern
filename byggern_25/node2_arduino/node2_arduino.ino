@@ -1,5 +1,4 @@
 #include "game_control.h"
-#include "servo_control.h"
 #include <SPI.h>
 #include <Servo.h>
 #include "CAN.h"
@@ -23,10 +22,10 @@ void setup()
 {
 	//Setup CAN
 	CAN.begin(CAN_SPEED_125000);
-	CAN.setMode (MCP2515_MODE_CONFIG);
-	CAN.setMode (CAN_MODE_NORMAL);
+	CAN.setMode(MCP2515_MODE_CONFIG);
+	CAN.setMode(CAN_MODE_NORMAL);
   
-	//Setup serial line
+	//Setup serial lines
 	Serial.begin(115200);
 	Serial1.begin(9600);
   
@@ -39,12 +38,11 @@ void setup()
 
 void loop()
 {
-	//Serial1.print("Jada\n");
-	//Alive?
-	if (++i>1000)
+	//Send alive message
+	if (++i>10000)
 	{
 		i = 0;
-		//Serial.print("Alive\n");		
+		Serial1.print("Alive\n");		
 	}
 	
 	//Command available?
@@ -77,23 +75,21 @@ void loop()
 				break;
 				
 			case GAME_START:
-				//Serial.print("Staring game\n");
+				//Serial1.print("Staring game\n");
 				
 				//Reset the score counter
 				gameBoard.reset_score();
 				break;
 				
 			case HIGHSCORE_REQUEST:
-				//Serial.print("Request for highscores");
-				//Serial.print("\n");
+				//Serial1.print("Request for highscores\n");
 				
 				//Send the highscore list to node 1
 				scores.send_highscore();
 				break;
 				
 			case WRITE_HIGHSCORE:
-				//Serial.print("Write Highscore\n");
-				//message.print(HEX);
+				//Serial1.print("Write Highscore\n");
 				
 				//Player name
 				char name[3];
@@ -111,7 +107,8 @@ void loop()
 				break;
 				
 			case SPOTIFY_COMMAND:
-				//Serial.print("Got SPOTIFY command\n");
+				//Serial1.print("Got SPOTIFY command\n");
+				
 				switch (message.data[0])
 				{
 					case 1:
@@ -130,16 +127,16 @@ void loop()
 				break;
 				
 			case RESET_HIGHSCORE:
-				//Serial.print("Highscore reset\n");
+				//Serial1.print("Highscore reset\n");
 				
 				//Reset the highscore list
 				scores.reset_highscore();
 				break;
 				
 			default:
-				Serial.print("Unknown CAN message received. ID: \n");
-				Serial.print(message.id);
-				Serial.print("\n");
+				Serial1.print("Unknown CAN message received. ID: ");
+				Serial1.print(message.id);
+				Serial1.print("\n");
 				break;
 		}
 	}
