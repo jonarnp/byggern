@@ -28,21 +28,9 @@ uint8_t ADC_read(uint8_t chan)
 	/* Write MUX configuration to ADC */
 	*adc_addr = 4+chan-1;
 	
-	/* Wait for the INTR line to go low */
-	//_delay_us(1);
-	//while(get_bit(INTR_Port,INTR_Pin))
-	//{
-	//
-	//}
-	
+	/* Wait for the INTR line to go low */	
 	_delay_us(50);
 	
 	/* Read and return the ADC value */
 	return *adc_addr;
 } 
-
-/*
-
-Bruke TMR til å genererer interrupt hvert 1 ms? for å polle en og en AD kanal. Legge inn minne i ADC driveren, og returnere nyeste verdien.
-
-*/

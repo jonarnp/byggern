@@ -9,6 +9,10 @@
 #ifndef BIT_OP_H_
 #define BIT_OP_H_
 
+/*
+Macros for bit operations
+*/
+
 #define set_bit(reg,bit) (reg |= 1 << bit)
 #define clear_bit(reg,bit) (reg &= ~(1 << bit))
 #define toggle_bit(reg,bit) (reg ^= (1 << bit))

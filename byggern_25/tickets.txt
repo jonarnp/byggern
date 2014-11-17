@@ -1,8 +1,0 @@
-1. in joy.c: JOY_getDirection()
-	- handle two directions. i.e. right and up
-
-2. in oled.h: Handle seperation of words with - ?
-
-Ekstra:
-- Tick tack? Eller hva det heter. En slider på hver side av banen (skjermen) og ball som går mellom. Pong
-- Buzzer med PWM styring for musikk (LYD)

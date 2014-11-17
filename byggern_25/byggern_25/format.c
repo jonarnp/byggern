@@ -15,6 +15,13 @@ char *uint8_to_str(uint8_t number)
 	return str;
 }
 
+char *uint16_to_str(uint16_t number)
+{
+	char str[16];
+	itoa(number,str,10);
+	return str;
+}
+
 char *int16_to_str(int16_t number)
 {
 	char str[16];

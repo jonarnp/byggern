@@ -12,6 +12,38 @@
 #include "can_ctrl.h"
 #include "../../bit_op.h"
 
+/*
+Private functions
+*/
+
+/*
+Read a byte on the mcp2515
+@param uint8_t. mcp2515 register address
+@return uint8_t. Read data
+*/
+uint8_t mcp2515_read(uint8_t address);
+
+/*
+Write a byte to the mcp2515
+@param uint8_t address. mcp2515 register address. 
+@param uint8_t data. Write data
+*/
+void mcp2515_write(uint8_t address, uint8_t data);
+
+/*
+Modify byte at mcp2515 register address
+@param uint8_t address. mcp2515 register address.
+@param uint8_t mask. Bits allowed to change are high
+@param uint8_t data. New register value if bit is allowed to be changed
+*/
+void mcp2515_bit_modify(uint8_t address, uint8_t mask, uint8_t data);
+
+/*
+Re-initialize internal registers on the mcp2515
+*/
+void mcp2515_reset();
+
+
 uint8_t mcp2515_init()
 {
 	uint8_t value;
@@ -41,17 +73,20 @@ uint8_t mcp2515_init()
 	mcp2515_write(MCP_CANINTE,0x03);
 	
 	//Enable filtering/masking of receive buffers
-	mcp2515_bit_modify(MCP_RXB0CTRL,0b01100100,0xFF);
-	mcp2515_bit_modify(MCP_RXB1CTRL,0b01100000,0xFF);
+	mcp2515_bit_modify(MCP_RXB0CTRL,0b01100100,0x24);
+	mcp2515_bit_modify(MCP_RXB1CTRL,0b01100000,0x20);
+	mcp2515_write(MCP_RXM0SIDH,0xFF);
+	mcp2515_write(MCP_RXM0SIDL,0xE0);
+	mcp2515_write(MCP_RXM1SIDH,0xFF);
+	mcp2515_write(MCP_RXM1SIDL,0xE0);
 	
-	// Set loopback mode
-	mcp2515_write(MCP_CANCTRL, MODE_LOOPBACK);
+	// Set mode
+	//mcp2515_write(MCP_CANCTRL, MODE_LOOPBACK); // Loopback
+	mcp2515_write(MCP_CANCTRL, MODE_NORMAL); // Normal
 	
 	// Define INT pin as input on MCU
 	clear_bit(MCP_Int_DDR,MCP_Int_Pin);
 	
-	// Set normal mode
-	//mcp2515_write(MCP_CANCTRL, MODE_NORMAL);
 	
 	return 0;
 }
@@ -136,7 +171,7 @@ void mcp2515_load_tx_data(uint8_t buffer_nr, uint8_t* data, uint8_t length)
 	}
 	SPI_deselect();
 	
-	mcp2515_write(MCP_TXB0DLC + buffer_nr*0x10,length-1);
+	mcp2515_write(MCP_TXB0DLC + buffer_nr*0x10,length);
 }
 
 void mcp2515_select_tx_identifier(uint8_t buffer_nr, uint16_t ID)
@@ -151,7 +186,12 @@ void mcp2515_select_tx_identifier(uint8_t buffer_nr, uint16_t ID)
 	SPI_deselect();
 }
 
-void mcp2515_buffer_recieve(buffer_recieve_t *recieved)
+void mcp2515_set_tx_priority(uint8_t buffer_nr, uint8_t priority)
+{
+	mcp2515_bit_modify(MCP_TXB0CTRL+0x10*buffer_nr,0x03,priority);
+}
+
+void mcp2515_read_rx_buffer(buffer_recieve_t *recieved)
 {
 	uint8_t status = mcp2515_read_status();
 	uint8_t ident_low;
@@ -181,7 +221,7 @@ void mcp2515_buffer_recieve(buffer_recieve_t *recieved)
 		mcp2515_bit_modify(MCP_CANINTF,0x01,0);
 		recieved->id = (((uint16_t)ident_high)<<3) +(ident_low>>5);
 	}
-	if ((status & 0x02)>>1)
+	else if ((status & 0x02)>>1)
 	{
 		SPI_select();
 		SPI_send(MCP_READ_RX1);
@@ -204,17 +244,6 @@ void mcp2515_buffer_recieve(buffer_recieve_t *recieved)
 		recieved->id = (((uint16_t)ident_high)<<3) +(ident_low>>5);
 	}
 }
-/*
-//alt 1
-void mcp2515_buffer_recieve(buffer_recieve_t *)
-
-
-// alt 2
-static buffer_recieve_t
-
-// alt 3
-malloc
-*/
 
 /*
 This routine can only be used when MCP2515 is in configuration mode!

@@ -14,7 +14,4 @@
  */
 void XMEM_En(void);
 
-
-
-
 #endif /* XMEM_H_ */

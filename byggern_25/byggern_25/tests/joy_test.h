@@ -9,8 +9,9 @@
 #ifndef JOY_TEST_H_
 #define JOY_TEST_H_
 
+/*
+Prints joystick position and direction
+*/
 void Test_joy();
-
-
 
 #endif /* JOY_TEST_H_ */
