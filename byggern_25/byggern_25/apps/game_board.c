@@ -19,9 +19,26 @@
 #include "../drivers/oled.h"
 #include "../drivers/p1000switches.h"
 
+/*
+Private functions
+*/
+
+/*
+Send a start game command to node 2
+@return uint8_t. 0 if transmission was unsuccessful
+*/
 uint8_t send_start_game();
+
+/*
+Send joystick position and P1000 SW0 to node 2
+*/
 void transmit_joy_pos();
+
+/*
+Send joystick position as 0,0 and P1000 SW0 as 0 to when the game is finished
+*/
 void transmit_joy_pos_zero();
+
 
 void send_joy_pos_init()
 {
@@ -34,9 +51,11 @@ void play_game_board()
 	uint16_t score = 0;
 	can_rx_message_t rx_msg;
 	
+	//Get highscore list from node 2 and display it while playing
 	receive_highscore_list();
 	display_highscore_list(2);
 	
+	//Send start game command to node 2 
 	if (!send_start_game())
 	{
 		//printf("Failed to send start game command\n");
@@ -49,17 +68,18 @@ void play_game_board()
 	oled_goto_column(70);
 	oled_print(uint16_to_str(score));
 	
-	//printf("finished before loop: %d\n", finished);
-	
+	//Loop until game is finished
 	while (!finished)
 	{
+		//Sending game controls every iteration
 		transmit_joy_pos();
 		
+		//Busy-wait until message received from node 2
 		while(!read_can_message(&rx_msg));
-		
-		//printf("received finished: %d\n", rx_msg.data[0]);
+
 		if (rx_msg.id == GAME_STATUS)
 		{
+			//Received data
 			finished = rx_msg.data[0];
 			score = ((uint16_t)rx_msg.data[1] << 8) + rx_msg.data[2];
 				
@@ -74,23 +94,25 @@ void play_game_board()
 			//printf("Got unexpected CAN msg in play_game_board. id: %04x\n", rx_msg.id);
 		}
 		
-		_delay_ms(20);
+		_delay_ms(20); //Loop delay
 	}
 	
+	//Stop motor and set servo to middle position
 	transmit_joy_pos_zero();
-	//printf("Game finished%d\n", finished);
 	
+	//Check if any highscore was beaten
 	if (add_to_highscore(score))
 	{
+		//Sending new highscore to node 2
 		highscore_element_t entry = enter_initials(score);
 		send_new_highscore(entry);
-		//printf("New highscore sent: %c%c%c %d\n", entry.name[0], entry.name[1], entry.name[2], entry.score);
 		_delay_ms(200);
 	}
 }
 
 uint8_t send_start_game()
 {
+	//Generate and send game start command
 	can_tx_message_t message;
 	message.id = GAME_START;
 	message.length = 0;
@@ -101,8 +123,8 @@ uint8_t send_start_game()
 void transmit_joy_pos()
 {
 	JOY_pos_t joy_pos = JOY_getPosition();
-	//printf("Joy_pos x: %d, y: %d\n",joy_pos.x,joy_pos.y);
 	
+	//Generate and send game controls
 	can_tx_message_t message;
 	message.id = GAME_CONTROLS;
 	message.data[0] = (uint8_t)((joy_pos.y & 0xFF00)>>8);
@@ -118,6 +140,7 @@ void transmit_joy_pos()
 
 void transmit_joy_pos_zero()
 {
+	//Generate and send game controls with all zeros
 	can_tx_message_t message;
 	message.id = GAME_CONTROLS;
 	message.data[0] = 0;

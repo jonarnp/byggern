@@ -38,7 +38,7 @@ Initializes the system. Sets up the external memory, oled, sliders, joystick, CA
 void setup();
 
 /*
-Main loop. Initializes the system and continuously checks for menu updates from controls
+Main loop. Initializes the system and continuously checks for menu actions from joystick
 */
 int main(void)
 {
@@ -46,14 +46,13 @@ int main(void)
 
 	while(1)
 	{
-		menu_update();
+		menu_action_update();
 		_delay_ms(10);
 	}
 }
 
 void setup()
 {
-	DDRB = 0x01;
 	USART_Init(MYUBRR,false);
 	XMEM_En();
 	oled_init();
@@ -71,5 +70,4 @@ void setup()
 	_delay_ms(100);
 	
 	menu_init();
-	//printf("setup finished\n");
 }

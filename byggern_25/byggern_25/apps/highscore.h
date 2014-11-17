@@ -24,7 +24,7 @@ typedef struct highscore_element{
 }highscore_element_t;
 
 /*
-Receiving four highscore from node 2, and storing them in highscore_list[HIGHSCORE_LENGTH].
+Receiving four highscores from node 2, and storing them in highscore_list[HIGHSCORE_LENGTH].
 The function starts by sending a highscore request to node 2, then loops until highscores are sent back
 @return uint8_t. 1 when successfully received highscores
 */

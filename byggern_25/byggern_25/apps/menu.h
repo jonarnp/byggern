@@ -9,11 +9,13 @@
 #ifndef MENU_H_
 #define MENU_H_
 
+/* Defines for menu system */
 #define SELECT_DELAY 10
 #define SELECT_BUTTON_DELAY 20
 #define MAIN_MENU_LENGTH 4
 #define SETTINGS_MENU_LENGTH 4
 
+/* Defined system states */
 typedef enum state{
 	main_s,
 	play_s,
@@ -22,6 +24,7 @@ typedef enum state{
 	pong_s
 } state_t;
 
+/* Defined main menu items */
 typedef enum main_menu{
 	play,
 	highscore,
@@ -29,6 +32,7 @@ typedef enum main_menu{
 	pong
 } main_menu_t;
 
+/* Defined settings menu items */
 typedef enum settings_menu{
 	calibrate_joy,
 	calibrate_sliders,
@@ -37,10 +41,14 @@ typedef enum settings_menu{
 	back
 } settings_menu_t;
 
+/*
+Initialize the menu system
+*/
 void menu_init();
 
-void menu_update();
-
-state_t get_current_state();
+/*
+Check for menu actions from the joystick. If action occurred, update the system states accordingly
+*/
+void menu_action_update();
 
 #endif /* MENU_H_ */

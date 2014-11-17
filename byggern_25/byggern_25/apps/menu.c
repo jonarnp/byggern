@@ -16,7 +16,7 @@
 #include "../drivers/joy.h"
 #include "../drivers/slider.h"
 
-
+/* Struct containing all menu actions */
 typedef struct menu_action {
 	uint8_t up_iterations;
 	uint8_t down_iterations;
@@ -26,7 +26,7 @@ typedef struct menu_action {
 	bool select;
 }menu_action_t;
 
-// Strings
+/* Main menu strings stored in progmem */
 const unsigned char PROGMEM main_menu_str[5][20] = {
 	{"Main menu"},
 	{"  -Play"},
@@ -35,6 +35,7 @@ const unsigned char PROGMEM main_menu_str[5][20] = {
 	{"  -Pong"}
 };
 
+/* Settings menu strings stored in progmem */
 const unsigned char PROGMEM settings_menu_str[6][20] = {
 	{"Settings"},
 	{"  -Joystick"},
@@ -44,7 +45,7 @@ const unsigned char PROGMEM settings_menu_str[6][20] = {
 	{"  -Back"}
 };
 
-// States
+//States
 static state_t current_state;
 
 //Variables
@@ -71,7 +72,7 @@ void menu_init()
 	menu_update_screen();
 }
 
-void menu_update()
+void menu_action_update()
 {
 	if (JOY_getDirection() == DOWN)
 	{
@@ -214,9 +215,6 @@ void menu_update_state()
 
 void menu_update_screen()
 {
-	//printf("Update screen, goDown: %d, goUp: %d, select: %d\n",menu_select.goDown,menu_select.goUp,menu_select.select);
-	//printf("Current state: %d\n",current_state);
-	
 	
 	oled_clear();
 	oled_goto_column(0);
@@ -343,9 +341,4 @@ void menu_update_screen()
 			break;
 	}
 	//printf("End of update screen, goDown: %d, goUp: %d, select: %d\n",menu_select.goDown,menu_select.goUp,menu_select.select);
-}
-
-state_t get_current_state()
-{
-	return current_state;
 }
